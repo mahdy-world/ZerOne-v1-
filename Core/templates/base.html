@@ -1,0 +1,115 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+    
+    <head>
+    
+        <title>تريكو لمتابعة اعمال المصنع </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/static/assets/images/favicon.ico">
+    
+        
+            <!-- RTL -->
+            <!-- Bootstrap CSS -->
+            <link href="/static/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet">
+            <!-- App Css-->
+            <link href="/static/assets/css/app-rtl.min.css" id="app-style" rel="stylesheet">
+        
+    
+        <!-- Icons Css -->
+        <link href="/static/assets/css/icons.min.css" rel="stylesheet">
+    
+        <link href="/static/ONLink/ON.css" rel="stylesheet">
+    
+    
+    </head>
+    
+    
+    
+    <body data-sidebar="dark" >
+
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+            {% block header %}
+              
+            {% endblock header %}
+           
+
+            <!-- ========== Left Sidebar Start ========== -->
+            {% block left-sidebar %}
+              
+            {% endblock left-sidebar %}
+            <!-- Left Sidebar End -->
+
+            
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            
+           {% block main %}
+             
+           {% endblock main %} 
+            
+        
+        {% block model %}
+            <div class="modal fade" id="sub_modal">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" id="sub_body">
+                            <span class="float-left">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </span>
+        
+                    </div>
+                </div>
+            </div>
+        {% endblock model %}
+            
+
+    
+           
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+      
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+
+      
+
+
+                <!-- JAVASCRIPT -->
+        <script src="/static/assets/libs/jquery/jquery.min.js"></script>
+        <script src="/static/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/static/assets/libs/metismenu/metisMenu.min.js"></script>
+        <script src="/static/assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="/static/assets/libs/node-waves/waves.min.js"></script>
+
+        <!-- apexcharts -->
+        {% comment %}<script src="/static/assets/libs/apexcharts/apexcharts.min.js"></script>
+
+        <script src="/static/assets/js/pages/dashboard.init.js"></script>
+        {% endcomment %}
+
+
+        <!-- App js -->
+        <script src="/static/assets/js/app.js"></script>
+        {% comment %}<script src="{% static 'js/main.js' %}"></script>{% endcomment %}
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'ONLink/on.js' %}"></script>
+        <script src="{% static 'js/all.js' %}"></script>
+
+
+    </body>
+
+</html>
