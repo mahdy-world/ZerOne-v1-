@@ -8,11 +8,10 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMix
 from django.views import View
 from django.views.generic import *
 
-# Create your views here.
 
+# Create your views here.
 class Login(View):
-    
-    def post(self,request):
+    def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -23,15 +22,15 @@ class Login(View):
                 return redirect('Core:index')
             else:
                 error = 'تم ايقاف الحساب الخاص بك '
-                return render(request, 'login.html' , context={'error':error}) 
+                return render(request, 'login.html', context={'error': error})
         else:
                 error = 'برجاء التأكد من اسم المستخدم وكلمة المرور'
-                return render(request, 'login.html' , context={'error':error})
+                return render(request, 'login.html', context={'error': error})
 
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('Core:index')
-        return render(request,'login.html')                   
+        return render(request, 'login.html')
 
 
 class Logout(LoginRequiredMixin, View):
