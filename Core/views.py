@@ -5,4 +5,4 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='Auth:login')
 def Index(request):
-    return render(request , 'Core/index.html')
+    return render(request, 'core/index.html')
