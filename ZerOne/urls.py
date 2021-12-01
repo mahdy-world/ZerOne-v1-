@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Core.urls')),
     path('',include('Auth.urls')),
+    path('spare_parts/',include('SpareParts.urls')),
+    path('machine/',include('Machines.urls'))
     path('spareparts/',include('SpareParts.urls'))
 ]
 
