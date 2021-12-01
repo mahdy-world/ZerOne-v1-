@@ -1,13 +1,13 @@
 
 {% block main %}
-    {% load crispy_forms_tags %}
+    {% load bootstrap4 %}
     <form method="post" action="{{ action_url }}">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
-                            <b>{{ title }}</b>
+                            <b> {{ title }}</b>
                         </div>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
@@ -20,7 +20,7 @@
                     </div>
                     <div class="card-body">
                         {% csrf_token %}
-                        {{ form|crispy }}
+                        {% bootstrap_form form %}
 
                         <input name="url" type="hidden" class="url_input">
                         <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
