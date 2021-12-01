@@ -1,0 +1,141 @@
+<i class='bx bx-filter-alt' ></i> الفلتر{% extends "base.html" %}
+
+
+{% block header %}
+{% include "components/header.html" %}
+{% endblock header %}
+
+{% block main %}
+
+
+{% if object_list %}
+    <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row mb-1 " >
+                    
+                  <div class="col-12">
+                      <div class="page-title-box ">
+                          <div class="row">
+                               <div class="col-12 d-flex ">
+                                  <h1 class="mb-0 font-size-30 font-weight-bold"> أنواع  قطع الغيار </h1>
+                                    <a class="  ml-2" aria-current="page" href="#" data-toggle="modal"data-target="#sub_modal" >
+                                      <span class="badge badge-success"> <i class="bx bxs-add-to-queue"></i> جديد  </span>
+                                        
+                                    </a>
+
+                                    <a class="ml-2" href="#"> 
+                                      <span class="badge badge-danger"> <i class="bx bx-trash"></i> المهملات</span>
+                                    </a> 
+
+                                    <a class="ml-2" href="#">
+                                       
+                                       <span class="badge badge-info"> <i class='bx bx-filter-alt' ></i> الفلتر</span>
+                                    </a>             
+                              </div>
+                              </div>                             
+                      </div>
+                  </div>
+
+                  
+              </div>
+              <!-- end page title -->
+              <!-- end page title -->
+
+              <div class="row">
+                {% for x in object_list  %}
+                <div class="col-xl-3 col-sm-6">
+                  <div class="card text-center">
+                      <div class="card-body">
+                          <div class="avatar-sm mx-auto mb-4 mt-4">
+                              <span class="avatar-title rounded-circle bg-soft-primary text-primary font-size-16">
+                                <img src="/static/assets/images/vector/type.png" alt="" width="100px"> 
+
+                              </span>
+                          </div>
+                          <h3 ><a href="#" class="text-dark"> {{x.name}}</a></h3>
+            
+                      </div>
+                      <div class="card-footer bg-transparent border-top">
+                          <div class="contact-links d-flex justify-content-center font-size-20">
+                              <div class="mr-3">
+                                  <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Message"><i class='bx bx-edit  bx-sm' style="color: #50a5f1
+                                    ;" ></i></a>
+                              </div>
+                              
+                              <div class="">
+                                  <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Profile"><i class='bx bxs-trash  bx-sm' style='color:#f46a6a'  ></i></a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                {% endfor %}
+               
+                
+              </div>
+              <!-- end row -->
+
+
+              <!-- pagination -->
+
+              {% if is_paginated %}
+              {% include "components/paginator.html" %}
+            {% endif %}
+                
+              <!-- end row -->
+
+          </div> <!-- container-fluid -->
+      </div>
+      <!-- End Page-content -->
+
+      
+      {% include "components/footer.html" %}
+
+{% else %}
+
+ <!-- not found page   -->
+ <div class="main-content">
+
+  <div class="page-content">
+
+      <div class="container-fluid">
+
+          <div class="row">
+
+              <div class="col-lg-12">
+                  <div class="text-center mb-5 mt-5">
+                      <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                      <h4 class="text-uppercase">للأسف لا توجد بيانات</h4>
+                      <div class="mt-3 text-center">
+                          <a class="btn btn-primary waves-effect waves-light" href="index.html">اضافة بيانات</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      
+          <div class="row d-flex justify-content-center">
+              <div class="col-lg-12 d-flex justify-content-center ">
+                  
+                  <img src="/static/assets/images/error-img.png" width="400px" height="188px" alt="" class="img-fluid" >
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+{% endif %}
+  
+
+  
+{% endblock main %}
+
+{% block left-sidebar %}
+  {% include "components/leftSidebar.html" %}
+{% endblock left-sidebar %}
