@@ -4,14 +4,6 @@ from django.db import models
 # Create your models here.
 
 
-# وحدات قطع الغيار
-class SparePartsUnits(models.Model):
-    name = models.CharField(max_length=128, verbose_name='الاسم')
-    deleted = models.BooleanField(default=False, verbose_name='مسح')
-
-    def __str__(self):
-        return self.name
-
 
 # انواع قطع الغيار
 class SparePartsTypes(models.Model):
@@ -70,7 +62,6 @@ class SparePartsOrders(models.Model):
 class SparePartsOrderProducts(models.Model):
     product_order = models.ForeignKey(SparePartsOrders, on_delete=models.CASCADE, null=True, verbose_name='الطلبية')
     product_name = models.ForeignKey(SparePartsNames, on_delete=models.CASCADE, null=True, verbose_name='المنج')
-    product_unit = models.ForeignKey(SparePartsUnits, on_delete=models.CASCADE, null=True, verbose_name='وحدة المنتج')
     product_quantity = models.IntegerField(default=0, null=True, verbose_name="الكمية")
     product_price = models.FloatField(default=0, null=True, verbose_name="سعر الشراء")
     deleted = models.BooleanField(default=False, verbose_name='حذف')
