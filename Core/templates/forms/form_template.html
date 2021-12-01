@@ -1,4 +1,11 @@
+{% extends "base.html" %}
+
+
 {% block main %}
+  {% include "components/main.html" %}
+{% endblock main %}
+
+{% block modal %}
     {% load crispy_forms_tags %}
     <form method="post" action="{{ action_url }}">
         <div class="row">
@@ -35,4 +42,4 @@
             </div>
         </div>
     </form>
-{% endblock %}
+{% endblock modal %}

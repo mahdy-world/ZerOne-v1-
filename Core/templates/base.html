@@ -5,7 +5,7 @@
     
     <head>
     
-        <title>تريكو لمتابعة اعمال المصنع </title>
+        <title>نظام زيرو وان المحاسبي للماكينات والغزل</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
@@ -68,43 +68,27 @@
         <!-- Begin page -->
         <div id="layout-wrapper">
 
-            {% block header %}
-              
-            {% endblock header %}
-           
+            {% include "components/header.html" %}
 
-            <!-- ========== Left Sidebar Start ========== -->
-            {% block left-sidebar %}
-              
-            {% endblock left-sidebar %}
-            <!-- Left Sidebar End -->
+            {% include "components/leftSidebar.html" %}
 
-            
-
-            <!-- ============================================================== -->
-            <!-- Start right Content here -->
-            <!-- ============================================================== -->
-            
-           {% block main %}
+            {% block main %}
              
-           {% endblock main %} 
-            
+            {% endblock main %}
+
+            {% include "components/footer.html" %}
         
-        {% block model %}
-            <div class="modal fade" id="sub_modal">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content" id="sub_body">
-                            <span class="float-left">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </span>
-        
+            {% block model %}
+                <div class="modal fade" id="sub_modal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" id="sub_body">
+                                <span class="float-left">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endblock model %}
-            
-
-    
+            {% endblock model %}
            
             <!-- end main content-->
 
