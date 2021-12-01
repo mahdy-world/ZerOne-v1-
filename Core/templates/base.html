@@ -79,15 +79,38 @@
             {% include "components/footer.html" %}
         
             {% block model %}
-                <div class="modal fade" id="sub_modal">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content" id="sub_body">
-                                <span class="float-left">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </span>
-                        </div>
+            <div class="modal fade" id="action_modal">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content" id="action_body">
+                            <span class="float-left">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </span>
+        
                     </div>
                 </div>
+            </div>
+            
+            <div class="modal fade" id="calendar_modal">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" id="calendar_body">
+                            <span class="float-left">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </span>
+        
+                    </div>
+                </div>
+            </div>
+        
+            <div class="modal fade" id="sub_modal">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" id="sub_body">
+                            <span class="float-left">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </span>
+        
+                    </div>
+                </div>
+            </div>
             {% endblock model %}
            
             <!-- end main content-->
@@ -124,7 +147,9 @@
         <script src="{% static 'ONLink/on.js' %}"></script>
         <script src="{% static 'js/all.js' %}"></script>
 
-
+        {% block js %}
+          
+        {% endblock js %}
     </body>
 
 </html>
