@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Core',
     'Auth',
     'SpareParts',
+    'Machines',
 
 ]
 
