@@ -9,18 +9,37 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
-                            <h4 class="mb-0 font-size-18">أنواع قطع الغيار</h4>
+                            <h4 class="mb-0 font-size-18">أنواع الماكينات
+                            {% if page == 'trash' %}
+                            المحذوفة
+                            {% endif %}
+                            <button type="button"
+                                {% if page == 'active' %}
+                                class="btn btn-success waves-effect waves-light"
+                                {% endif %}
+                                {% if page == 'trash' %}
+                                class="btn btn-danger waves-effect waves-light"
+                                {% endif %}
+                            >
+                                {{ object_list.count }}
+                            </button>
+                            </h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
-                                    <li class="breadcrumb-item active">أنواع قطع الغيار</li>
+                                    <li class="breadcrumb-item active">أنواع الماكينات
+                                    {% if page == 'trash' %}
+                                    المحذوفة
+                                    {% endif %}
+                                    </li>
                                 </ol>
                             </div>
 
                         </div>
                     </div>
                 </div>
+
 
                 {% if object_list %}
                 <div class="row">
@@ -30,7 +49,7 @@
                       <div class="card-body">
                           <div class="avatar-sm mx-auto mb-4 mt-4">
                               <span class="avatar-title rounded-circle bg-soft-primary text-primary font-size-16">
-                                <img src="/static/assets/images/vector/type.png" alt="" width="100px">
+                                <img src="/static/assets/images/vector/machines.jpg" alt="" width="150px" height="100px">
 
                               </span>
                           </div>
@@ -40,12 +59,15 @@
                       <div class="card-footer bg-transparent border-top">
                           <div class="contact-links d-flex justify-content-center font-size-20">
                               <div class="mr-3">
-                                  <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Message"><i class='bx bx-edit  bx-sm' style="color: #50a5f1
-                                    ;" ></i></a>
+                                  <button type="button" class="btn btn-info waves-effect waves-light">
+                                    <i class="bx bxs-edit font-size-16 align-middle mr-2"></i> تعديل
+                                  </button>
                               </div>
 
                               <div class="">
-                                  <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Profile"><i class='bx bxs-trash  bx-sm' style='color:#f46a6a'  ></i></a>
+                                  <button type="button" class="btn btn-danger waves-effect waves-light">
+                                    <i class="bx bxs-trash font-size-16 align-middle mr-2"></i> حذف
+                                  </button>
                               </div>
                           </div>
                       </div>
@@ -68,10 +90,16 @@
                               <div class="col-lg-12">
                                   <div class="text-center mb-5 mt-5">
                                       <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
-                                      <h4 class="text-uppercase">لا توجد بيانات</h4>
+                                      <h4 class="text-uppercase">لا توجد بيانات
+                                      {% if page == 'trash' %}
+                                        محذوفة
+                                      {% endif %}
+                                      </h4>
+                                      {% if page == 'active' %}
                                       <div class="mt-3 text-center">
                                           <a class="btn btn-primary waves-effect waves-light" href="index.html">اضافة بيانات</a>
                                       </div>
+                                      {% endif %}
                                   </div>
                               </div>
                           </div>

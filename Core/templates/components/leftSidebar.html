@@ -20,7 +20,7 @@
                    
                     <ul class="sub-menu" aria-expanded="false">
                         
-                        <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-line-chart' ></i>
+                        <li><a href="/" key="t-products"><i class='bx bx-line-chart' ></i>
                             احصائيات عامة  </a></li>
 
                         <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-search-alt' ></i>
@@ -246,13 +246,13 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
-                                <li><a href="{% url 'Machines:types_list' %}" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'Machines:types_active_list' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الأنواع </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'Machines:types_create' %}" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة نوع جديد</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'Machines:types_trash_list' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>
