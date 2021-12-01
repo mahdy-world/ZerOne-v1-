@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+                            <h4 class="mb-0 font-size-18">
+                                {% if page == 'create' %}
+                                اضافة
+                                {% endif %}
+                                {% if page == 'update' %}
+                                تعديل
+                                {% endif %}
+                                نوع ماكينة
+                            </h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'Machines:types_active_list' %}">قائمة أنواع الماكينات</a></li>
+                                    <li class="breadcrumb-item active">
+                                        {% if page == 'create' %}
+                                        اضافة
+                                        {% endif %}
+                                        {% if page == 'update' %}
+                                        تعديل
+                                        {% endif %}
+                                        نوع ماكينة
+                                    </li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                {% load crispy_forms_tags %}
+                <form method="post" action="{{ action_url }}">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    {% csrf_token %}
+                                    {{ form|crispy }}
+
+                                    <input name="url" type="hidden" class="url_input">
+                                    <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
+                                </div>
+
+                                <div class="card-footer text-center">
+                                    {% if page == 'create' %}
+                                    <button type="submit" class="btn form-control btn-success">
+                                        <i class="fa fa-save"></i>
+                                        اضافة
+                                    </button>
+                                    {% endif %}
+                                    {% if page == 'update' %}
+                                    <button type="submit" class="btn form-control btn-info">
+                                        <i class="fa fa-save"></i>
+                                        تعديل
+                                    </button>
+                                    {% endif %}
+                                    <button style="margin-top: 5px" onclick="window.history.back();" class="btn form-control btn-secondary" type="button">
+                                        <i class="bx bx-redo"></i>
+                                        عودة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+          </div>
+      </div>
+  </div>
+{% endblock main %}

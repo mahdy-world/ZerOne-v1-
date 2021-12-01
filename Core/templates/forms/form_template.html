@@ -1,11 +1,4 @@
-{% extends "base.html" %}
-
-
 {% block main %}
-  {% include "components/main.html" %}
-{% endblock main %}
-
-{% block modal %}
     {% load crispy_forms_tags %}
     <form method="post" action="{{ action_url }}">
         <div class="row">
@@ -42,4 +35,40 @@
             </div>
         </div>
     </form>
-{% endblock modal %}
+{% endblock %}
+
+
+{% block js %}
+
+    <script>
+        function get_url() {
+            var url_input = $('.url_input');
+            url_input.each(function (i) {
+                $(this).val(window.location.href);
+            });
+            return url_input;
+        }
+
+        get_url();
+    </script>
+
+    <script>
+        function set_instance() {
+            var instance_input = $('#id_instance');
+            instance_input.each(function (i) {
+                "{{ request.user.instance.id }}"
+            });
+            return instance_input;
+        }
+
+        set_instance();
+    </script>
+
+    <script>
+        $('select').addClass('select2');
+        $('.select2').select2();
+        $('.select2-container').addClass('form-control');
+    </script>
+
+
+{% endblock %}

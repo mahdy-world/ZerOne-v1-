@@ -21,7 +21,7 @@
                                 class="btn btn-danger waves-effect waves-light"
                                 {% endif %}
                             >
-                                {{ object_list.count }}
+                                {{ count }}
                             </button>
                             </h4>
 
@@ -59,15 +59,15 @@
                       <div class="card-footer bg-transparent border-top">
                           <div class="contact-links d-flex justify-content-center font-size-20">
                               <div class="mr-3">
-                                  <button type="button" class="btn btn-info waves-effect waves-light">
+                                  <a type="button" href="{% url 'Machines:types_update' x.id %}" class="btn btn-info waves-effect waves-light">
                                     <i class="bx bxs-edit font-size-16 align-middle mr-2"></i> تعديل
-                                  </button>
+                                  </a>
                               </div>
 
                               <div class="">
-                                  <button type="button" class="btn btn-danger waves-effect waves-light">
+                                  <a type="button" href="{% url 'Machines:types_delete' x.id %}" class="btn btn-danger waves-effect waves-light">
                                     <i class="bx bxs-trash font-size-16 align-middle mr-2"></i> حذف
-                                  </button>
+                                  </a>
                               </div>
                           </div>
                       </div>

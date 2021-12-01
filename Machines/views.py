@@ -15,10 +15,11 @@ class TypesActiveList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page'] = 'active'
+        context['count'] = self.model.objects.filter(deleted=False).count()
         return context
 
     def get_queryset(self):
-        queryset = self.model.objects.filter(deleted=False)
+        queryset = self.model.objects.filter(deleted=False).order_by('id')
         return queryset
 
 
@@ -30,22 +31,22 @@ class TypesTrashList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page'] = 'trash'
+        context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
     def get_queryset(self):
-        queryset = self.model.objects.filter(deleted=True)
+        queryset = self.model.objects.filter(deleted=True).order_by('id')
         return queryset
 
 
 class TypesCreate(CreateView):
     model = MachinesTypes
     form_class = MachinesTypesForm
-    template_name = 'forms/form_template.html'
     success_url = reverse_lazy('Machines:types_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'إضافة مجموعة أصناف رئيسية'
+        context['page'] = 'create'
         context['action_url'] = reverse_lazy('Machines:types_create')
         return context
 
@@ -54,3 +55,27 @@ class TypesCreate(CreateView):
             return self.request.POST.get('url')
         else:
             return self.success_url
+
+
+class TypesUpdate(UpdateView):
+    model = MachinesTypes
+    form_class = MachinesTypesForm
+    success_url = reverse_lazy('Machines:types_active_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'update'
+        context['action_url'] = reverse_lazy('Machines:types_update', kwargs={'pk': self.object.id})
+        return context
+
+
+class TypesDelete(DeleteView):
+    model = MachinesTypes
+    form_class = MachinesTypesForm
+    success_url = reverse_lazy('Machines:types_active_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'delete'
+        context['action_url'] = reverse_lazy('Machines:types_delete', kwargs={'pk': self.object.id})
+        return context
