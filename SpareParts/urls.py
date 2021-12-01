@@ -3,6 +3,7 @@ from .views import *
 
 app_name = 'SpareParts'
 urlpatterns = [
-   path('spareparts/', SparePartsTypeList.as_view(), name="SpareTypeList" ),
-   path('sparepartsName/', SparePartsNameList.as_view(), name="SpareNameList" )
+   path('sparepartsList/', SparePartsTypeList.as_view(), name="SpareTypeList" ),
+   path('sparepartsType/create/', SparePartsTypeCreate.as_view(), name='SparePartsTypeCreate'),
+   
 ]
