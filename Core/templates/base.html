@@ -2,17 +2,17 @@
 {% load static %}
 <html lang="en">
 
-    
+
     <head>
-    
+
         <title>نظام زيرو وان المحاسبي للماكينات والغزل</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
 
 
         <!-- Admin lte  -->
-        
+
                     <!-- Font Awesome -->
                     <link rel="stylesheet" href="{% static 'AdminLTE/plugins/fontawesome-free/css/all.min.css' %}">
                     <!-- Ionicons -->
@@ -24,7 +24,7 @@
                         integrity="sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If" crossorigin="anonymous">
                     <!-- iCheck -->
                     <link rel="stylesheet" href="{% static 'AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
-        
+
                     <!-- JQVMap -->
                     <link rel="stylesheet" href="{% static 'AdminLTE/plugins/jqvmap/jqvmap.min.css' %}">
                     <!-- Theme style -->
@@ -42,25 +42,25 @@
 
         <!-- App favicon -->
         <link rel="shortcut icon" href="/static/assets/images/favicon.ico">
-    
+
             <!-- RTL -->
             <!-- Bootstrap CSS -->
             <link href="/static/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet">
             <!-- App Css-->
             <link href="/static/assets/css/app-rtl.min.css" id="app-style" rel="stylesheet">
-        
+
         <!-- Icons Css -->
         <link href="/static/assets/css/icons.min.css" rel="stylesheet">
-    
+
         <link href="/static/ONLink/ON.css" rel="stylesheet">
 
 
-        
-    
+
+
     </head>
-    
-    
-    
+
+
+
     <body data-sidebar="dark" >
 
     <!-- <body data-layout="horizontal" data-topbar="dark"> -->
@@ -73,11 +73,11 @@
             {% include "components/leftSidebar.html" %}
 
             {% block main %}
-             
+
             {% endblock main %}
 
             {% include "components/footer.html" %}
-        
+
             {% block model %}
             <div class="modal fade" id="action_modal">
                 <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -85,45 +85,49 @@
                             <span class="float-left">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </span>
+
         
                     </div>
                 </div>
             </div>
             
+
             <div class="modal fade" id="calendar_modal">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content" id="calendar_body">
                             <span class="float-left">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </span>
+
+
         
                     </div>
                 </div>
             </div>
         
+
             <div class="modal fade" id="sub_modal">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content" id="sub_body">
                             <span class="float-left">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </span>
-        
-                    </div>
+      </div>
                 </div>
             </div>
             {% endblock model %}
-           
+
             <!-- end main content-->
 
         </div>
         <!-- END layout-wrapper -->
 
-      
+
 
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
 
-      
+
 
 
                 <!-- JAVASCRIPT -->
@@ -148,7 +152,7 @@
         <script src="{% static 'js/all.js' %}"></script>
 
         {% block js %}
-          
+
         {% endblock js %}
     </body>
 
