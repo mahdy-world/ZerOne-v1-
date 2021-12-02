@@ -6,7 +6,4 @@ from .models import *
 class SparePartsTypeForm(forms.ModelForm):
     class Meta:
         model = SparePartsTypes
-        fields = '__all__'
-        widgets = {
-            'deleted': forms.HiddenInput(),
-        }
+        exclude = ['deleted']
