@@ -7,3 +7,12 @@ class SparePartsTypeForm(forms.ModelForm):
     class Meta:
         model = SparePartsTypes
         exclude = ['deleted']
+
+class DeleteForm(forms.ModelForm):
+    class Meta:
+        exclude = ['name']
+        model = SparePartsTypes
+        widgets = {
+
+            'deleted': forms.HiddenInput(),
+        }
