@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
+
     <div class="main-content">
 
       <div class="page-content">
@@ -10,26 +11,17 @@
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
                             <h4 class="mb-0 font-size-18">أنواع الماكينات
-                            {% if page == 'trash' %}
+                            {% if message == 'trash' %}
                             المحذوفة
                             {% endif %}
-                            <button type="button"
-                                {% if page == 'active' %}
-                                class="btn btn-success waves-effect waves-light"
-                                {% endif %}
-                                {% if page == 'trash' %}
-                                class="btn btn-danger waves-effect waves-light"
-                                {% endif %}
-                            >
-                                {{ count }}
-                            </button>
                             </h4>
+                            <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} نوع </span>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
                                     <li class="breadcrumb-item active">أنواع الماكينات
-                                    {% if page == 'trash' %}
+                                    {% if message == 'trash' %}
                                     المحذوفة
                                     {% endif %}
                                     </li>
@@ -58,17 +50,32 @@
                       </div>
                       <div class="card-footer bg-transparent border-top">
                           <div class="contact-links d-flex justify-content-center font-size-20">
+                              {% if message == 'active' %}
                               <div class="mr-3">
-                                  <a type="button" href="{% url 'Machines:types_update' x.id %}" class="btn btn-info waves-effect waves-light">
+                                  <a type="button" href="{% url 'Machines:types_update' x.id %}" data-toggle="modal" data-target="#action_modal" class="btn btn-info waves-effect waves-light">
                                     <i class="bx bxs-edit font-size-16 align-middle mr-2"></i> تعديل
                                   </a>
                               </div>
 
                               <div class="">
-                                  <a type="button" href="{% url 'Machines:types_delete' x.id %}" class="btn btn-danger waves-effect waves-light">
+                                  <a type="button" href="{% url 'Machines:types_delete' x.id %}" data-toggle="modal" data-target="#action_modal" class="btn btn-danger waves-effect waves-light">
                                     <i class="bx bxs-trash font-size-16 align-middle mr-2"></i> حذف
                                   </a>
                               </div>
+                              {% endif %}
+                                {% if message == 'trash' %}
+                              <div class="mr-3">
+                                  <a type="button" href="{% url 'Machines:types_restore' x.id %}" data-toggle="modal" data-target="#action_modal" class="btn btn-info waves-effect waves-light">
+                                    <i class="bx bxs-edit font-size-16 align-middle mr-2"></i> ارجاع
+                                  </a>
+                              </div>
+
+                              <div class="">
+                                  <a type="button" href="{% url 'Machines:types_super_delete' x.id %}" data-toggle="modal" data-target="#action_modal" class="btn btn-danger waves-effect waves-light">
+                                    <i class="bx bxs-trash font-size-16 align-middle mr-2"></i> حذف نهائي
+                                  </a>
+                              </div>
+                              {% endif %}
                           </div>
                       </div>
                   </div>
@@ -91,13 +98,13 @@
                                   <div class="text-center mb-5 mt-5">
                                       <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
                                       <h4 class="text-uppercase">لا توجد بيانات
-                                      {% if page == 'trash' %}
+                                      {% if message == 'trash' %}
                                         محذوفة
                                       {% endif %}
                                       </h4>
-                                      {% if page == 'active' %}
+                                      {% if message == 'active' %}
                                       <div class="mt-3 text-center">
-                                          <a class="btn btn-primary waves-effect waves-light" href="index.html">اضافة بيانات</a>
+                                          <a class="btn btn-primary waves-effect waves-light" href="{% url 'Machines:types_create' %}" data-toggle="modal" data-target="#action_modal">اضافة بيانات</a>
                                       </div>
                                       {% endif %}
                                   </div>

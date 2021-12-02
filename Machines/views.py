@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import *
 from .models import *
 from .forms import *
@@ -14,7 +14,7 @@ class TypesActiveList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page'] = 'active'
+        context['message'] = 'active'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
 
@@ -30,7 +30,7 @@ class TypesTrashList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page'] = 'trash'
+        context['message'] = 'trash'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -39,43 +39,105 @@ class TypesTrashList(LoginRequiredMixin, ListView):
         return queryset
 
 
-class TypesCreate(CreateView):
+class TypesCreate(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
     model = MachinesTypes
     form_class = MachinesTypesForm
+    template_name = 'forms/form_template.html'
     success_url = reverse_lazy('Machines:types_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page'] = 'create'
+        context['title'] = 'إضافة نوع ماكينة '
+        context['message'] = 'create'
         context['action_url'] = reverse_lazy('Machines:types_create')
         return context
 
-    def get_success_url(self):
-        if self.request.POST.get('url'):
-            return self.request.POST.get('url')
-        else:
-            return self.success_url
+    # def get_success_url(self):
+    #     if self.request.POST.get('url'):
+    #         return self.request.POST.get('url')
+    #     else:
+    #         return self.success_url
 
 
-class TypesUpdate(UpdateView):
+class TypesUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
     model = MachinesTypes
     form_class = MachinesTypesForm
+    template_name = 'forms/form_template.html'
     success_url = reverse_lazy('Machines:types_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page'] = 'update'
+        context['title'] = 'تعديل نوع ماكينة: ' + str(self.object)
+        context['message'] = 'update'
         context['action_url'] = reverse_lazy('Machines:types_update', kwargs={'pk': self.object.id})
         return context
 
 
-class TypesDelete(DeleteView):
+class TypesDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
     model = MachinesTypes
-    form_class = MachinesTypesForm
-    success_url = reverse_lazy('Machines:types_active_list')
+    form_class = MachinesTypesFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Machines:types_trash_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page'] = 'delete'
+        context['title'] = 'حذف نوع ماكينة: ' + str(self.object)
+        context['message'] = 'delete'
         context['action_url'] = reverse_lazy('Machines:types_delete', kwargs={'pk': self.object.id})
         return context
+
+    def form_valid(self, form):
+        my_form = MachinesTypes.objects.get(id=self.kwargs['pk'])
+        my_form.deleted = 1
+        my_form.save()
+        return redirect(self.get_success_url())
+
+
+class TypesRestore(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = MachinesTypes
+    form_class = MachinesTypesFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Machines:types_active_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'ارجاع نوع ماكينة: ' + str(self.object)
+        context['message'] = 'restore'
+        context['action_url'] = reverse_lazy('Machines:types_restore', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        my_form = MachinesTypes.objects.get(id=self.kwargs['pk'])
+        my_form.deleted = 0
+        my_form.save()
+        return redirect(self.get_success_url())
+
+
+class TypesSuperDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = MachinesTypes
+    form_class = MachinesTypesFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Machines:types_trash_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف نوع ماكينة بشكل نهائي: ' + str(self.object)
+        context['message'] = 'super_delete'
+        context['action_url'] = reverse_lazy('Machines:types_super_delete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        my_form = MachinesTypes.objects.get(id=self.kwargs['pk'])
+        my_form.delete()
+        return redirect(self.get_success_url())
