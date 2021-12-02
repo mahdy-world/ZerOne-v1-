@@ -19,10 +19,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {% if message == 'delete' %}
-                            <h3>هل انت متأكد من الحذف</h3>
-                        {% endif %}
-
+                        <h3>هل انت متأكد من الحذف</h3>
                         {% csrf_token %}
                         {% bootstrap_form form %}
 
@@ -31,23 +28,10 @@
                     </div>
 
                     <div class="card-footer">
-                        {% if message == 'delete' %}
-                           <button type="submit" class="btn btn-danger">
+                        <button type="submit" class="btn btn-success">
                             <i class="fa fa-save"></i>
                             نعم
                         </button>
-                        {% elif message == 'update' %}
-                            <button type="submit" class="btn btn-info">
-                            <i class="fa fa-save"></i>
-                            تعديل
-                        </button>
-                         {% else %}
-                            <button type="submit" class="btn btn-success">
-                            <i class="fa fa-save"></i>
-                            حفظ
-                        </button>
-                        {% endif %}
-
                     </div>
                 </div>
             </div>
