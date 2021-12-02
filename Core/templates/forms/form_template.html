@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
-                            <b> {{ title }}</b>
+                            <b class="font-weight-bold text-center"> {{ title }}</b>
                         </div>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
@@ -20,24 +20,34 @@
                     </div>
                     <div class="card-body">
                         {% if message == 'delete' %}
-                            <h3>هل انت متأكد من الحذف</h3>
+                            <h3 class="font-weight-bold text-center">هل انت متأكد من الحذف ؟</h3>
+                            {% elif message == 'restore' %}
+                            <h3 class="font-weight-bold text-center">هل انت متأكد ؟  </h3>
+                            {% else %}
+                        
                         {% endif %}
-
+                        
                         {% csrf_token %}
                         {% bootstrap_form form %}
-
                         <input name="url" type="hidden" class="url_input">
                         <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
                     </div>
 
-                    <div class="card-footer">
+                    <div class="card-footer ">
                         {% if message == 'delete' %}
                            <button type="submit" class="btn btn-danger">
-                            <i class="fa fa-save"></i>
-                            نعم
+                                
+                                 نعم
+                               
+                        </button>
+                        {% elif message == 'restore' %}
+                           <button type="submit" class="btn btn-danger ">
+                                
+                                 نعم
+                               
                         </button>
                         {% elif message == 'update' %}
-                            <button type="submit" class="btn btn-info">
+                            <button type="submit" class="btn btn-info font-weight-bold text-center">
                             <i class="fa fa-save"></i>
                             تعديل
                         </button>
