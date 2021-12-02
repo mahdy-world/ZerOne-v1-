@@ -20,29 +20,46 @@
                     </div>
                     <div class="card-body">
                         {% if message == 'delete' %}
-                            <h3 class="font-weight-bold text-center">هل انت متأكد من الحذف ؟</h3>
-                            {% elif message == 'restore' %}
-                            <h3 class="font-weight-bold text-center">هل انت متأكد ؟  </h3>
-                            {% else %}
-                        
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <h5 class="font-weight-bold text-center">هل انت متأكد من نقل العنصر
+                                "{{ object.name }}"
+                                الي سلة المهملات
+                                ؟
+                            </h5>
+                        {% elif message == 'restore' %}
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <h5 class="font-weight-bold text-center">هل انت متأكد من ارجاع العنصر
+                                "{{ object.name }}"
+                                الى القائمة النشطة مرة اخري
+                                ؟
+                            </h5>
+                        {% elif message == 'super_delete' %}
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <h5 class="font-weight-bold text-center">هل انت متأكد من حذف العنصر
+                                "{{ object.name }}"
+                                بشكل نهائي
+                                ؟
+                            </h5>
+                        {% else %}
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <input name="url" type="hidden" class="url_input">
+                            <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
                         {% endif %}
-                        
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        <input name="url" type="hidden" class="url_input">
-                        <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
                     </div>
-
-                    <div class="card-footer ">
-                        {% if message == 'delete' %}
+                    <div class="card-footer text-center">
+                        {% if message == 'delete' or message == 'super_delete' %}
                            <button type="submit" class="btn btn-danger">
-                                
+                                <i class="fa fa-save"></i>
                                  نعم
                                
                         </button>
                         {% elif message == 'restore' %}
-                           <button type="submit" class="btn btn-danger ">
-                                
+                           <button type="submit" class="btn btn-info ">
+                                <i class="fa fa-save"></i>
                                  نعم
                                
                         </button>
@@ -57,6 +74,10 @@
                             حفظ
                         </button>
                         {% endif %}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fas fa-times"></i>
+                            الغاء
+                        </button>
 
                     </div>
                 </div>
