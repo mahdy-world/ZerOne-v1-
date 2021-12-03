@@ -63,11 +63,25 @@
 
     <body data-sidebar="dark" >
 
+        <!-- Spinner -->
+        <div id="preloader" >
+            <div id="status" >
+                <div class="spinner-chase">
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                </div>
+            </div>
+        </div>
+
     <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
         <!-- Begin page -->
         <div id="layout-wrapper">
-
+            
             {% include "components/header.html" %}
 
             {% include "components/leftSidebar.html" %}
@@ -150,6 +164,7 @@
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'ONLink/on.js' %}"></script>
         <script src="{% static 'js/all.js' %}"></script>
+        <script src="/static/assets/libs/simplebar/simplebar.min.js"></script>
 
         {% block js %}
 

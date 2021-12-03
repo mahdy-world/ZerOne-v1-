@@ -76,7 +76,7 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'SpareParts:SparePartsSupplierList' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الموردين </a></li>
 
                                 <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
@@ -98,13 +98,13 @@
                                 <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-transfer-alt' ></i>
                                 تحوبل مخزون </a></li>
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'SpareParts:SparePartsWarehouseList' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة المخازن </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'SpareParts:SparePartsWarehouseCreate' %}" data-target="#action_modal" data-toggle="modal" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة مخزن جديد</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'SpareParts:SparePartsWarehouseTrachList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>
@@ -120,7 +120,7 @@
                                 <li><a href="{% url 'SpareParts:SparePartsNameList' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الأسماء </a></li>
 
-                                <li><a href="{% url 'SpareParts:SparePartsNameCreate' %}" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'SpareParts:SparePartsNameCreate' %}" data-target="#action_modal" data-toggle="modal" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة اسم جديد</a></li>
 
                                 <li><a href="{% url 'SpareParts:SpareNameTrachList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>

@@ -33,3 +33,22 @@ class DeleteNameForm(forms.ModelForm):
             'deleted': forms.HiddenInput(),
         }
                 
+                
+                
+
+class SparePartsWarehouseForm(forms.ModelForm):
+    class Meta:
+        model = SparePartsWarehouses
+        exclude = ['deleted']        
+        
+        
+
+class WarehouseDeleteForm(forms.ModelForm):
+    class Meta:
+        exclude = ['name']
+        model = SparePartsWarehouses
+        widgets = {
+
+            'deleted': forms.HiddenInput(),
+        }
+                                
