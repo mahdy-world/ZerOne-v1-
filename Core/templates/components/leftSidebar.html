@@ -117,13 +117,13 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
-                                <li><a href="#" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'SpareParts:SparePartsNameList' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الأسماء </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'SpareParts:SparePartsNameCreate' %}" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة اسم جديد</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'SpareParts:SpareNameTrachList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>
