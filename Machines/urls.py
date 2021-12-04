@@ -9,5 +9,29 @@ urlpatterns = [
     path('types_update/<int:pk>/edit/', TypesUpdate.as_view(), name='types_update'),
     path('types_delete/<int:pk>/edit/', TypesDelete.as_view(), name='types_delete'),
     path('types_restore/<int:pk>/restore/', TypesRestore.as_view(), name='types_restore'),
-    path('types_super_delete/<int:pk>/super_delete/', TypesSuperDelete.as_view(), name='types_super_delete')
+    path('types_super_delete/<int:pk>/super_delete/', TypesSuperDelete.as_view(), name='types_super_delete'),
+    ###############################################################################
+    path('warehouses_active_list/', WarehousesActiveList.as_view(), name='warehouses_active_list'),
+    path('warehouses_trash_list/', WarehousesTrashList.as_view(), name='warehouses_trash_list'),
+    path('warehouses_create/', WarehousesCreate.as_view(), name='warehouses_create'),
+    path('warehouses_update/<int:pk>/edit/', WarehousesUpdate.as_view(), name='warehouses_update'),
+    path('warehouses_delete/<int:pk>/edit/', WarehousesDelete.as_view(), name='warehouses_delete'),
+    path('warehouses_restore/<int:pk>/restore/', WarehousesRestore.as_view(), name='warehouses_restore'),
+    path('warehouses_super_delete/<int:pk>/super_delete/', WarehousesSuperDelete.as_view(), name='warehouses_super_delete'),
+    ###############################################################################
+    path('names_active_list/', NamesActiveList.as_view(), name='names_active_list'),
+    path('names_trash_list/', NamesTrashList.as_view(), name='names_trash_list'),
+    path('names_create/', NamesCreate.as_view(), name='names_create'),
+    path('names_update/<int:pk>/edit/', NamesUpdate.as_view(), name='names_update'),
+    path('names_delete/<int:pk>/edit/', NamesDelete.as_view(), name='names_delete'),
+    path('names_restore/<int:pk>/restore/', NamesRestore.as_view(), name='names_restore'),
+    path('names_super_delete/<int:pk>/super_delete/', NamesSuperDelete.as_view(), name='names_super_delete'),
+    ###############################################################################
+    path('suppliers_active_list/', SuppliersActiveList.as_view(), name='suppliers_active_list'),
+    path('suppliers_trash_list/', SuppliersTrashList.as_view(), name='suppliers_trash_list'),
+    path('suppliers_create/', SuppliersCreate.as_view(), name='suppliers_create'),
+    path('suppliers_update/<int:pk>/edit/', SuppliersUpdate.as_view(), name='suppliers_update'),
+    path('suppliers_delete/<int:pk>/edit/', SuppliersDelete.as_view(), name='suppliers_delete'),
+    path('suppliers_restore/<int:pk>/restore/', SuppliersRestore.as_view(), name='suppliers_restore'),
+    path('suppliers_super_delete/<int:pk>/super_delete/', SuppliersSuperDelete.as_view(), name='suppliers_super_delete'),
 ]
