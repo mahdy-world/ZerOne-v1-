@@ -51,4 +51,20 @@ class WarehouseDeleteForm(forms.ModelForm):
 
             'deleted': forms.HiddenInput(),
         }
-                                
+
+class SparePartSupplierForm(forms.ModelForm):
+    class Meta:
+        model = SparePartsSuppliers
+        exclude = ['deleted']        
+        
+        
+
+class SupplierDeleteForm(forms.ModelForm):
+    class Meta:
+        exclude = ['name', 'phone', 'initial_balance', 'credit_or_debit']
+        model = SparePartsSuppliers
+        widgets = {
+
+            'deleted': forms.HiddenInput(),
+        }
+                                                                

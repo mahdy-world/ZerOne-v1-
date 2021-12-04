@@ -104,19 +104,19 @@
                                         <div class="contact-links d-flex  font-size-20">
                                             {% if type == "list"  %}
                                                 <div class="mr-3">
-                                                     <a href="{% url 'SpareParts:SparePartsWarehouseUpdate' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
+                                                     <a href="{% url 'SpareParts:SparePartsSupplierUpdate' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
                                                          <span class="badge badge-info"><i class='bx bx-edit' ></i>تعديل</span>
                                                     </a>
                                                  </div>
                         
                                                 <div class="">
-                                                    <a href="{% url 'SpareParts:SparePartsWarehouseDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
+                                                    <a href="{% url 'SpareParts:SparePartsSupplierDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
                                                         <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
                                                     </a>
                                                 </div>
                                             {% else %}
                                                  <div class="mr-3">
-                                                        <a href="{% url 'SpareParts:SparePartsWarehouseRestore' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
+                                                        <a href="{% url 'SpareParts:SparePartsSupplierRestore' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
                                                             <span class="badge badge-dark"><i class='bx bx-redo '></i> استرجاع
                                                         </a></span>
                                                 </div>

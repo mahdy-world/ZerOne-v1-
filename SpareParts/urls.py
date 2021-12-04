@@ -32,6 +32,11 @@ urlpatterns = [
    #-------------------------------------------------------------------------------------------------------
    
    
-   
+   # Spare Parts Supplier Module 
    path('sparepartsSupplierList/', SparePartsSupplierList.as_view(), name="SparePartsSupplierList" ),
+   path('sparepartsSupplierTrachList/', SparePartsSupplierTrachList.as_view(), name="SparePartsSupplierTrachList" ),
+   path('sparepartsSupplier/create/', SparePartsSupplierCreate.as_view(), name='SparePartsSupplierCreate'),
+   path('sparepartsSupplier/<int:pk>/update/', SparePartsSupplierUpdate.as_view(), name='SparePartsSupplierUpdate'),
+   path('sparepartsSupplier/<int:pk>/delete/', SparePartsSupplierDelete.as_view(), name='SparePartsSupplierDelete'),
+   path('sparepartsSupplier/<int:pk>/restore/', SparePartsSupplierRestore.as_view(), name='SparePartsSupplierRestore'),
 ]
