@@ -188,13 +188,13 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'Machines:suppliers_active_list' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الموردين </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'Machines:suppliers_create' %}" data-toggle="modal" data-target="#action_modal" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة مورد جديد</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'Machines:suppliers_trash_list' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>
@@ -210,13 +210,13 @@
                                 <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-transfer-alt' ></i>
                                 تحوبل مخزون </a></li>
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'Machines:warehouses_active_list' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة المخازن </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'Machines:warehouses_create' %}" data-toggle="modal" data-target="#action_modal" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة مخزن جديد</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'Machines:warehouses_trash_list' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>
@@ -225,17 +225,17 @@
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
                                 <i class='bx bxs-cylinder bx-sm' ></i>
-                                <span key="t-ecommerce"> اسماء قطع الغيار</span>
+                                <span key="t-ecommerce"> أصناف الماكينات</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
-                                قائمة الأسماء </a></li>
+                                <li><a href="{% url 'Machines:names_active_list' %}" key="t-products"><i class='bx bx-list-ul' ></i>
+                                قائمة الأصناف </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
-                                اضافة اسم جديد</a></li>
+                                <li><a href="{% url 'Machines:names_create' %}" data-toggle="modal" data-target="#action_modal" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                اضافة صنف جديد</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'Machines:names_trash_list' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>
