@@ -127,23 +127,9 @@
         get_url();
     </script>
 
-    <script>
-        function set_instance() {
-            var instance_input = $('#id_instance');
-            instance_input.each(function (i) {
-                "{{ request.user.instance.id }}"
-            });
-            return instance_input;
-        }
+   
 
-        set_instance();
-    </script>
-
-    <script>
-        $('select').addClass('select2');
-        $('.select2').select2();
-        $('.select2-container').addClass('form-control');
-    </script>
+ 
 
 
 {% endblock %} 

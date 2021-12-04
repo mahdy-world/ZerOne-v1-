@@ -171,13 +171,13 @@ class SparePartsNameCreate(LoginRequiredMixin ,CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'إضافة أسم قطعة غيار '
+        context['title'] = 'إضافة صنف قطعة غيار '
         context['message'] = 'add'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsNameCreate')
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "  تم اضافة اسم قطعة غيار بنجاح", extra_tags="success")
+        messages.success(self.request, "  تم اضافة صنف قطعة غيار بنجاح", extra_tags="success")
         return reverse('SpareParts:SparePartsNameList',)
 
     
@@ -189,13 +189,13 @@ class SparePartsNameUpdate(LoginRequiredMixin ,UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تعديل أسم قطعة غيار: ' + str(self.object)
+        context['title'] = 'تعديل صنف قطعة غيار: ' + str(self.object)
         context['message'] = 'update'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsNameUpdate', kwargs={'pk': self.object.id})
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم تعديل أسم قطعة غيار بنجاح ", extra_tags="info")
+        messages.success(self.request, "تم تعديل صنف قطعة غيار بنجاح ", extra_tags="info")
         return reverse('SpareParts:SparePartsNameList',)
 
 
@@ -211,13 +211,13 @@ class SparePartsNameDelete(LoginRequiredMixin ,UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'حذف أسم قطعة غيار: ' + str(self.object)
+        context['title'] = 'حذف صنف قطعة غيار: ' + str(self.object)
         context['message'] = 'delete'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsNameDelete', kwargs={'pk': self.object.id})
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف أسم قطعة غيار " + str(self.object) + ' بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم حذف صنف قطعة غيار " + str(self.object) + ' بنجاح ' , extra_tags="danger")
         myform = SparePartsNames.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -235,13 +235,13 @@ class SparePartsNameRestore(LoginRequiredMixin ,UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'استرجاع أسم قطعة غيار: ' + str(self.object)
+        context['title'] = 'استرجاع صنف قطعة غيار: ' + str(self.object)
         context['message'] = 'restore'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsNameRestore', kwargs={'pk': self.object.id})
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع نوع قطعة غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع صنف قطعة غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
         myform = SparePartsNames.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -252,7 +252,7 @@ class SparePartsNameRestore(LoginRequiredMixin ,UpdateView):
 # Spare Parts Warehouse Module 
 class SparePartsWarehouseList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
-    model = SparePartsWarehouses
+    model = SparePartsSuppliers
     paginate_by = 8
     template_name = 'SpareParts/sparepartswarehouse_list.html'
 
@@ -286,7 +286,7 @@ class SparePartsWarehouseTrachList(LoginRequiredMixin ,ListView):
 class SparePartsWarehouseCreate(LoginRequiredMixin ,CreateView):
     login_url = '/auth/login/'
     model = SparePartsWarehouses
-    form_class = SparePartsWarehouseForm
+    form_class = SparePartSupplierForm
     template_name = 'forms/form_template.html'
 
     def get_context_data(self, **kwargs):
@@ -304,7 +304,7 @@ class SparePartsWarehouseCreate(LoginRequiredMixin ,CreateView):
 class SparePartsWarehouseUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = SparePartsWarehouses
-    form_class = SparePartsWarehouseForm
+    form_class = SparePartSupplierForm
     template_name = 'forms/form_template.html'
     
     def get_context_data(self, **kwargs):
@@ -372,6 +372,7 @@ class SparePartsWarehouseRestore(LoginRequiredMixin ,UpdateView):
 
 # Spare Parts Suppliers Module 
 class SparePartsSupplierList(LoginRequiredMixin ,ListView):
+
     login_url = '/auth/login/'
     model = SparePartsSuppliers
     paginate_by = 8
@@ -387,3 +388,106 @@ class SparePartsSupplierList(LoginRequiredMixin ,ListView):
         context['page'] = 'active'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
+    
+class SparePartsSupplierTrachList(LoginRequiredMixin ,ListView):
+    login_url = '/auth/login/'
+    model = SparePartsSuppliers
+    paginate_by = 8
+    template_name = 'SpareParts/sparepartssupplier_list.html'
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=True).order_by('id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['Name'] = 'trach'
+        context['count'] = self.model.objects.filter(deleted=True).count()
+        return context
+
+class SparePartsSupplierCreate(LoginRequiredMixin ,CreateView):
+    login_url = '/auth/login/'
+    model = SparePartsSuppliers
+    form_class = SparePartSupplierForm
+    template_name = 'forms/form_template.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'إضافة مورد قطع غيار '
+        context['message'] = 'add'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsSupplierCreate')
+        return context
+    
+    def get_success_url(self):
+        messages.success(self.request, "  تم اضافة مورد قطع غيار بنجاح", extra_tags="success")
+        return reverse('SpareParts:SparePartsSupplierList',)
+
+    
+class SparePartsSupplierUpdate(LoginRequiredMixin ,UpdateView):
+    login_url = '/auth/login/'
+    model = SparePartsSuppliers
+    form_class = SparePartSupplierForm
+    template_name = 'forms/form_template.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل مورد قطع غيار: ' + str(self.object)
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsSupplierUpdate', kwargs={'pk': self.object.id})
+        return context
+    
+    def get_success_url(self):
+        messages.success(self.request, "تم تعديل مورد قطع غيار بنجاح ", extra_tags="info")
+        return reverse('SpareParts:SparePartsSupplierList',)
+
+
+class SparePartsSupplierDelete(LoginRequiredMixin ,UpdateView):
+    login_url = '/auth/login/'
+    model = SparePartsSuppliers
+    form_class = SupplierDeleteForm
+    template_name = 'forms/form_template.html'
+    
+
+    def get_success_url(self):
+        return reverse('SpareParts:SparePartsSupplierList',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف مورد قطع غيار: ' + str(self.object)
+        context['message'] = 'delete'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsSupplierDelete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم حذف مورد قطع غيار " + str(self.object) + ' بنجاح ' , extra_tags="danger")
+        myform = SparePartsSuppliers.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 1
+        myform.save()
+        return redirect(self.get_success_url())
+
+class SparePartsSupplierRestore(LoginRequiredMixin ,UpdateView):
+    login_url = '/auth/login/'
+    model = SparePartsSuppliers
+    form_class = SupplierDeleteForm
+    template_name = 'forms/form_template.html'
+    
+
+    def get_success_url(self):
+        return reverse('SpareParts:SparePartsSupplierList',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'استرجاع مورد قطع غيار: ' + str(self.object)
+        context['message'] = 'restore'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsSupplierRestore', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم ارجاع مورد قطع غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        myform = SparePartsSuppliers.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 0
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+    
