@@ -252,7 +252,7 @@ class SparePartsNameRestore(LoginRequiredMixin ,UpdateView):
 # Spare Parts Warehouse Module 
 class SparePartsWarehouseList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
-    model = SparePartsSuppliers
+    model = SparePartsWarehouses
     paginate_by = 8
     template_name = 'SpareParts/sparepartswarehouse_list.html'
 
@@ -286,7 +286,7 @@ class SparePartsWarehouseTrachList(LoginRequiredMixin ,ListView):
 class SparePartsWarehouseCreate(LoginRequiredMixin ,CreateView):
     login_url = '/auth/login/'
     model = SparePartsWarehouses
-    form_class = SparePartSupplierForm
+    form_class = SparePartsWarehouseForm
     template_name = 'forms/form_template.html'
 
     def get_context_data(self, **kwargs):
@@ -304,7 +304,7 @@ class SparePartsWarehouseCreate(LoginRequiredMixin ,CreateView):
 class SparePartsWarehouseUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = SparePartsWarehouses
-    form_class = SparePartSupplierForm
+    form_class = SparePartsWarehouseForm
     template_name = 'forms/form_template.html'
     
     def get_context_data(self, **kwargs):
