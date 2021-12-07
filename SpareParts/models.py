@@ -50,12 +50,12 @@ class SparePartsSuppliers(models.Model):
 # فاتورة الطلب
 class SparePartsOrders(models.Model):
     order_number = models.CharField(max_length=50, null=True, verbose_name="رقم الطلب")
-    order_date = models.DateTimeField(null=True, verbose_name="تاريخ الطلب")
+    order_date = models.DateField(null=True, verbose_name="تاريخ الطلب")
     order_supplier = models.ForeignKey(SparePartsSuppliers, on_delete=models.CASCADE, null=True, verbose_name='المورد')
     order_deposit_value = models.FloatField(default=0, null=True, verbose_name="قيمة العربون")
-    order_deposit_date = models.DateTimeField(null=True, verbose_name="تاريخ دفع العربون")
-    order_rest_date = models.DateTimeField(null=True, verbose_name="تاريخ دفع باقي المبلغ")
-    order_receipt_date = models.DateTimeField(null=True, verbose_name="تاريخ استلام البضاعة")
+    order_deposit_date = models.DateField(null=True, verbose_name="تاريخ دفع العربون")
+    order_rest_date = models.DateField(null=True, verbose_name="تاريخ دفع باقي المبلغ")
+    order_receipt_date = models.DateField(null=True, verbose_name="تاريخ استلام البضاعة")
     deleted = models.BooleanField(default=False, verbose_name='حذف')
 
     def __str__(self):
@@ -65,10 +65,9 @@ class SparePartsOrders(models.Model):
 # منتجات داخل الفاتورة
 class SparePartsOrderProducts(models.Model):
     product_order = models.ForeignKey(SparePartsOrders, on_delete=models.CASCADE, null=True, verbose_name='الطلبية')
-    product_name = models.ForeignKey(SparePartsNames, on_delete=models.CASCADE, null=True, verbose_name='المنج')
+    product_name = models.ForeignKey(SparePartsNames, on_delete=models.CASCADE, null=True, verbose_name='المنتج')
     product_quantity = models.IntegerField(default=0, null=True, verbose_name="الكمية")
     product_price = models.FloatField(default=0, null=True, verbose_name="سعر الشراء")
     deleted = models.BooleanField(default=False, verbose_name='حذف')
 
-    def __str__(self):
-        return self.product_order
+  

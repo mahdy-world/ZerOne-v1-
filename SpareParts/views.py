@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, redirect ,HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect ,HttpResponseRedirect, render
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic import *
@@ -490,4 +490,111 @@ class SparePartsSupplierRestore(LoginRequiredMixin ,UpdateView):
         return redirect(self.get_success_url())
 
 
+
+# Spare Parts Orders Module 
+class SparePartsOrderList(LoginRequiredMixin ,ListView):
+    login_url = '/auth/login/'
+    model = SparePartsOrders
+    paginate_by = 8
+    template_name = 'SpareParts/sparepartsorders_list.html'
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=False).order_by('id')
+        return queryset
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'list'
+        context['page'] = 'active'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+    
+    
+    
+class SparePartsOrderCreate(LoginRequiredMixin ,CreateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrders
+    form_class = SparePartOrderForm
+    template_name = 'forms/order_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'إضافة طلبية قطع غيار '
+        context['message'] = 'add'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderCreate')
+        return context
+    
+    def get_success_url(self, **kwargs):
+        messages.success(self.request, "  تم اضافة طلبية قطع غيار بنجاح", extra_tags="success")
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.object.id})
+
+class SparePartsOrderUpdate(LoginRequiredMixin ,UpdateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrders
+    form_class = SparePartOrderForm
+    template_name = 'forms/order_form.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل طلبية قطع غيار: ' + str(self.object)
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderUpdate', kwargs={'pk': self.object.id})
+        return context
+    
+    def get_success_url(self,**kwargs):
+        messages.success(self.request, "تم تعديل طلبية' قطع غيار بنجاح ", extra_tags="info")
+        return reverse('SpareParts:SparePartsOrderDetail',kwargs={'pk': self.object.id})
+    
+    
+
+def SparePartsOrderDetail(request, pk):
+    order = get_object_or_404(SparePartsOrders , id=pk)
+    product = SparePartsOrderProducts.objects.filter(product_order=order)
+    print(product)
+    form = orderProductForm
+    type_page = "list"
+    page = "active"
+    action_url = reverse_lazy('SpareParts:AddProductOrder',kwargs={'pk':order.id})
+    
+    context = {
+        'order' : order,
+        'type' : type_page,
+        'page' : page,
+        'form' : form,
+        'action_url' : action_url,
+        'product':product
+        
+    }
+    return render(request, 'SpareParts/sparepartsorders_detail.html', context)
+
+
+
+
+def AddProductOrder(request, pk):
+    order = get_object_or_404(SparePartsOrders , id=pk)
+    product = SparePartsOrderProducts.objects.filter(product_order=order)
+    
+    form = orderProductForm(request.POST or None)
+    type_page = "list"
+    page = "active"
+    action_url = reverse_lazy('SpareParts:AddProductOrder',kwargs={'pk':order.id})
+    
+    context = {
+        'order' : order,
+        'type' : type_page,
+        'page' : page,
+        'form' : orderProductForm,
+        'action_url' : action_url,
+        'product':product
+        
+        
+    }    
+   
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.product_order = order 
+        obj.save()
+        return render(request, 'SpareParts/sparepartsorders_detail.html', context)        
+    
+    return render(request, 'SpareParts/sparepartsorders_detail.html', context)        
+        
