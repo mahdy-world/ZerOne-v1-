@@ -57,10 +57,10 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'SpareParts:SparePartsOrderList' %}"  key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الطلبيات </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'SpareParts:SparePartsOrderCreate' %}" data-target="#sub_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة طلبية جديدة</a></li>
 
                                 <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>

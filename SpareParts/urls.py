@@ -39,4 +39,12 @@ urlpatterns = [
    path('sparepartsSupplier/<int:pk>/update/', SparePartsSupplierUpdate.as_view(), name='SparePartsSupplierUpdate'),
    path('sparepartsSupplier/<int:pk>/delete/', SparePartsSupplierDelete.as_view(), name='SparePartsSupplierDelete'),
    path('sparepartsSupplier/<int:pk>/restore/', SparePartsSupplierRestore.as_view(), name='SparePartsSupplierRestore'),
+   #--------------------------------------------------------------------------------------------------------------------
+   
+   # Spare Parts Orders Module 
+   path('sparepartsOrdersList/', SparePartsOrderList.as_view(), name="SparePartsOrderList" ),
+   path('sparepartsOrder/create/', SparePartsOrderCreate.as_view(), name='SparePartsOrderCreate'),
+   path('sparepartsOrder/<int:pk>/detail/', SparePartsOrderDetail, name='SparePartsOrderDetail'),
+   path('sparepartsOrder/<int:pk>/update/', SparePartsOrderUpdate.as_view(), name='SparePartsOrderUpdate'),
+   path('sparepartsOrderProduct/<int:pk>/create/', AddProductOrder, name='AddProductOrder'),
 ]
