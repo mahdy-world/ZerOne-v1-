@@ -178,7 +178,14 @@ class SparePartsNameCreate(LoginRequiredMixin ,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, "  تم اضافة صنف قطعة غيار بنجاح", extra_tags="success")
-        return reverse('SpareParts:SparePartsNameList',)
+       
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+
+  
+        
 
     
 class SparePartsNameUpdate(LoginRequiredMixin ,UpdateView):
