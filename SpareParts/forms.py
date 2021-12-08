@@ -99,8 +99,8 @@ class orderProductForm(forms.ModelForm):
         model = SparePartsOrderProducts
         fields = ['product_name','product_quantity', 'product_price']
         widgets = {
-            
-            'product_name':forms.Select(attrs={'class':'form-control'}),
+
+            'product_name':forms.Select(attrs={'class':'form-control' , 'id':'product' }),
             'product_quantity':forms.NumberInput(attrs={'class':'form-control'}),
             'product_price' :forms.NumberInput(attrs={'class':'form-control' }),
             

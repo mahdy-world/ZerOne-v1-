@@ -29,7 +29,7 @@
                     <link rel="stylesheet" href="{% static 'AdminLTE/plugins/jqvmap/jqvmap.min.css' %}">
                     <!-- Theme style -->
                     <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/adminlte.min.css' %}">
-                    <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/css/select2.min.css' %}">
+                    
                     <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/adminlte-rtl.css' %}">
                     <!-- overlayScrollbars -->
                     <link rel="stylesheet" href="{% static 'AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
@@ -39,6 +39,9 @@
                     <link rel="stylesheet" href="{% static 'AdminLTE/plugins/summernote/summernote-bs4.min.css' %}">
                     <!-- Cairo Font -->
                     <link href='https://fonts.googleapis.com/css?family=Cairo' rel='stylesheet'>
+
+                    <!-- select2 -->
+                    <link href="/static/assets/select2/dist/css/select2.min.css" rel="stylesheet">
 
         <!-- App favicon -->
         <link rel="shortcut icon" href="/static/assets/images/1logo.png">
@@ -53,6 +56,11 @@
         <link href="/static/assets/css/icons.min.css" rel="stylesheet">
 
         <link href="/static/ONLink/ON.css" rel="stylesheet">
+
+
+        {% block css %}
+          
+        {% endblock css %}
 
 
 
@@ -165,6 +173,9 @@
         <script src="{% static 'ONLink/on.js' %}"></script>
         <script src="{% static 'js/all.js' %}"></script>
         <script src="/static/assets/libs/simplebar/simplebar.min.js"></script>
+
+        <!-- select2 -->
+        <script src="/static/assets/select2/dist/js/select2.min.js"></script>
 
         {% block js %}
 
