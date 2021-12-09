@@ -1,7 +1,9 @@
+from django.db.models.aggregates import Sum
 from django.shortcuts import get_object_or_404, redirect ,HttpResponseRedirect, render
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic import *
+from django.db.models import Count
 from django.contrib import messages
 
 from .forms import *
@@ -515,6 +517,22 @@ class SparePartsOrderList(LoginRequiredMixin ,ListView):
         context['page'] = 'active'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
+
+class SparePartsOrderTrachList(LoginRequiredMixin ,ListView):
+    login_url = '/auth/login/'
+    model = SparePartsOrders
+    paginate_by = 8
+    template_name = 'SpareParts/sparepartsorders_list.html'
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=True).order_by('id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['Name'] = 'trach'
+        context['count'] = self.model.objects.filter(deleted=True).count()
+        return context
     
     
     
@@ -550,14 +568,73 @@ class SparePartsOrderUpdate(LoginRequiredMixin ,UpdateView):
     
     def get_success_url(self,**kwargs):
         messages.success(self.request, "تم تعديل طلبية' قطع غيار بنجاح ", extra_tags="info")
-        return reverse('SpareParts:SparePartsOrderDetail',kwargs={'pk': self.object.id})
+        return reverse('SpareParts:SparePartsOrderList')
+    
+
+class SparePartsOrderDelete(LoginRequiredMixin ,UpdateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrders
+    form_class = OrderDeleteForm
+    template_name = 'forms/order_form.html'
+    
+
+    def get_success_url(self):
+        return reverse('SpareParts:SparePartsOrderList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف طلب قطع غيار: ' + str(self.object)
+        context['message'] = 'delete'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderDelete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم حذف طلب قطع غيار " + str(self.object) + ' بنجاح ' , extra_tags="danger")
+        myform = SparePartsOrders.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 1
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class SparePartsOrderRestore(LoginRequiredMixin ,UpdateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrders
+    form_class = OrderDeleteForm
+    template_name = 'forms/order_form.html'
+    
+
+    def get_success_url(self):
+        return reverse('SpareParts:SparePartsOrderList',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'استرجاع طلب قطع غيار: ' + str(self.object)
+        context['message'] = 'restore'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderRestore', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم ارجاع طلب قطع غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        myform = SparePartsOrders.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 0
+        myform.save()
+        return redirect(self.get_success_url())    
     
     
 
 def SparePartsOrderDetail(request, pk):
     order = get_object_or_404(SparePartsOrders , id=pk)
-    product = SparePartsOrderProducts.objects.filter(product_order=order)
-    print(product)
+    product = SparePartsOrderProducts.objects.all().filter(product_order=order,)
+    
+    count_product = SparePartsOrderProducts.objects.all().filter(product_order=order).count()
+    print(count_product)
+    
+    
+    queryset = SparePartsOrderProducts.objects.all().filter(product_order=order,)
+    total = queryset.aggregate(total=Sum('product_price'))
+    
+
+    
     form = orderProductForm
     type_page = "list"
     page = "active"
@@ -569,7 +646,9 @@ def SparePartsOrderDetail(request, pk):
         'page' : page,
         'form' : form,
         'action_url' : action_url,
-        'product':product
+        'product':product,
+        'count_product':count_product,
+        'total' :total
         
     }
     return render(request, 'SpareParts/sparepartsorders_detail.html', context)
@@ -579,7 +658,9 @@ def SparePartsOrderDetail(request, pk):
 
 def AddProductOrder(request, pk):
     order = get_object_or_404(SparePartsOrders , id=pk)
-    product = SparePartsOrderProducts.objects.filter(product_order=order)
+    product = SparePartsOrderProducts.objects.filter(product_order=order).order_by('id')
+    count_product = SparePartsOrderProducts.objects.all().filter(product_order=order).count()
+    print(count_product)
     
     form = orderProductForm(request.POST or None)
     type_page = "list"
@@ -592,7 +673,8 @@ def AddProductOrder(request, pk):
         'page' : page,
         'form' : orderProductForm,
         'action_url' : action_url,
-        'product':product
+        'product':product,
+        'count_product' : count_product
         
         
     }    
@@ -604,4 +686,55 @@ def AddProductOrder(request, pk):
         return render(request, 'SpareParts/sparepartsorders_detail.html', context)        
     
     return render(request, 'SpareParts/sparepartsorders_detail.html', context)        
+
+
+class SparePartsOrderAddProductUpdate(LoginRequiredMixin ,UpdateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrderProducts
+    form_class = orderProductForm
+    template_name = 'forms/form_template.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل المنتج: ' 
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderAddProductUpdate', kwargs={'pk': self.object.id})
+        return context
+    
+    def get_success_url(self,**kwargs):
+        messages.success(self.request, "تم تعديل بنجاح ", extra_tags="info")
+             
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+
+  
+class SparePartsOrderAddProductDelete(LoginRequiredMixin,UpdateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrderProducts
+    form_class = orderProductDeleteForm
+    template_name = 'forms/form_template.html'
+
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف المنتج: ' 
+        context['message'] = 'super_delete'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderAddProductDelete', kwargs={'pk': self.object.id})
+        return context
+    
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم حذف  المنتج " + str(self.object) + " نهائيا بنجاح ", extra_tags="success")
+        my_form = SparePartsOrderProducts.objects.get(id=self.kwargs['pk'])
+        my_form.delete()
+       
+        return self.request.POST.get('url')
         
+           
+
+
+    
+    

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
+
     <div class="main-content">
 
       <div class="page-content">
@@ -99,19 +100,19 @@
                                                    </a>
                                                 </div>
                                                       <div class="mr-3">
-                                                           <a href="{% url 'SpareParts:SparePartsOrderUpdate' x.id %}" data-placement="top" title="" data-original-title="Message">
+                                                           <a href="{% url 'SpareParts:SparePartsOrderUpdate' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
                                                                <span class="badge badge-info"><i class='bx bx-edit' ></i>تعديل</span>
                                                           </a>
                                                        </div>
                               
                                                       <div class="">
-                                                          <a href="{% url 'SpareParts:SparePartsNameDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
+                                                          <a href="{% url 'SpareParts:SparePartsOrderDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
                                                               <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
                                                           </a>
                                                       </div>
                                                   {% else %}
                                                        <div class="mr-3">
-                                                              <a href="{% url 'SpareParts:SparePartsNameRestore' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
+                                                              <a href="{% url 'SpareParts:SparePartsOrderRestore' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
                                                                   <span class="badge badge-dark"><i class='bx bx-redo '></i> استرجاع
                                                               </a></span>
                                                       </div>

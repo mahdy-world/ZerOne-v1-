@@ -1,0 +1,29 @@
+
+                                                                {% if product %}
+                                                                {% for x in product  %}
+                                                                <tr class="shadow  bg-white ">
+                                                                    <td>{{x.id}}</td>
+                                                                    <td>
+                                                                        <h4 class="text-truncate font-size-14"><a href="#" class="text-dark">{{x.product_name}}</a></h4>
+
+                                                                    </td>
+                                                                    <td ><h4><i class="fas fa-copy fx-7"></i> {{x.product_quantity}}</h4></td>
+                                                                    <td><h4><span class="badge badge-primary"> <i class='bx bx-dollar'></i>{{ x.product_price }}</span></h4></td>
+                                                                    <td>
+                                                                        <div class="team">
+                                                                            <a href="javascript: void(0);" class="team-member d-inline-block btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Daniel Canales">
+                                                                                <i class='bx bx-edit' ></i>
+                                                                            </a>
+
+                                                                            <a href="javascript: void(0);" class="team-member d-inline-block btn btn-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Daniel Canales">
+                                                                                <i class='bx bxs-trash' ></i>
+                                                                            </a>
+
+                                                                        </div>
+                                                                    </td>
+
+                                                                </tr>
+                                                                {% endfor %}
+
+                                                                {% endif %}
+
