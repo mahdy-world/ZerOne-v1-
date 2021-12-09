@@ -65,7 +65,13 @@
                             {% csrf_token %}
                             {% bootstrap_form form %}
                             <h5 class="font-weight-bold text-center">هل انت متأكد من حذف العنصر
+                                
+                                {% if object.name %}
                                 "{{ object.name }}"
+                                {% else %}
+                                "{{ object.product_name }}"
+                                {% endif %}
+                                    
                                 بشكل نهائي
                                 ؟
                             </h5>

@@ -51,5 +51,5 @@ urlpatterns = [
    path('sparepartsOrder/<int:pk>/restore/', SparePartsOrderRestore.as_view(), name='SparePartsOrderRestore'),
    path('sparepartsOrderProduct/<int:pk>/create/', AddProductOrder, name='AddProductOrder'),
    path('sparepartsOrderProduct/<int:pk>/update/', SparePartsOrderAddProductUpdate.as_view(), name='SparePartsOrderAddProductUpdate'),
-   path('sparepartsOrderProduct/<int:pk>/Delete/', SparePartsOrderAddProductDelete.as_view(), name='SparePartsOrderAddProductDelete'),
+   path('sparepartsOrderProduct/<int:pk>/<int:id>/Delete/', SparePartsOrderAddProductDelete.as_view(), name='SparePartsOrderAddProductDelete'),
 ]
