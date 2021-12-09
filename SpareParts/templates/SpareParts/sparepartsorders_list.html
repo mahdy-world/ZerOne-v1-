@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_tags %}
 
 {% block main %}
 
@@ -30,15 +31,15 @@
                         <div class="page-title-box d-flex align-items-center justify-content-between">
                             
                             {% if type == "list" %}
-                                <h3 class="mb-0 ">طلبات قطع الغيار</h3>
+                                <h3 class="mb-0 ">طلبيات قطع الغيار</h3>
                                 
                                 {% else %}
-                                <h3 class="mb-0 ">سلة مهملات طلبات قطع الغيار</h3>
+                                <h3 class="mb-0 ">سلة مهملات طلبيات قطع الغيار</h3>
                             
                             {% endif %}
                              
                             
-                                <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} قطع </span>
+                                <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} طلبية </span>
                                
 
                            
@@ -47,9 +48,9 @@
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
 
                                     {% if type == "list" %}
-                                    <li class="breadcrumb-item active">طلبات قطع الغيار</li>
+                                    <li class="breadcrumb-item active">طلبيات قطع الغيار</li>
                                     {% else %}
-                                    <li class="breadcrumb-item active">سلة مهملات طلبات قطع الغيار</li>
+                                    <li class="breadcrumb-item active">سلة مهملات طلبيات قطع الغيار</li>
 
                                     {% endif %}
                                 </ol>
@@ -105,9 +106,23 @@
                                                           </a>
                                                        </div>
                               
+                                                       {% order_products x.id as has_products %}
                                                       <div class="">
-                                                          <a href="{% url 'SpareParts:SparePartsOrderDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
-                                                              <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
+                                                          <a 
+                                                          {% if has_products %}
+                                                          href="#"
+                                                          {% else %}
+                                                          href="{% url 'SpareParts:SparePartsOrderDelete' x.id %}" data-toggle="modal" data-target="#action_modal" 
+                                                          {% endif %}
+                                                          >
+                                                          
+                                                          {% if has_products %}
+                                                            <span class="badge badge-danger" style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. الفانورة تحتوي علي منتجات"><i class='bx bxs-trash'  ></i>حذف</span>
+                                                          {% else %}
+                                                            <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
+                                                          {% endif %}
+                                                              
+                                                              
                                                           </a>
                                                       </div>
                                                   {% else %}

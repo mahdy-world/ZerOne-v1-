@@ -631,7 +631,7 @@ def SparePartsOrderDetail(request, pk):
     
     
     queryset = SparePartsOrderProducts.objects.all().filter(product_order=order,)
-    total = queryset.aggregate(total=Sum('product_price'))
+    total = queryset.aggregate(total=Sum('product_price')).get('total')
     
 
     
@@ -675,15 +675,14 @@ def AddProductOrder(request, pk):
         'action_url' : action_url,
         'product':product,
         'count_product' : count_product
-        
-        
     }    
    
     if form.is_valid():
         obj = form.save(commit=False)
         obj.product_order = order 
         obj.save()
-        return render(request, 'SpareParts/sparepartsorders_detail.html', context)        
+        return redirect('SpareParts:SparePartsOrderDetail', pk=order.id)
+    
     
     return render(request, 'SpareParts/sparepartsorders_detail.html', context)        
 
@@ -715,23 +714,25 @@ class SparePartsOrderAddProductDelete(LoginRequiredMixin,UpdateView):
     model = SparePartsOrderProducts
     form_class = orderProductDeleteForm
     template_name = 'forms/form_template.html'
-
+    
+    def get_success_url(self):
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['id']})
     
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'حذف المنتج: ' 
         context['message'] = 'super_delete'
-        context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderAddProductDelete', kwargs={'pk': self.object.id})
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderAddProductDelete', kwargs={'pk': self.object.id, 'id': self.object.product_order.id})
         return context
     
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف  المنتج " + str(self.object) + " نهائيا بنجاح ", extra_tags="success")
+        messages.success(self.request, " تم حذف  المنتج " + str(self.object.product_name) + " نهائيا بنجاح ", extra_tags="success")
         my_form = SparePartsOrderProducts.objects.get(id=self.kwargs['pk'])
         my_form.delete()
-       
-        return self.request.POST.get('url')
+        return redirect(self.get_success_url())
+        
         
            
 
