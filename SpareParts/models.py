@@ -39,7 +39,6 @@ STATUS_CHOICES = (
 class SparePartsSuppliers(models.Model):
     name = models.CharField(max_length=250, verbose_name='اسم المورد')
     phone = models.CharField(max_length=11, verbose_name='رقم الهاتف')
-    initial_balance = models.FloatField(default=0, verbose_name='الرصيد الافتتاحي')
     credit_or_debit = models.IntegerField(choices=STATUS_CHOICES, default=0, verbose_name='لك أم عليك')
     deleted = models.BooleanField(default=False, verbose_name='حذف')
 

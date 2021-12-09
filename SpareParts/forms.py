@@ -105,6 +105,16 @@ class orderProductForm(forms.ModelForm):
             'product_price' :forms.NumberInput(attrs={'class':'form-control' }),
             
         }        
-        
+
+class orderProductDeleteForm(forms.ModelForm):
+    class Meta:
+        model = SparePartsOrderProducts
+        exclude = ['product_name','product_quantity', 'product_price', 'product_order']
+        widgets = {
+
+            'deleted': forms.HiddenInput(),
+        }
+    
+                
         
                                                                         

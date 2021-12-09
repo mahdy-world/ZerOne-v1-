@@ -48,110 +48,24 @@
                     <div class="card-body">
                         {% if message == 'delete' %}
                             {% csrf_token %}
-                            <!-- {% bootstrap_form form %} -->
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_number|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_date|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_supplier|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_deposit_value|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_deposit_date|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_rest_date|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
+                           
+                            
+                                        {{form.deleted|as_crispy_field}}
+                                 
 
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_receipt_date|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                
-                            </div>
-                            
-                            
-                            
                             <h5 class="font-weight-bold text-center">هل انت متأكد من نقل العنصر
-                                "{{ object.name }}"
+                                "{{ object.order_number }}"
                                 الي سلة المهملات
                                 ؟
                             </h5>
                         {% elif message == 'restore' %}
                             {% csrf_token %}
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_number|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_date|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_supplier|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_deposit_value|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_deposit_date|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_rest_date|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_receipt_date|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                
-                            </div>
+                          
+                            {{form.deleted|as_crispy_field}}
+                       
                             
                             <h5 class="font-weight-bold text-center">هل انت متأكد من ارجاع العنصر
-                                "{{ object.name }}"
+                                "{{ object.order_number }}"
                                 الى القائمة النشطة مرة اخري
                                 ؟
                             </h5>

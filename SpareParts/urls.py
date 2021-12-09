@@ -43,8 +43,13 @@ urlpatterns = [
    
    # Spare Parts Orders Module 
    path('sparepartsOrdersList/', SparePartsOrderList.as_view(), name="SparePartsOrderList" ),
+   path('sparepartsOrderTrachList/', SparePartsOrderTrachList.as_view(), name="SparePartsOrderTrachList" ),
    path('sparepartsOrder/create/', SparePartsOrderCreate.as_view(), name='SparePartsOrderCreate'),
    path('sparepartsOrder/<int:pk>/detail/', SparePartsOrderDetail, name='SparePartsOrderDetail'),
    path('sparepartsOrder/<int:pk>/update/', SparePartsOrderUpdate.as_view(), name='SparePartsOrderUpdate'),
+   path('sparepartsOrder/<int:pk>/delete/', SparePartsOrderDelete.as_view(), name='SparePartsOrderDelete'),
+   path('sparepartsOrder/<int:pk>/restore/', SparePartsOrderRestore.as_view(), name='SparePartsOrderRestore'),
    path('sparepartsOrderProduct/<int:pk>/create/', AddProductOrder, name='AddProductOrder'),
+   path('sparepartsOrderProduct/<int:pk>/update/', SparePartsOrderAddProductUpdate.as_view(), name='SparePartsOrderAddProductUpdate'),
+   path('sparepartsOrderProduct/<int:pk>/Delete/', SparePartsOrderAddProductDelete.as_view(), name='SparePartsOrderAddProductDelete'),
 ]
