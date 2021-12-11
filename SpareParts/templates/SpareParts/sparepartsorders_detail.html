@@ -200,7 +200,7 @@
                                                                             </small>
                                                                             <h4 class="font-weight-bold"><i class="fas fa-comment-dollar"></i> دفع العربون المستحق </h4>   
 
-                                                                            <a href="#" style="width:30%" class="btn btn-sm btn-primary">
+                                                                            <a href="{% url 'SpareParts:SparePartsOperationCreateDeposit' order.id %}" data-target="#action_modal" data-toggle="modal" style="width:40%" class="btn btn-sm btn-primary">
                                                                                 <i class='bx bx-check-circle'></i>
                                                                                    اتمام العملية
                                                                                 </a>
@@ -269,13 +269,13 @@
 
                                                                    <a
                                                                    {% if op1 %}
-                                                                   href="#"
+                                                                   href="{% url 'SpareParts:SparePartsOperationCreateReset' order.id %}"
                                                                    {% else %}
                                                                    href="#"
                                                                    {% endif %}
                                                                    
                                                                     
-                                                                    style="width:30%" class="btn btn-sm btn-primary">
+                                                                    style="width:40%" data-target="#action_modal" data-toggle="modal" class="btn btn-sm btn-primary">
                                                                     <i class='bx bx-check-circle'></i>
                                                                        اتمام العملية
                                                                     </a>
@@ -343,12 +343,12 @@
                                                                        
                                                                        <a
                                                                        {% if op2 %}
-                                                                       href="{% url 'SpareParts:SparePartsNameCreate' %}"
+                                                                       href="{% url 'SpareParts:SparePartsOperationCreateOrder' order.id %}"
                                                                        {% else %}
                                                                        href="#"  
                                                                        {% endif %}
                                                                             
-                                                                       style="width:30%" class="btn btn-sm btn-primary">
+                                                                       style="width:40%" data-target="#action_modal" data-toggle="modal" class="btn btn-sm btn-primary">
                                                                         <i class='bx bx-check-circle'></i>
                                                                            اتمام العملية
                                                                         </a>

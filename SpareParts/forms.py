@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
+from django.forms import widgets
 from django.forms.models import inlineformset_factory
 from .models import *
 
@@ -115,6 +116,17 @@ class orderProductDeleteForm(forms.ModelForm):
             'deleted': forms.HiddenInput(),
         }
     
-                
+
+class OperationForm(forms.ModelForm):
+    class Meta:
+        model = SparePartsOrderOperations
+        fields = ['operation_value']                
         
-                                                                        
+class OperationOrderForm(forms.ModelForm):
+    class Meta:
+        model = SparePartsOrderOperations
+        fields = ['operation_value'] 
+        widgets = {
+            'operation_value' : forms.HiddenInput()
+        }               
+                                                                                

@@ -52,4 +52,9 @@ urlpatterns = [
    path('sparepartsOrderProduct/<int:pk>/create/', AddProductOrder, name='AddProductOrder'),
    path('sparepartsOrderProduct/<int:pk>/update/', SparePartsOrderAddProductUpdate.as_view(), name='SparePartsOrderAddProductUpdate'),
    path('sparepartsOrderProduct/<int:pk>/<int:id>/Delete/', SparePartsOrderAddProductDelete.as_view(), name='SparePartsOrderAddProductDelete'),
+   
+   # Operations
+   path('sparepartsOrderOperation/<int:pk>/create_deposite/', SparePartsOperationCreateDeposit.as_view(), name='SparePartsOperationCreateDeposit'),
+   path('sparepartsOrderOperation/<int:pk>/create_reset/', SparePartsOperationCreateReset.as_view(), name='SparePartsOperationCreateReset'),
+   path('sparepartsOrderOperation/<int:pk>/create_order/', SparePartsOperationCreateOrder.as_view(), name='SparePartsOperationCreateOrder'),
 ]
