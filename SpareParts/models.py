@@ -69,4 +69,18 @@ class SparePartsOrderProducts(models.Model):
     product_price = models.FloatField(default=0, null=True, verbose_name="سعر الشراء")
     deleted = models.BooleanField(default=False, verbose_name='حذف')
 
-  
+
+OPERATIONS_CHOICES = (
+    (1, "دفع عربون"),
+    (2, "دفع باقي المبلغ"),
+    (3, "استلام البضاعة"),
+    )
+
+class SparePartsOrderOperations(models.Model):
+    order_number = models.ForeignKey(SparePartsOrders, on_delete=models.CASCADE, verbose_name="رقم الطلب")
+    operation_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ العملية")
+    operation_type = models.IntegerField(choices=OPERATIONS_CHOICES, default=0, verbose_name="نوع العملية")
+    operation_value = models.FloatField(default=0, verbose_name="قيمة العملية")
+
+    
+    
