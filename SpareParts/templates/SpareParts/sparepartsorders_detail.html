@@ -81,11 +81,11 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 col-md-4">
                         <div class="card">
 
-                                <div class="card-body ">
-                                                    <div class="bg-soft-danger">
+                            <div class="card-body ">
+                                <div class="bg-soft-danger">
                                                         <div class="row">
                                                             <div class="col-lg-12">
                                                                 <div class=" p-3">
@@ -100,73 +100,276 @@
                                                         <table class="table table-nowrap mb-0">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th scope="row"> رقم الطلب :</th>
+                                                                    <th scope="row"><i class='bx bx-bookmark-minus bx-sm' style='color:#c658c2'  ></i> رقم الطلب :</th>
                                                                     <td>{{ order.order_number }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row">تاريخ الطلب :</th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ الطلب : </th>
                                                                     <td>{{ order.order_date|date:'Y-m-d' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row">المورد :</th>
+                                                                    <th scope="row"><i class='bx bx-user-pin bx-sm' style='color:#c658c2' ></i>المورد : </th>
                                                                     <td>{{ order.order_supplier }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row">قمية العربون :</th>
-                                                                    <td>{{ order.order_deposit_value }}</td>
+                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#c658c2' ></i>قمية العربون : </th>
+                                                                    <td>{{ order.order_deposit_value }} جنية</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row">تاريخ دفع العربون :</th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ دفع العربون :</th>
                                                                     <td > <span class="badge badge-danger font-size-14">{{ order.order_deposit_date|date:'Y-m-d' }}</span></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> تاريخ دفع باقي المبلغ :</th>
+                                                                    <th scope="row"><i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i> تاريخ دفع باقي المبلغ :</th>
                                                                     <td>{{ order.order_rest_date|date:'Y-m-d' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row">تاريخ استلام البضاعة  :</th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ استلام البضاعة  :</th>
                                                                     <td>{{ order.order_receipt_date|date:'Y-m-d' }}</td>
-                                                                
+
                                                                 </tr>
+
+
                                                             </tbody>
                                                         </table>
+
                                                     </div>
 
-                                                    
-                                </div>
-                        </div>
-
-                       
-                            <div class="card card-warning">
-                              <div class="card-header">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12">
-                                        <h3 class="card-title">
-                                            <i class="fas fa-copy fx-7"></i>
-                                              عدد القطع :  <span class="badge badge-danger font-size-12">{{count_product}} قطعة</span>
-                                         </h3>
-
-                                    </div>
-                                    
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12">
-                                        <h3 class="card-title">
-                                            <i class="fas fa-file-invoice-dollar"></i>
-                                            اجمالي المبلغ : <span class="badge badge-danger font-size-12">{{total}} جنية</span>
-
-                                        </h3>
-
-                                    </div>
-                                </div>
-
-                              </div>
-                             
                             </div>
-                         
-                                    
-                    </div>           
+                        </div>
+                            
+
+                       <div class="card">
+                                    <div class="card-body">
+                                        
+                                        
+                                            <div class="row bg-soft-info">
+                                                <div class="col-lg-12">
+                                                    
+                                                    <div class="text-primary p-3">
+                                                            
+                                                        <h3 class="text-center font-weight-bold" >عمليات الطلب</h3>
+                                                </div>                                                </div>
+                                            </div>
+                                            
+
+                                       
+                                        <div data-simplebar="init" class="mt-2" style="max-height: 280px;"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: -16.8px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+                                            <ul class="verti-timeline list-unstyled">
+                                                 
+                                               
+                                                {% if order.order_deposit_date %}
+                                                   
+                                                    {% if op1 %}
+                                                             <!-- عملية دفع العربون -->
+                                                             <li class="event-list active ">
+                                                                <div class="event-timeline-dot">
+                                                                    <i class='bx bx-dollar-circle bx-sm ' ></i>
+                                                                </div>
+                                                                <div class="media">
+                                                                
+                                                                    <div class="media-body">
+                                                                        <div>
+
+                                                                            <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
+                                                                            <spna> {{ order.order_deposit_date|date:'Y-m-d' }}</span>
+                                                                            </small>
+                                                                            <h4 class="font-weight-bold"><i class="fas fa-comment-dollar"></i> دفع العربون المستحق </h4>   
+
+                                                                            <a href="#" style="width:40%" class="btn btn-sm btn-success">
+                                                                                <i class="fas fa-check-double"></i>
+                                                                                 تمت العملية بنجاح
+                                                                                </a>
+                                                                        </div>
+                                                                    </div>   
+                                                                </div>
+                                                            </li>
+                                                        {% else %}
+                                                             <!-- عملية دفع العربون -->
+                                                             <li class="event-list active">
+                                                                <div class="event-timeline-dot">
+                                                                    <i class='bx bx-dollar-circle bx-sm bx-fade-left' ></i>
+                                                                </div>
+                                                                <div class="media">
+                                                                
+                                                                    <div class="media-body">
+                                                                        <div>
+
+                                                                            <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
+                                                                            <spna> {{ order.order_deposit_date|date:'Y-m-d' }}</span>
+                                                                            </small>
+                                                                            <h4 class="font-weight-bold"><i class="fas fa-comment-dollar"></i> دفع العربون المستحق </h4>   
+
+                                                                            <a href="#" style="width:30%" class="btn btn-sm btn-primary">
+                                                                                <i class='bx bx-check-circle'></i>
+                                                                                   اتمام العملية
+                                                                                </a>
+                                                                        </div>
+                                                                    </div>   
+                                                                </div>
+                                                            </li>
+                            
+                                                    {% endif %}
+                                                        
+                                                
+
+                                                {% endif %}
+                                                    
+                                                
+                                                {% if order.order_rest_date %}
+
+                                                
+                                                {% if op2 %}
+                                                        <!-- عملية باقي المبلغ -->
+                                                <li class="event-list active">
+                                                    <div class="event-timeline-dot">
+                                                        <i class='bx bx-dollar-circle bx-sm ' ></i>
+                                                    </div>
+                                                    <div class="media">
+                                                       
+                                                        <div class="media-body">
+                                                            <div>
+
+                                                                <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
+                                                                   <spna> {{ order.order_rest_date|date:'Y-m-d' }}</span>
+                                                                </small>
+                                                                 <h4 class="font-weight-bold"> <i class="fas fa-file-invoice-dollar"></i> دفع باقي المبلغ المستحق </h4>   
+
+                                                                 <a href="#" style="width:40%" class="btn btn-sm btn-success">
+                                                                    <i class="fas fa-check-double"></i>
+                                                                     تمت العملية بنجاح
+                                                                    </a>
+                                                            </div>
+                                                        </div>   
+                                                    </div>
+                                                </li>
+
+                                                {% else %}
+                                                        <!-- عملية باقي المبلغ -->
+                                                <li class="event-list active">
+                                                    <div class="event-timeline-dot">
+                                                        
+                                                        {% if op1 %}
+                                                        <i class='bx bx-dollar-circle bx-sm bx-fade-left' ></i>
+                                                        {% else %}
+                                                        <i class='bx bx-dollar-circle bx-sm ' ></i>
+                                                        {% endif %}
+                                                            
+                                                        
+                                                    </div>
+                                                    <div class="media">
+                                                       
+                                                        <div class="media-body">
+                                                            <div>
+
+                                                                <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
+                                                                   <spna> {{ order.order_rest_date|date:'Y-m-d' }}</span>
+                                                                </small>
+                                                                 <h4 class="font-weight-bold"> <i class="fas fa-file-invoice-dollar"></i> دفع باقي المبلغ المستحق </h4>   
+
+                                                                   <a
+                                                                   {% if op1 %}
+                                                                   href="#"
+                                                                   {% else %}
+                                                                   href="#"
+                                                                   {% endif %}
+                                                                   
+                                                                    
+                                                                    style="width:30%" class="btn btn-sm btn-primary">
+                                                                    <i class='bx bx-check-circle'></i>
+                                                                       اتمام العملية
+                                                                    </a>
+                                                            </div>
+                                                        </div>   
+                                                    </div>
+                                                </li>
+
+                                                {% endif %}
+                                                    
+                                                
+                                                {% endif %}
+                                                    
+                                                
+                                               
+                                               {% if order.order_receipt_date %}
+                                                    <!-- عملية استلام البضاعة المبلغ -->
+                                                    
+                                                    {% if op3 %}
+                                                    <li class="event-list active">
+                                                        <div class="event-timeline-dot">
+                                                            <i class='bx bx-package bx-sm ' ></i>
+                                                        </div>
+                                                        <div class="media">
+                                                           
+                                                            <div class="media-body">
+                                                                <div>
+    
+                                                                    <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
+                                                                       <spna> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
+                                                                    </small>
+                                                                     <h4 class="font-weight-bold"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
+    
+                                                                     <a href="" style="width:40%" class="btn btn-sm btn-success">
+                                                                        <i class="fas fa-check-double"></i>
+                                                                         تمت العملية بنجاح
+                                                                        </a>
+                                                                </div>
+                                                            </div>   
+                                                        </div>
+                                                    </li>
+                                                    {% else %}
+                                                    <li class="event-list active">
+                                                        <div class="event-timeline-dot">
+                                                            
+                                                            
+                                                            {% if op2 %}
+                                                            <i class='bx bx-package bx-sm  bx-fade-left' ></i>
+                                                            {% else %}
+                                                            <i class='bx bx-package bx-sm  ' ></i>
+                                                            {% endif %}
+                                                                
+                                                           
+                                                        </div>
+                                                        <div class="media">
+                                                           
+                                                            <div class="media-body">
+                                                                <div>
+    
+                                                                    <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
+                                                                       <spna> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
+                                                                    </small>
+                                                                     <h4 class="font-weight-bold"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
+                                                                        
+                                                                       
+                                                                       <a
+                                                                       {% if op2 %}
+                                                                       href="{% url 'SpareParts:SparePartsNameCreate' %}"
+                                                                       {% else %}
+                                                                       href="#"  
+                                                                       {% endif %}
+                                                                            
+                                                                       style="width:30%" class="btn btn-sm btn-primary">
+                                                                        <i class='bx bx-check-circle'></i>
+                                                                           اتمام العملية
+                                                                        </a>
+                                                                </div>
+                                                            </div>   
+                                                        </div>
+                                                    </li>
+                                                    {% endif %}
+                                                        
+                                                
+
+                                               {% endif %}
+                                                   
+                                               
+
+                                            </ul>
+                                        </div></div></div></div><div class="simplebar-placeholder" style="width: auto; height: auto;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="transform: translate3d(0px, 0px, 0px); display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 275px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
+
+                                    </div>
+                                </div>
+                    </div>
 
                     <div class="col-lg-8">
 
@@ -264,6 +467,45 @@
                                     </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                       <div class="card mini-stats-wid">
+                                           <div class="card-body">
+                                               <div class="media">
+                                                   <div class="media-body">
+                                                       <p class="text-muted font-weight-bold">عدد القطع</p>
+                                                       <h4 class="mb-0">{{count_product}} قطع</h4>
+                                                   </div>
+
+                                                   <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                       <span class="avatar-title">
+                                                           <i class="bx bx-copy-alt bx-sm"></i>
+                                                       </span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+
+                               <div class="col-md-6">
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">اجمالي المبلغ </p>
+                                                               <h4 class="mb-0"> {{total}} جنية </h4>
+                                                           </div>
+
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                   <i class='bx bx-dollar-circle bx-sm'  ></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                       </div>
 
 
                     </div>

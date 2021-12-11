@@ -627,11 +627,15 @@ def SparePartsOrderDetail(request, pk):
     product = SparePartsOrderProducts.objects.all().filter(product_order=order,)
     
     count_product = SparePartsOrderProducts.objects.all().filter(product_order=order).count()
-    print(count_product)
-    
-    
+
     queryset = SparePartsOrderProducts.objects.all().filter(product_order=order,)
     total = queryset.aggregate(total=Sum('product_price')).get('total')
+    
+    op1 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=1)
+    op2 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=2)
+    op3 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=3)
+   
+    
     
 
     
@@ -648,7 +652,10 @@ def SparePartsOrderDetail(request, pk):
         'action_url' : action_url,
         'product':product,
         'count_product':count_product,
-        'total' :total
+        'total' :total,
+        'op1':op1,
+        'op2':op2,
+        'op3':op3
         
     }
     return render(request, 'SpareParts/sparepartsorders_detail.html', context)
