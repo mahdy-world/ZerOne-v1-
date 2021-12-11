@@ -75,11 +75,14 @@
                                 بشكل نهائي
                                 ؟
                             </h5>
-                        {% else %}
+                        {% elif message == 'operation' %} 
                             {% csrf_token %}
                             {% bootstrap_form form %}
-                            <input name="url" type="hidden" class="url_input">
-                            <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
+                            <h5 class="font-weight-bold text-center"> تأكيد العملية !</h5>   
+                        {% else %}
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+
                         {% endif %}
                     </div>
                     <div class="card-footer text-center">
@@ -100,6 +103,10 @@
                             <i class="fa fa-save"></i>
                             تعديل
                         </button>
+                        {% elif message == 'operation' %} 
+                        <button type="submit" class="btn btn-info ">
+                            <i class="fa fa-save"></i>
+                             نعم
                          {% else %}
                             <button type="submit" class="btn btn-success">
                             <i class="fa fa-save"></i>

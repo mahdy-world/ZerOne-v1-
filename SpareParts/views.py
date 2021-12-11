@@ -740,9 +740,85 @@ class SparePartsOrderAddProductDelete(LoginRequiredMixin,UpdateView):
         my_form.delete()
         return redirect(self.get_success_url())
         
-        
-           
 
 
+# عملية دفع العربون
+class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrderOperations
+    form_class = OperationForm
+    template_name = 'forms/form_template.html'
     
+
+    def get_success_url(self):
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' دفع عربون ' 
+        context['message'] = 'add'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateDeposit', kwargs={'pk':self.kwargs['pk']})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تمت العملية بنجاح " , extra_tags="success")
+        order_number = get_object_or_404(SparePartsOrders , id=self.kwargs['pk'])
+        myform = SparePartsOrderOperations()
+        myform.order_number = order_number
+        myform.operation_type=1
+        myform.save()
+        return redirect(self.get_success_url())
     
+#عملية باقي المبلغ 
+class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrderOperations
+    form_class = OperationForm
+    template_name = 'forms/form_template.html'
+    
+
+    def get_success_url(self):
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' دفع باقي المبلغ ' 
+        context['message'] = 'add'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateReset', kwargs={'pk':self.kwargs['pk']})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تمت العملية بنجاح " , extra_tags="success")
+        order_number = get_object_or_404(SparePartsOrders , id=self.kwargs['pk'])
+        myform = SparePartsOrderOperations()
+        myform.order_number = order_number
+        myform.operation_type=2
+        myform.save()
+        return redirect(self.get_success_url())    
+    
+#عملية باقي المبلغ 
+class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrderOperations
+    form_class = OperationOrderForm
+    template_name = 'forms/form_template.html'
+    
+
+    def get_success_url(self):
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'استلام البضاعة' 
+        context['message'] = 'operation'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateOrder', kwargs={'pk':self.kwargs['pk']})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تمت العملية بنجاح " , extra_tags="success")
+        order_number = get_object_or_404(SparePartsOrders , id=self.kwargs['pk'])
+        myform = SparePartsOrderOperations()
+        myform.order_number = order_number
+        myform.operation_type=3
+        myform.save()
+        return redirect(self.get_success_url())        
