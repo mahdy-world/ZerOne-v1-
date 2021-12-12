@@ -81,6 +81,7 @@
                 </div>
 
                 <div class="row">
+                    <!-- معلومات الطلب -->
                     <div class="col-lg-4 col-md-4">
                         <div class="card">
 
@@ -154,7 +155,7 @@
                                             
 
                                        
-                                        <div data-simplebar="init" class="mt-2" style="max-height: 280px;"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: -16.8px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+                                        <div data-simplebar="init" class="mt-2" style="max-height: 400px;"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: -16.8px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
                                             <ul class="verti-timeline list-unstyled">
                                                  
                                                
@@ -174,12 +175,24 @@
                                                                             <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
                                                                             <spna> {{ order.order_deposit_date|date:'Y-m-d' }}</span>
                                                                             </small>
+                                                                            
+                                                                            
+                                                                                
+                                                                            
                                                                             <h4 class="font-weight-bold" style="text-decoration:line-through"><i class="fas fa-comment-dollar"></i> دفع العربون المستحق </h4>   
 
-                                                                            <a href="#" style="width:40%" class="btn btn-sm btn-success">
+                                                                            <span href="#" style="width:40%" class="btn btn-sm btn-success">
                                                                                 <i class="fas fa-check-double"></i>
                                                                                  تمت العملية بنجاح
-                                                                                </a>
+                                                                            </span>
+                                                                            
+                                                                            <span class="btn btn-sm btn-info">
+                                                                                {% if op1 %}
+                                                                                {% for x in op1 %}
+                                                                                القيمة : {{x.operation_value}}  <i class="fas fa-comment-dollar"></i>
+                                                                                {% endfor %}
+                                                                                {% endif %}
+                                                                            </span>
                                                                         </div>
                                                                     </div>   
                                                                 </div>
@@ -200,10 +213,20 @@
                                                                             </small>
                                                                             <h4 class="font-weight-bold"><i class="fas fa-comment-dollar"></i> دفع العربون المستحق </h4>   
 
-                                                                            <a href="{% url 'SpareParts:SparePartsOperationCreateDeposit' order.id %}" data-target="#action_modal" data-toggle="modal" style="width:40%" class="btn btn-sm btn-primary">
-                                                                                <i class='bx bx-check-circle'></i>
-                                                                                   اتمام العملية
+                                                                            {% if product %}
+                                                                                <a 
+                                                                                href="{% url 'SpareParts:SparePartsOperationCreateDeposit' order.id %}" data-target="#action_modal" data-toggle="modal" 
+                                                                                style="width:40%" class="btn btn-sm btn-primary">
+                                                                                    <i class='bx bx-check-circle'></i>
+                                                                                    اتمام العملية
                                                                                 </a>
+                                                                            {% else %}
+                                                                            <span 
+                                                                            style="width:40%" class="btn btn-sm btn-primary">
+                                                                                <i class='bx bx-check-circle'></i>
+                                                                                اتمام العملية
+                                                                            </span>
+                                                                            {% endif %}    
                                                                         </div>
                                                                     </div>   
                                                                 </div>
@@ -235,10 +258,17 @@
                                                                 </small>
                                                                  <h4 class="font-weight-bold" style="text-decoration:line-through"> <i class="fas fa-file-invoice-dollar"></i> دفع باقي المبلغ المستحق </h4>   
 
-                                                                 <a href="#" style="width:40%" class="btn btn-sm btn-success">
+                                                                 <span  style="width:40%" class="btn btn-sm btn-success">
                                                                     <i class="fas fa-check-double"></i>
                                                                      تمت العملية بنجاح
-                                                                    </a>
+                                                                    </span>
+                                                                    <span class="btn btn-sm btn-info">
+                                                                        {% if op2 %}
+                                                                        {% for x in op2 %}
+                                                                        القيمة : {{x.operation_value}}  <i class="fas fa-comment-dollar"></i>
+                                                                        {% endfor %}
+                                                                        {% endif %}
+                                                                    </span>   
                                                             </div>
                                                         </div>   
                                                     </div>
@@ -266,19 +296,25 @@
                                                                    <spna> {{ order.order_rest_date|date:'Y-m-d' }}</span>
                                                                 </small>
                                                                  <h4 class="font-weight-bold"> <i class="fas fa-file-invoice-dollar"></i> دفع باقي المبلغ المستحق </h4>   
-
+                                                                 {% if op1 %}
                                                                    <a
-                                                                   {% if op1 %}
                                                                    href="{% url 'SpareParts:SparePartsOperationCreateReset' order.id %}"
-                                                                   {% else %}
-                                                                   href="#"
-                                                                   {% endif %}
-                                                                   
-                                                                    
-                                                                    style="width:40%" data-target="#action_modal" data-toggle="modal" class="btn btn-sm btn-primary">
+                                                                   style="width:40%" data-target="#action_modal" data-toggle="modal" class="btn btn-sm btn-primary"
+                                                                   >
                                                                     <i class='bx bx-check-circle'></i>
                                                                        اتمام العملية
+                                                                 
                                                                     </a>
+                                                                {% else %}
+                                                                <span
+                                                                   
+                                                                   style="width:40%"  class="btn btn-sm btn-primary"
+                                                                   >
+                                                                    <i class='bx bx-check-circle'></i>
+                                                                       اتمام العملية
+                                                                 
+                                                                    </span>   
+                                                                 {% endif %}  
                                                             </div>
                                                         </div>   
                                                     </div>
@@ -308,7 +344,7 @@
                                                                        <spna> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
                                                                     </small>
                                                                      <h4 class="font-weight-bold" style="text-decoration:line-through"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
-    
+                                                                        
                                                                      <a href="" style="width:40%" class="btn btn-sm btn-success">
                                                                         <i class="fas fa-check-double"></i>
                                                                          تمت العملية بنجاح
@@ -340,18 +376,27 @@
                                                                     </small>
                                                                      <h4 class="font-weight-bold"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
                                                                         
-                                                                       
+                                                                      {% if op2 %}
                                                                        <a
-                                                                       {% if op2 %}
+                                                                    
                                                                        href="{% url 'SpareParts:SparePartsOperationCreateOrder' order.id %}"
-                                                                       {% else %}
-                                                                       href="#"  
-                                                                       {% endif %}
-                                                                            
                                                                        style="width:40%" data-target="#action_modal" data-toggle="modal" class="btn btn-sm btn-primary">
-                                                                        <i class='bx bx-check-circle'></i>
-                                                                           اتمام العملية
-                                                                        </a>
+                                                                       <i class='bx bx-check-circle'></i>
+                                                                          اتمام العملية
+                                                                       </a>
+
+                                                                       {% else %}
+                                                                       <span
+                                                                      
+                                                                       
+                                                                       style="width:40%" class="btn btn-sm btn-primary">
+                                                                       <i class='bx bx-check-circle'></i>
+                                                                          اتمام العملية
+                                                                       </span>
+                                                                       {% endif %}
+                                                                      
+                                                                            
+                                                                      
                                                                 </div>
                                                             </div>   
                                                         </div>
@@ -467,8 +512,11 @@
                                     </div>
                             </div>
                         </div>
+
+                        <!-- اجمالي  -->
                         <div class="row">
-                            <div class="col-md-6">
+                            <!-- القطع -->
+                            <div class="col-lg-4 col-md-4">
                                        <div class="card mini-stats-wid">
                                            <div class="card-body">
                                                <div class="media">
@@ -486,8 +534,29 @@
                                            </div>
                                        </div>
                                    </div>
+                                 
+                                <!-- الكمية -->
+                               <div class="col-lg-4 col-md-4">
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">اجمالي الكمية </p>
+                                                               <h4 class="mb-0"> {{qu}} صنف </h4>
+                                                           </div>
 
-                               <div class="col-md-6">
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                <i class="fas fa-balance-scale"></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                               
+                               <!-- المبلغ -->
+                               <div class="col-lg-4 col-md-4">
                                                <div class="card mini-stats-wid">
                                                    <div class="card-body">
                                                        <div class="media">

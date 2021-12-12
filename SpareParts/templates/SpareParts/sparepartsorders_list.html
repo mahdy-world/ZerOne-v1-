@@ -64,15 +64,15 @@
                 <div class="row">
                 {% for x in object_list  %}
 
-                <div class="col-xl-4 col-sm-6">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 col-lg-4 col-md-6">
                                     <div class="text-lg-center">
                                         <div class="avatar-sm mr-3 mx-lg-auto mb-4 float-left float-lg-none" style="margin-top: 25%;">
                                             <span class="avatar-title rounded-circle bg-soft-primary text-primary font-size-16">
-                                                <img src="/static/assets/images/vector/Invoice.png" alt="" width="120px">
+                                                <img src="/static/assets/images/vector/Invoice.png" alt="" width="100px%">
                                             </span>
                                         </div>
                                         
@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-8">
+                                <div class="col-lg-6">
                                     <div>
                                         <a href="{% url 'SpareParts:SparePartsOrderDetail' x.id %}" class="d-block text-primary mb-2">Invoice #{{x.order_number}}</a>
                                         
@@ -133,7 +133,7 @@
                                                       </div>
                   
                                                       <div class="">
-                                                          <a href="{% url 'SpareParts:SparePartsTypeDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
+                                                          <a href="{% url 'SpareParts:SparePartsOrderSuperDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
                                                               <span class="badge badge-danger"><i class='bx bxs-trash '   ></i> حذف نهائي </span>
                                                                
                                                           </a>
