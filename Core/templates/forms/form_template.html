@@ -68,6 +68,8 @@
                                 
                                 {% if object.name %}
                                 "{{ object.name }}"
+                                {% elif object.order_number %}
+                                "{{object.order_number}}"
                                 {% else %}
                                 "{{ object.product_name }}"
                                 {% endif %}
