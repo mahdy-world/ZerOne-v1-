@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Auth',
     'SpareParts',
     'Machines',
+    'Treasury',
     'bootstrap4',
     'crispy_forms'
 

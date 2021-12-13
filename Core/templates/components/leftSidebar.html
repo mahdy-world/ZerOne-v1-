@@ -2,14 +2,14 @@
 
 <!-- left sideBar  -->
     
-<div class="vertical-menu">
+<div class="vertical-menu ">
 
     <div data-simplebar class="h-100">
 
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
-            <ul class="metismenu list-unstyled" id="side-menu">
+            <ul class="metismenu list-styled" id="side-menu">
 
                 <li class="menu-title" key="t-menu">واجهة المستخدم</li>
 
@@ -280,13 +280,13 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'Treasury:WorkTreasuryList' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الخزائن </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'Treasury:WorkTreasuryCreate' %}" data-target="#action_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة خزينة جديدة</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'Treasury:WorkTreasuryTrachList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>

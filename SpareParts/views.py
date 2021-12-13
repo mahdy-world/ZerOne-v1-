@@ -62,7 +62,6 @@ class SparePartsTypeCreate(LoginRequiredMixin ,CreateView):
         messages.success(self.request, "  تم إضافة نوع قطعة غيار بنجاح", extra_tags="success")
         return reverse('SpareParts:SpareTypeList',)
 
-    
 class SparePartsTypeUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = SparePartsTypes
@@ -79,7 +78,6 @@ class SparePartsTypeUpdate(LoginRequiredMixin ,UpdateView):
     def get_success_url(self):
         messages.success(self.request, "تم تعديل نوع قطعة غيار بنجاح ", extra_tags="info")
         return reverse('SpareParts:SpareTypeList',)
-
 
 class SparePartsTypeDelete(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
