@@ -55,7 +55,7 @@ urlpatterns = [
    path('sparepartsOrder/<int:pk>/restore/', SparePartsOrderRestore.as_view(), name='SparePartsOrderRestore'),
    path('sparepartsOrder/<int:pk>/super_delete/', SparePartsOrderSuperDelete.as_view(), name='SparePartsOrderSuperDelete'),
    path('sparepartsOrderProduct/<int:pk>/create/', AddProductOrder, name='AddProductOrder'),
-   path('sparepartsOrderProduct/<int:pk>/update/', SparePartsOrderAddProductUpdate.as_view(), name='SparePartsOrderAddProductUpdate'),
+   path('sparepartsOrderProduct/<int:pk>/<int:id>/update/', SparePartsOrderAddProductUpdate.as_view(), name='SparePartsOrderAddProductUpdate'),
    path('sparepartsOrderProduct/<int:pk>/<int:id>/Delete/', SparePartsOrderAddProductDelete.as_view(), name='SparePartsOrderAddProductDelete'),
    
    # Operations

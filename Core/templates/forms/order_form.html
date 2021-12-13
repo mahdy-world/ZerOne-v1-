@@ -29,10 +29,12 @@
                             if (document.getElementById('expand_modal').value === '0'){
                                 document.getElementById('expand_modal').value = 1;
                                 document.getElementById('action_modal2').className = 'modal-dialog expand_modal';
+                                document.getElementById('sub_modal2').className = 'modal-dialog modal-lg expand_modal';
                             }
                             else {
                                 document.getElementById('expand_modal').value = 0;
                                 document.getElementById('action_modal2').className = 'modal-dialog';
+                                document.getElementById('sub_modal2').className = 'modal-dialog modal-lg';
                             }
 
                             "
@@ -113,10 +115,10 @@
                                     <div class="form-group">
                                         {{form.order_receipt_date|as_crispy_field}}
                                     </div>
-                                </div>    
-                                
+                                </div>
+
                             </div>
-                            
+
                             <h5 class="font-weight-bold text-center">هل انت متأكد من حذف العنصر
                                 "{{ object.name }}"
                                 بشكل نهائي
@@ -149,25 +151,27 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         {{form.order_deposit_date|as_crispy_field}}
                                     </div>
                                 </div>    
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         {{form.order_rest_date|as_crispy_field}}
                                      </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-6">
+                             <div class="col-4">
                                     <div class="form-group">
                                         {{form.order_receipt_date|as_crispy_field}}
                                     </div>
-                                </div>    
-                                
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
                             </div>
                             
                             <input name="url" type="hidden" class="url_input">
