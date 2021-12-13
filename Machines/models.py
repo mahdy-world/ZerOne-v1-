@@ -72,3 +72,17 @@ class MachinesOrderProducts(models.Model):
 
     def __str__(self):
         return self.product_order
+
+
+OPERATIONS_CHOICES = (
+    (1, "دفع عربون"),
+    (2, "دفع باقي المبلغ"),
+    (3, "استلام البضاعة"),
+    )
+
+
+class MachinesOrderOperations(models.Model):
+    order_number = models.ForeignKey(MachinesOrders, on_delete=models.CASCADE, verbose_name="رقم الطلب")
+    operation_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ العملية")
+    operation_type = models.IntegerField(choices=OPERATIONS_CHOICES, default=0, verbose_name="نوع العملية")
+    operation_value = models.FloatField(default=0, verbose_name="قيمة العملية")
