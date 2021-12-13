@@ -25,6 +25,7 @@ urlpatterns = [
     path('',include('Auth.urls')),
     path('spare_parts/',include('SpareParts.urls')),
     path('machines/',include('Machines.urls')),
+    path('treasury/',include('Treasury.urls'), ),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
