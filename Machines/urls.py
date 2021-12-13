@@ -34,4 +34,22 @@ urlpatterns = [
     path('suppliers_delete/<int:pk>/edit/', SuppliersDelete.as_view(), name='suppliers_delete'),
     path('suppliers_restore/<int:pk>/restore/', SuppliersRestore.as_view(), name='suppliers_restore'),
     path('suppliers_super_delete/<int:pk>/super_delete/', SuppliersSuperDelete.as_view(), name='suppliers_super_delete'),
+    ###############################################################################
+    ###############################################################################
+    path('MachinesOrdersList/', MachinesOrdersList.as_view(), name="MachinesOrdersList"),
+    path('MachinesOrdersTrashList/', MachinesOrdersTrashList.as_view(), name="MachinesOrdersTrashList"),
+    path('MachinesOrdersCreate/create/', MachinesOrdersCreate.as_view(), name='MachinesOrdersCreate'),
+    path('MachinesOrdersDetail/<int:pk>/detail/', MachinesOrdersDetail, name='MachinesOrdersDetail'),
+    path('MachinesOrdersUpdate/<int:pk>/update/', MachinesOrdersUpdate.as_view(), name='MachinesOrdersUpdate'),
+    path('MachinesOrdersDelete/<int:pk>/delete/', MachinesOrdersDelete.as_view(), name='MachinesOrdersDelete'),
+    path('MachinesOrdersRestore/<int:pk>/restore/', MachinesOrdersRestore.as_view(), name='MachinesOrdersRestore'),
+    path('MachinesOrdersSuperDelete/<int:pk>/super_delete/', MachinesOrdersSuperDelete.as_view(), name='MachinesOrdersSuperDelete'),
+    ###############################################################################
+    path('AddProductOrder/<int:pk>/create/', AddProductOrder, name='AddProductOrder'),
+    path('MachinesOrderProductsUpdate/<int:pk>/<int:id>/update/', MachinesOrderProductsUpdate.as_view(), name='MachinesOrderProductsUpdate'),
+    path('MachinesOrderProductsDelete/<int:pk>/<int:id>/Delete/', MachinesOrderProductsDelete.as_view(), name='MachinesOrderProductsDelete'),
+    ###############################################################################
+    path('MachinesOrderOperationsCreateDeposit/<int:pk>/create_deposite/', MachinesOrderOperationsCreateDeposit.as_view(), name='MachinesOrderOperationsCreateDeposit'),
+    path('MachinesOrderOperationsCreateReset/<int:pk>/create_reset/', MachinesOrderOperationsCreateReset.as_view(), name='MachinesOrderOperationsCreateReset'),
+    path('MachinesOrderOperationsCreateOrder/<int:pk>/create_order/', MachinesOrderOperationsCreateOrder.as_view(), name='MachinesOrderOperationsCreateOrder'),
 ]

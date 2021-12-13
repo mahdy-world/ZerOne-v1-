@@ -169,13 +169,13 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
-                                <li><a href="#" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'Machines:MachinesOrdersList' %}"  key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الطلبيات </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'Machines:MachinesOrdersCreate' %}" data-target="#sub_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة طلبية جديدة</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'Machines:MachinesOrdersTrashList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>
@@ -276,7 +276,7 @@
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
                                 <i class='bx bxl-shopify bx-sm' ></i>
-                                <span key="t-ecommerce"> خزائن المحل</span>
+                                <span key="t-ecommerce"> خزائن العمل</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
 
@@ -284,7 +284,7 @@
                                 قائمة الخزائن </a></li>
 
                                 <li><a href="{% url 'Treasury:WorkTreasuryCreate' %}" data-target="#action_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
-                                اضافة خزينة جديدة</a></li>
+                                اضافة خزنة جديدة</a></li>
 
                                 <li><a href="{% url 'Treasury:WorkTreasuryTrachList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
@@ -303,7 +303,7 @@
                                 قائمة الخزائن </a></li>
 
                                 <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
-                                اضافة خزينة جديدة</a></li>
+                                اضافة خزنة جديدة</a></li>
 
                                 <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>

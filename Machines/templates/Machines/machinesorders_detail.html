@@ -48,13 +48,7 @@
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
                             
-                            {% if type == "list" %}
-                                <h3 class="mb-0 "> فاتورة طلب {{order.order_number}}</h3>
-                                
-                                {% else %}
-                                <h3 class="mb-0 ">سلة مهملات طلبات قطع الغيار</h3>
-                            
-                            {% endif %}
+                            <h3 class="mb-0 "> فاتورة طلب {{order.order_number}}</h3>
                              
                             
                                 <!-- <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} قطع </span> -->
@@ -65,16 +59,12 @@
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
                                     {% if order.deleted == 0 %}
-                                    <li class="breadcrumb-item"><a href="{% url 'SpareParts:SparePartsOrderList' %}">قائمة الطلبيات</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'Machines:MachinesOrdersList' %}">قائمة الطلبيات</a></li>
                                     {% else %}
-                                    <li class="breadcrumb-item"><a href="{% url 'SpareParts:SparePartsOrderTrachList' %}">قائمة الطلبيات</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'Machines:MachinesOrdersTrashList' %}">قائمة الطلبيات</a></li>
                                     {% endif %}
 
-                                    {% if type == "list" %}
                                     <li class="breadcrumb-item active">فاتورة طلب {{order.order_number}}</li>
-                                    {% else %}
-                                    <li class="breadcrumb-item active">سلة مهملات طلبات قطع الغيار</li>
-                                    {% endif %}
                                 </ol>
                             </div>
 
@@ -219,7 +209,7 @@
 
                                                                             {% if product %}
                                                                                 <a 
-                                                                                href="{% url 'SpareParts:SparePartsOperationCreateDeposit' order.id %}" data-target="#action_modal" data-toggle="modal" 
+                                                                                href="{% url 'Machines:MachinesOrderOperationsCreateDeposit' order.id %}" data-target="#action_modal" data-toggle="modal"
                                                                                 style="width:40%" class="btn btn-sm btn-primary">
                                                                                     <i class='bx bx-check-circle'></i>
                                                                                     اتمام العملية
@@ -302,7 +292,7 @@
                                                                  <h4 class="font-weight-bold"> <i class="fas fa-file-invoice-dollar"></i> دفع باقي المبلغ المستحق </h4>   
                                                                  {% if op1 %}
                                                                    <a
-                                                                   href="{% url 'SpareParts:SparePartsOperationCreateReset' order.id %}"
+                                                                   href="{% url 'Machines:MachinesOrderOperationsCreateReset' order.id %}"
                                                                    style="width:40%" data-target="#action_modal" data-toggle="modal" class="btn btn-sm btn-primary"
                                                                    >
                                                                     <i class='bx bx-check-circle'></i>
@@ -383,7 +373,7 @@
                                                                       {% if op2 %}
                                                                        <a
                                                                     
-                                                                       href="{% url 'SpareParts:SparePartsOperationCreateOrder' order.id %}"
+                                                                       href="{% url 'Machines:MachinesOrderOperationsCreateOrder' order.id %}"
                                                                        style="width:40%" data-target="#action_modal" data-toggle="modal" class="btn btn-sm btn-primary">
                                                                        <i class='bx bx-check-circle'></i>
                                                                           اتمام العملية
@@ -458,7 +448,7 @@
                                                                                 {{form.product_name|as_crispy_field}}                                                                           
                                                                             </div> 
                                                                             
-                                                                            <a href="{% url 'SpareParts:SparePartsNameCreate' %}" style="width: 25%; " data-target="#action_modal" data-toggle="modal" class=" btn btn-success d-inline-block">
+                                                                            <a href="{% url 'Machines:names_create' %}" style="width: 25%; " data-target="#action_modal" data-toggle="modal" class=" btn btn-success d-inline-block">
                                                                                    منتج جديد                                                                        
                                                                             </a>
                                         
@@ -488,11 +478,11 @@
                                                                     {% if not op1 %}
                                                                     <td>
                                                                         <div class="team">
-                                                                            <a href="{% url 'SpareParts:SparePartsOrderAddProductUpdate' x.id x.product_order.id %}" class="team-member d-inline-block btn btn-info btn-sm" data-target="#action_modal" data-toggle="modal">
+                                                                            <a href="{% url 'Machines:MachinesOrderProductsUpdate' x.id x.product_order.id %}" class="team-member d-inline-block btn btn-info btn-sm" data-target="#action_modal" data-toggle="modal">
                                                                                 <i class='bx bx-edit' ></i>
                                                                             </a>
 
-                                                                            <a href="{% url 'SpareParts:SparePartsOrderAddProductDelete' x.id x.product_order.id  %}"  class="team-member d-inline-block btn btn-danger btn-sm" data-target="#action_modal" data-toggle="modal">
+                                                                            <a href="{% url 'Machines:MachinesOrderProductsDelete' x.id x.product_order.id  %}"  class="team-member d-inline-block btn btn-danger btn-sm" data-target="#action_modal" data-toggle="modal">
                                                                                 <i class='bx bxs-trash' ></i>
                                                                             </a>
                                                                         </div>

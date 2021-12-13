@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.db.models import Sum
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import *
@@ -602,4 +603,379 @@ class SuppliersSuperDelete(LoginRequiredMixin, UpdateView):
         messages.success(self.request, " تم حذف مورد ماكينات " + str(self.object) + " نهائيا بنجاح ", extra_tags="success")
         my_form = MachinesSuppliers.objects.get(id=self.kwargs['pk'])
         my_form.delete()
+        return redirect(self.get_success_url())
+
+
+###################################################################
+###################################################################
+
+
+class MachinesOrdersList(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = MachinesOrders
+    paginate_by = 12
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=False).order_by('id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'active'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+
+class MachinesOrdersTrashList(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = MachinesOrders
+    paginate_by = 12
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=True).order_by('id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'trash'
+        context['count'] = self.model.objects.filter(deleted=True).count()
+        return context
+
+
+class MachinesOrdersCreate(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = MachinesOrders
+    form_class = MachinesOrdersForm
+    template_name = 'forms/order_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'إضافة طلبية مكن'
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrdersCreate')
+        return context
+
+    def get_success_url(self, **kwargs):
+        messages.success(self.request, "  تم اضافة طلبية مكن بنجاح", extra_tags="success")
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.object.id})
+
+
+class MachinesOrdersUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = MachinesOrders
+
+    def get_form_class(self, **kwargs):
+        op1 = MachinesOrderOperations.objects.filter(order_number=self.object, operation_type=1)
+        op2 = MachinesOrderOperations.objects.filter(order_number=self.object, operation_type=2)
+        if op2:
+            form_class_name = MachinesOrdersFormOp2
+        elif op1:
+            form_class_name = MachinesOrdersFormOp1
+        else:
+            form_class_name = MachinesOrdersForm
+        return form_class_name
+
+    template_name = 'forms/order_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل طلبية مكن: ' + str(self.object)
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrdersUpdate', kwargs={'pk': self.object.id})
+        return context
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=self.form_class)
+        op1 = MachinesOrderOperations.objects.filter(order_number=self.object, operation_type=1)
+        op2 = MachinesOrderOperations.objects.filter(order_number=self.object, operation_type=2)
+        if op1 or op2:
+            form.fields['order_supplier'].queryset = MachinesSuppliers.objects.filter(
+                id=self.object.order_supplier.id)
+        return form
+
+    def get_success_url(self, **kwargs):
+        messages.success(self.request, " تم تعديل طلبية مكن " + str(self.object) + " بنجاح ", extra_tags="info")
+        return reverse('Machines:MachinesOrdersList')
+
+
+class MachinesOrdersDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = MachinesOrders
+    form_class = MachinesOrdersDeleteForm
+    template_name = 'forms/order_form.html'
+
+    def get_success_url(self):
+        return reverse('Machines:MachinesOrdersList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف طلبية مكن: ' + str(self.object)
+        context['message'] = 'delete'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrdersDelete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم حذف طلبية مكن " + str(self.object) + ' بنجاح ', extra_tags="danger")
+        myform = MachinesOrders.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 1
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class MachinesOrdersRestore(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = MachinesOrders
+    form_class = MachinesOrdersDeleteForm
+    template_name = 'forms/order_form.html'
+
+    def get_success_url(self):
+        return reverse('Machines:MachinesOrdersList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'استرجاع طلبية مكن: ' + str(self.object)
+        context['message'] = 'restore'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrdersRestore', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم استرجاع طلبية مكن " + str(self.object) + ' بنجاح ', extra_tags="dark")
+        myform = MachinesOrders.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 0
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class MachinesOrdersSuperDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = MachinesOrders
+    form_class = MachinesOrdersDeleteForm
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Machines:MachinesOrdersTrashList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف طلبية مكن : ' + str(self.object.order_number) + 'بشكل نهائي'
+        context['message'] = 'super_delete'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrdersSuperDelete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم حذف طلبية مكن " + str(self.object.order_number) + " نهائيا بنجاح ",
+                         extra_tags="success")
+        my_form = MachinesOrders.objects.get(id=self.kwargs['pk'])
+        my_form.delete()
+        return redirect(self.get_success_url())
+
+
+###################################################################
+
+
+def MachinesOrdersDetail(request, pk):
+    order = get_object_or_404(MachinesOrders, id=pk)
+    product = MachinesOrderProducts.objects.filter(product_order=order).order_by('id')
+    count_product = product.count()
+
+    total = product.aggregate(total=Sum('product_price')).get('total')
+    quantity = product.aggregate(quantity=Sum('product_quantity')).get('quantity')
+
+    op1 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=1)
+    op2 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=2)
+    op3 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=3)
+
+    form = MachinesOrderProductsForm
+    type_page = "list"
+    page = "active"
+    action_url = reverse_lazy('Machines:AddProductOrder', kwargs={'pk': order.id})
+
+    context = {
+        'order': order,
+        'type': type_page,
+        'page': page,
+        'form': form,
+        'action_url': action_url,
+        'product': product,
+        'count_product': count_product,
+        'total': total,
+        'op1': op1,
+        'op2': op2,
+        'op3': op3,
+        'qu': quantity
+
+    }
+    return render(request, 'Machines/machinesorders_detail.html', context)
+
+
+def AddProductOrder(request, pk):
+    order = get_object_or_404(MachinesOrders, id=pk)
+    product = MachinesOrderProducts.objects.filter(product_order=order).order_by('id')
+    count_product = product.count()
+
+    form = MachinesOrderProductsForm(request.POST or None)
+    type_page = "list"
+    page = "active"
+    action_url = reverse_lazy('Machines:AddProductOrder', kwargs={'pk': order.id})
+
+    context = {
+        'order': order,
+        'type': type_page,
+        'page': page,
+        'form': MachinesOrderProductsForm,
+        'action_url': action_url,
+        'product': product,
+        'count_product': count_product
+    }
+
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.product_order = order
+        obj.save()
+        return redirect('Machines:MachinesOrdersDetail', pk=order.id)
+
+    return render(request, 'Machines/machinesorders_detail.html', context)
+
+
+class MachinesOrderProductsUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = MachinesOrderProducts
+    form_class = MachinesOrderProductsForm
+    template_name = 'forms/form_template.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل المنتج: ' + str(self.object.product_name)
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrderProductsUpdate',
+                                             kwargs={'pk': self.object.id, 'id': self.object.product_order.id})
+        return context
+
+    def get_success_url(self, **kwargs):
+        messages.success(self.request, " تم تعديل منتج " + str(self.object.product_name) + " بنجاح ", extra_tags="info")
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['id']})
+
+
+class MachinesOrderProductsDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = MachinesOrderProducts
+    form_class = MachinesOrderProductsDeleteForm
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['id']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف المنتج: ' + str(self.object.product_name)
+        context['message'] = 'super_delete'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrderProductsDelete',
+                                             kwargs={'pk': self.object.id, 'id': self.object.product_order.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم حذف المنتج " + str(self.object.product_name) + " من الفاتورة بنجاح ",
+                         extra_tags="success")
+        my_form = MachinesOrderProducts.objects.get(id=self.kwargs['pk'])
+        my_form.delete()
+        return redirect(self.get_success_url())
+
+
+###################################################################
+
+
+class MachinesOrderOperationsCreateDeposit(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = MachinesOrderOperations
+    form_class = MachinesOrderOperationsForm
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'دفع عربون'
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrderOperationsCreateDeposit',
+                                             kwargs={'pk': self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
+        form = super(MachinesOrderOperationsCreateDeposit, self).get_form(*args, **kwargs)
+        form.fields['operation_value'].initial = order_number.order_deposit_value
+        return form
+
+    def form_valid(self, form):
+        messages.success(self.request, " تمت دفع العربون بنجاح ", extra_tags="success")
+        order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
+        myform = MachinesOrderOperations()
+        myform.order_number = order_number
+        myform.operation_type = 1
+        myform.operation_value = form.cleaned_data.get("operation_value")
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = MachinesOrderOperations
+    form_class = MachinesOrderOperationsForm
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' دفع باقي المبلغ '
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrderOperationsCreateReset',
+                                             kwargs={'pk': self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
+        order_products_val = MachinesOrderProducts.objects.filter(product_order__id=self.kwargs['pk']).aggregate(
+            sum=Sum('product_price')).get('sum')
+        form = super(MachinesOrderOperationsCreateReset, self).get_form(*args, **kwargs)
+        form.fields['operation_value'].initial = float(order_products_val) - float(order_number.order_deposit_value)
+        return form
+
+    def form_valid(self, form):
+        messages.success(self.request, " تمت العملية بنجاح ", extra_tags="success")
+        order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
+        myform = MachinesOrderOperations()
+        myform.order_number = order_number
+        myform.operation_type = 2
+        myform.operation_value = form.cleaned_data.get("operation_value")
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = MachinesOrderOperations
+    form_class = MachinesOrderOperationsForm2
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'استلام البضاعة'
+        context['message'] = 'operation'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrderOperationsCreateOrder',
+                                             kwargs={'pk': self.kwargs['pk']})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تمت العملية بنجاح ", extra_tags="success")
+        order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
+        myform = MachinesOrderOperations()
+        myform.order_number = order_number
+        myform.operation_type = 3
+        myform.save()
         return redirect(self.get_success_url())
