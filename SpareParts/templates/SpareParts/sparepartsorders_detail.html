@@ -64,12 +64,16 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
+                                    {% if order.deleted == 0 %}
+                                    <li class="breadcrumb-item"><a href="{% url 'SpareParts:SparePartsOrderList' %}">قائمة الطلبيات</a></li>
+                                    {% else %}
+                                    <li class="breadcrumb-item"><a href="{% url 'SpareParts:SparePartsOrderTrachList' %}">قائمة الطلبيات</a></li>
+                                    {% endif %}
 
                                     {% if type == "list" %}
                                     <li class="breadcrumb-item active">فاتورة طلب {{order.order_number}}</li>
                                     {% else %}
                                     <li class="breadcrumb-item active">سلة مهملات طلبات قطع الغيار</li>
-
                                     {% endif %}
                                 </ol>
                             </div>
@@ -113,8 +117,8 @@
                                                                     <td>{{ order.order_supplier }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#c658c2' ></i>قمية العربون : </th>
-                                                                    <td>{{ order.order_deposit_value }} جنية</td>
+                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#c658c2' ></i>قيمة العربون : </th>
+                                                                    <td><span class="badge badge-danger font-size-14">{{ order.order_deposit_value }} جنية</span></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ دفع العربون :</th>
@@ -139,7 +143,7 @@
                             </div>
                         </div>
                             
-
+                        {% if order.deleted == 0 %}
                        <div class="card">
                                     <div class="card-body">
                                         
@@ -173,7 +177,7 @@
                                                                         <div>
 
                                                                             <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
-                                                                            <spna> {{ order.order_deposit_date|date:'Y-m-d' }}</span>
+                                                                            <span> {{ order.order_deposit_date|date:'Y-m-d' }}</span>
                                                                             </small>
                                                                             
                                                                             
@@ -209,7 +213,7 @@
                                                                         <div>
 
                                                                             <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
-                                                                            <spna> {{ order.order_deposit_date|date:'Y-m-d' }}</span>
+                                                                            <span> {{ order.order_deposit_date|date:'Y-m-d' }}</span>
                                                                             </small>
                                                                             <h4 class="font-weight-bold"><i class="fas fa-comment-dollar"></i> دفع العربون المستحق </h4>   
 
@@ -254,7 +258,7 @@
                                                             <div>
 
                                                                 <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
-                                                                   <spna> {{ order.order_rest_date|date:'Y-m-d' }}</span>
+                                                                   <span> {{ order.order_rest_date|date:'Y-m-d' }}</span>
                                                                 </small>
                                                                  <h4 class="font-weight-bold" style="text-decoration:line-through"> <i class="fas fa-file-invoice-dollar"></i> دفع باقي المبلغ المستحق </h4>   
 
@@ -293,7 +297,7 @@
                                                             <div>
 
                                                                 <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
-                                                                   <spna> {{ order.order_rest_date|date:'Y-m-d' }}</span>
+                                                                   <span> {{ order.order_rest_date|date:'Y-m-d' }}</span>
                                                                 </small>
                                                                  <h4 class="font-weight-bold"> <i class="fas fa-file-invoice-dollar"></i> دفع باقي المبلغ المستحق </h4>   
                                                                  {% if op1 %}
@@ -341,7 +345,7 @@
                                                                 <div>
     
                                                                     <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
-                                                                       <spna> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
+                                                                       <span> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
                                                                     </small>
                                                                      <h4 class="font-weight-bold" style="text-decoration:line-through"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
                                                                         
@@ -372,7 +376,7 @@
                                                                 <div>
     
                                                                     <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
-                                                                       <spna> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
+                                                                       <span> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
                                                                     </small>
                                                                      <h4 class="font-weight-bold"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
                                                                         
@@ -414,8 +418,10 @@
 
                                     </div>
                                 </div>
+                        {% endif %}
                     </div>
 
+                    {% if order.deleted == 0 %}
                     <div class="col-lg-8">
 
                          <div class="card">
@@ -447,26 +453,23 @@
 
                                                                     </th>
                                                                     <th class="col-lg-5 col-xl-5 col-md-5" style="width: 100%;">
-                                                                      
                                                                             
                                                                             <div class=" d-inline-block sel" style="width: 75%;">
                                                                                 {{form.product_name|as_crispy_field}}                                                                           
                                                                             </div> 
                                                                             
-                                                                            <a href="{% url 'SpareParts:SparePartsNameCreate' %}" style="width: 25%; " data-target="#action_modal" data-toggle="modal" class=" btn btn-success  d-inline-block">
+                                                                            <a href="{% url 'SpareParts:SparePartsNameCreate' %}" style="width: 25%; " data-target="#action_modal" data-toggle="modal" class=" btn btn-success d-inline-block">
                                                                                    منتج جديد                                                                        
-                                                                            </a> 
-
-                                                                            
-                                             
+                                                                            </a>
                                         
                                                                     </th>
                                                                     <th class="col-lg-2 col-xl-2 col-md-2">{{form.product_quantity|as_crispy_field}} </th>
                                                                     <th class="col-lg-2 col-xl-2 col-md-2">{{form.product_price|as_crispy_field}}</th>
+                                                                    {% if not op1 %}
                                                                     <th class="col-lg-2 col-xl-2 col-md-2">
-
                                                                         <button style="width: 100%" type="submit" class="btn btn-success">اضافة</button>
                                                                     </th>
+                                                                    {% endif %}
                                                                 </tr>
                                                                 </form>
                                                             </thead>
@@ -482,18 +485,19 @@
                                                                     </td>
                                                                     <td ><h4><i class="fas fa-copy fx-7"></i> {{x.product_quantity}}</h4></td>
                                                                     <td><h4><span class="badge badge-primary"> <i class='bx bx-dollar'></i>{{ x.product_price }}</span></h4></td>
+                                                                    {% if not op1 %}
                                                                     <td>
                                                                         <div class="team">
-                                                                            <a href="{% url 'SpareParts:SparePartsOrderAddProductUpdate' x.id %}" class="team-member d-inline-block btn btn-info" data-target="#action_modal" data-toggle="modal">
+                                                                            <a href="{% url 'SpareParts:SparePartsOrderAddProductUpdate' x.id x.product_order.id %}" class="team-member d-inline-block btn btn-info btn-sm" data-target="#action_modal" data-toggle="modal">
                                                                                 <i class='bx bx-edit' ></i>
                                                                             </a>
 
-                                                                            <a href="{% url 'SpareParts:SparePartsOrderAddProductDelete' x.id x.product_order.id  %}"  class="team-member d-inline-block btn btn-danger" data-target="#action_modal" data-toggle="modal">
+                                                                            <a href="{% url 'SpareParts:SparePartsOrderAddProductDelete' x.id x.product_order.id  %}"  class="team-member d-inline-block btn btn-danger btn-sm" data-target="#action_modal" data-toggle="modal">
                                                                                 <i class='bx bxs-trash' ></i>
                                                                             </a>
-
                                                                         </div>
                                                                     </td>
+                                                                    {% endif %}
 
                                                                 </tr>
                                                                 {% endfor %}
@@ -521,8 +525,8 @@
                                            <div class="card-body">
                                                <div class="media">
                                                    <div class="media-body">
-                                                       <p class="text-muted font-weight-bold">عدد القطع</p>
-                                                       <h4 class="mb-0">{{count_product}} قطع</h4>
+                                                       <p class="text-muted font-weight-bold">عدد الأصناف</p>
+                                                       <h4 class="mb-0">{{count_product}} صنف</h4>
                                                    </div>
 
                                                    <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
@@ -542,7 +546,14 @@
                                                        <div class="media">
                                                            <div class="media-body">
                                                                <p class="text-muted font-weight-bold ">اجمالي الكمية </p>
-                                                               <h4 class="mb-0"> {{qu}} صنف </h4>
+                                                               <h4 class="mb-0">
+                                                                   {% if qu %}
+                                                                   {{qu}}
+                                                                   {% else %}
+                                                                   0
+                                                                   {% endif %}
+                                                                   قطعة
+                                                               </h4>
                                                            </div>
 
                                                            <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
@@ -562,7 +573,14 @@
                                                        <div class="media">
                                                            <div class="media-body">
                                                                <p class="text-muted font-weight-bold ">اجمالي المبلغ </p>
-                                                               <h4 class="mb-0"> {{total}} جنية </h4>
+                                                               <h4 class="mb-0">
+                                                                   {% if total %}
+                                                                   {{total}}
+                                                                   {% else %}
+                                                                   0
+                                                                   {% endif %}
+                                                                   جنية
+                                                               </h4>
                                                            </div>
 
                                                            <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
@@ -578,6 +596,7 @@
 
 
                     </div>
+                    {% endif %}
                 </div>
 
 

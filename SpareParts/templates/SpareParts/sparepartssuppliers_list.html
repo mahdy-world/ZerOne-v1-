@@ -37,7 +37,7 @@
                             {% endif %}
                              
                             
-                                <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} قطع </span>
+                                <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} مورد </span>
                                
 
                            
@@ -73,8 +73,7 @@
                             </div>
                             <h3 ><a href="#" class="text-dark"> {{x.name}}</a></h3>
                             {% if x.phone %}
-                            <p class="text-muted mb-2 ">رقم الموبيل</p>
-                            <h5>{{x.phone}}</h5>
+                            <h5 ><a href="#" class="text-dark"> تواصل: {{x.phone}}</a></h5>
                             {% endif %}
   
                         </div>
@@ -130,7 +129,7 @@
                             <div class="mt-3 text-center">
                                 
                                 {% if type == "list" %}
-                                    <a class="btn btn-primary waves-effect waves-light" href="{% url 'SpareParts:SparePartsWarehouseCreate' %}" data-toggle="modal" data-target="#action_modal">اضافة بيانات</a>
+                                    <a class="btn btn-primary waves-effect waves-light" href="{% url 'SpareParts:SparePartsSupplierCreate' %}" data-toggle="modal" data-target="#action_modal">اضافة بيانات</a>
                                 
                                 {% endif %}
                                     

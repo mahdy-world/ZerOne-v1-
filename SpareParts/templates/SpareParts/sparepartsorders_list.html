@@ -63,14 +63,16 @@
                 {% if object_list %}
                 <div class="row">
                 {% for x in object_list  %}
-
+                {% order_op3 x.id as has_op3 %}
+                {% order_products x.id as has_products %}
+                {% order_products_val x.id as products_val %}
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-4 col-lg-4 col-md-6">
+                                <div class="col-lg-6 col-lg-6 col-md-6">
                                     <div class="text-lg-center">
-                                        <div class="avatar-sm mr-3 mx-lg-auto mb-4 float-left float-lg-none" style="margin-top: 25%;">
+                                        <div class="avatar-sm mr-3 mx-lg-auto mb-4 float-left float-lg-none" style="margin-top: 12%;">
                                             <span class="avatar-title rounded-circle bg-soft-primary text-primary font-size-16">
                                                 <img src="/static/assets/images/vector/Invoice.png" alt="" width="100px%">
                                             </span>
@@ -82,66 +84,89 @@
 
                                 <div class="col-lg-6">
                                     <div>
-                                        <a href="{% url 'SpareParts:SparePartsOrderDetail' x.id %}" class="d-block text-primary mb-2">Invoice #{{x.order_number}}</a>
+                                        <a href="{% url 'SpareParts:SparePartsOrderDetail' x.id %}" class="d-block text-primary mb-2">فاتورة #{{x.order_number}}</a>
                                         
                                         <ul class="list-inline mb-0">
                                             <li class="list-inline-item mr-3">
-                                                <h5 class="font-size-14" data-toggle="tooltip" data-placement="top" title="" data-original-title="Amount"><i class="bx bx-money mr-1 text-primary"></i> $ 1455</h5>
+                                                <h5 class="font-size-14" data-toggle="tooltip" data-placement="top" title="" data-original-title="Amount"><i class="bx bx-money mr-1 text-primary"></i> $
+                                                    {% if products_val %}
+                                                    {{ products_val }}
+                                                    {% else %}
+                                                    0.0
+                                                    {% endif %}
+                                                </h5>
                                             </li>
+                                            <br>
                                             <li class="list-inline-item">
-                                                <h5 class="font-size-14" data-toggle="tooltip" data-placement="top" title="" data-original-title="Due Date"><i class="bx bx-calendar mr-1 text-primary"></i>{{x.order_date}}</h5>
+                                                <h5 class="font-size-14" data-toggle="tooltip" data-placement="top" title="" data-original-title="Due Date"><i class="bx bx-calendar mr-1 text-primary"></i>{{x.order_date|date:'Y-m-d'}}</h5>
                                             </li>
                                         </ul>
-                                        <div class="card-footer bg-transparent border-top">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card-footer bg-transparent ">
                                             <div class="contact-links d-flex justify-content-center font-size-20">
-                                                  {% if type == "list"  %}
-                                                  <div class="mr-3">
+                                                <div class="mr-3">
                                                     <a href="{% url 'SpareParts:SparePartsOrderDetail' x.id %}"  data-placement="top" title="" data-original-title="Message">
                                                         <span class="badge badge-dark"><i class='bx bx-area'></i>تفاصيل</span>
                                                    </a>
                                                 </div>
-                                                      <div class="mr-3">
-                                                           <a href="{% url 'SpareParts:SparePartsOrderUpdate' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
+                                                  {% if type == "list"  %}
+
+                                                  <div class="mr-3">
+                                                           <a
+                                                               {% if has_op3 %}
+                                                                href="#"
+                                                                {% else %}
+                                                               href="{% url 'SpareParts:SparePartsOrderUpdate' x.id %}" data-toggle="modal" data-target="#sub_modal"
+                                                                {% endif %}
+                                                           >
+                                                                {% if has_op3 %}
+                                                               <span class="badge badge-info" style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. الفانورة تحتوي علي منتجات"><i class='bx bx-edit' ></i>تعديل</span>
+                                                                {% else %}
                                                                <span class="badge badge-info"><i class='bx bx-edit' ></i>تعديل</span>
+                                                                {% endif %}
                                                           </a>
                                                        </div>
-                              
-                                                       {% order_products x.id as has_products %}
-                                                      <div class="">
-                                                          <a 
+
+                                                  <div class="">
+                                                          <a
                                                           {% if has_products %}
                                                           href="#"
                                                           {% else %}
-                                                          href="{% url 'SpareParts:SparePartsOrderDelete' x.id %}" data-toggle="modal" data-target="#action_modal" 
+                                                          href="{% url 'SpareParts:SparePartsOrderDelete' x.id %}" data-toggle="modal" data-target="#action_modal"
                                                           {% endif %}
                                                           >
-                                                          
+
                                                           {% if has_products %}
                                                             <span class="badge badge-danger" style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. الفانورة تحتوي علي منتجات"><i class='bx bxs-trash'  ></i>حذف</span>
                                                           {% else %}
                                                             <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
                                                           {% endif %}
-                                                              
-                                                              
+
+
                                                           </a>
                                                       </div>
                                                   {% else %}
                                                        <div class="mr-3">
                                                               <a href="{% url 'SpareParts:SparePartsOrderRestore' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
-                                                                  <span class="badge badge-dark"><i class='bx bx-redo '></i> استرجاع
-                                                              </a></span>
+                                                                  <span class="badge badge-info"><i class='bx bx-redo '></i> استرجاع
+                                                                  </span>
+                                                              </a>
                                                       </div>
-                  
+
                                                       <div class="">
                                                           <a href="{% url 'SpareParts:SparePartsOrderSuperDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
                                                               <span class="badge badge-danger"><i class='bx bxs-trash '   ></i> حذف نهائي </span>
-                                                               
+
                                                           </a>
                                                       </div>
                                                   {% endif %}
                                               </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                             
@@ -170,7 +195,7 @@
                             <div class="mt-3 text-center">
                                 
                                 {% if type == "list" %}
-                                    <a class="btn btn-primary waves-effect waves-light" href="{% url 'SpareParts:SparePartsNameCreate' %}" data-toggle="modal" data-target="#action_modal">اضافة بيانات</a>
+                                    <a class="btn btn-primary waves-effect waves-light" href="{% url 'SpareParts:SparePartsOrderCreate' %}" data-toggle="modal" data-target="#sub_modal">اضافة بيانات</a>
                                 
                                 {% endif %}
                                     

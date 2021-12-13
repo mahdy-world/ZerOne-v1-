@@ -68,7 +68,8 @@ class SupplierDeleteForm(forms.ModelForm):
 
             'deleted': forms.HiddenInput(),
         }
-                                                                
+
+
 class SparePartOrderForm(forms.ModelForm):
     class Meta:
         model = SparePartsOrders
@@ -81,9 +82,44 @@ class SparePartOrderForm(forms.ModelForm):
             'order_deposit_date' :forms.DateInput(attrs={'type': 'date','class':'form-control'}),
             'order_rest_date' :forms.DateInput(attrs={'type': 'date','class':'form-control'}),
             'order_receipt_date' :forms.DateInput(attrs={'type': 'date','class':'form-control'}),
-        }        
-        
-        
+        }
+
+class SparePartOrderFormOp1(forms.ModelForm):
+    class Meta:
+        model = SparePartsOrders
+        exclude = ['deleted']
+        widgets = {
+            'order_supplier':forms.Select(attrs={'class':'form-control', 'readonly':'readonly'}),
+            'order_deposit_value':forms.NumberInput(attrs={'class':'form-control', 'readonly':'readonly'}),
+            'order_number':forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly'}),
+            'order_date':forms.DateInput(attrs={'type': 'date','class':'form-control', 'readonly':'readonly'}),
+            'order_deposit_date' :forms.DateInput(attrs={'type': 'date','class':'form-control', 'readonly':'readonly'}),
+            'order_rest_date' :forms.DateInput(attrs={'type': 'date','class':'form-control'}),
+            'order_receipt_date':forms.DateInput(attrs={'type': 'date','class':'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SparePartOrderFormOp1, self).__init__(*args, **kwargs)
+        self.fields['order_supplier'].empty_label = None
+
+class SparePartOrderFormOp2(forms.ModelForm):
+    class Meta:
+        model = SparePartsOrders
+        exclude = ['deleted']
+        widgets = {
+            'order_supplier':forms.Select(attrs={'class':'form-control', 'readonly':'readonly'}),
+            'order_deposit_value':forms.NumberInput(attrs={'class':'form-control', 'readonly':'readonly'}),
+            'order_number':forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly'}),
+            'order_date':forms.DateInput(attrs={'type': 'date','class':'form-control', 'readonly':'readonly'}),
+            'order_deposit_date' :forms.DateInput(attrs={'type': 'date','class':'form-control', 'readonly':'readonly'}),
+            'order_rest_date' :forms.DateInput(attrs={'type': 'date','class':'form-control', 'readonly':'readonly'}),
+            'order_receipt_date':forms.DateInput(attrs={'type': 'date','class':'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SparePartOrderFormOp2, self).__init__(*args, **kwargs)
+        self.fields['order_supplier'].empty_label = None
+
 
 class OrderDeleteForm(forms.ModelForm):
     class Meta:
@@ -102,8 +138,8 @@ class orderProductForm(forms.ModelForm):
         widgets = {
 
             'product_name':forms.Select(attrs={'class':'form-control' , 'id':'product' }),
-            'product_quantity':forms.NumberInput(attrs={'class':'form-control'}),
-            'product_price' :forms.NumberInput(attrs={'class':'form-control' }),
+            'product_quantity':forms.NumberInput(attrs={'class':'form-control', 'min':'1'}),
+            'product_price':forms.NumberInput(attrs={'class':'form-control', 'min':'1'}),
             
         }        
 
