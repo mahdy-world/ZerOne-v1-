@@ -299,13 +299,13 @@
                             </a>
                             <ul class="sub-menu bg-light" aria-expanded="false">
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'Treasury:HomeTreasuryList' %}" key="t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الخزائن </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'Treasury:HomeTreasuryCreate' %}" data-target="#action_modal" data-toggle="modal" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة خزنة جديدة</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'Treasury:HomeTreasuryTrachList' %}"  key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>
@@ -318,13 +318,13 @@
                             </a>
                             <ul class="sub-menu bg-light" aria-expanded="false">
 
-                                <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                                <li><a href="{% url 'Treasury:BankAccountList' %}"t-products"><i class='bx bx-list-ul' ></i>
                                 قائمة الحسابات </a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                                <li><a href="{% url 'Treasury:BankAccountCreate' %}" data-toggle="modal" data-target="#action_modal" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
                                 اضافة حساب جديد</a></li>
 
-                                <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                <li><a href="{% url 'Treasury:BankAccountTrachList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                     سلة المهملاات</a></li>
 
                             </ul>

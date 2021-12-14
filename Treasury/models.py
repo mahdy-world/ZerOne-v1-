@@ -10,3 +10,23 @@ class WorkTreasury(models.Model):
     
     def __str__(self):
         return self.name
+
+
+class HomeTreasury(models.Model):
+    name = models.CharField(max_length=128, verbose_name='الاسم')
+    balance = models.FloatField(default=0.0, verbose_name='رصيد')
+    deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+class BankAccount(models.Model):
+    name = models.CharField(max_length=128, verbose_name='الاسم')
+    account_no = models.CharField(max_length=128, verbose_name='رقم الحساب', null=True, blank=True)
+    balance = models.FloatField(default=0.0, verbose_name='رصيد')
+    deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+
