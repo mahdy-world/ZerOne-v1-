@@ -29,12 +29,39 @@
                         <div class="page-title-box d-flex align-items-center justify-content-between">
                             
                             {% if type == "list" %}
-                                <h3 class="mb-0 ">أصناف قطع الغيار</h3>
+                                <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}}
+                                    <a class="badge badge-success" style="font-size:x-small;" href="{% url 'SpareParts:SparePartsNameCreate' %}" data-toggle="modal" data-target="#action_modal">
+                                            <i class="fas fa-plus-square fx-2"></i>
+                                    </a>
+
+                                    <a class="badge badge-info" style="font-size:x-small;" href="{% url 'SpareParts:SparePartsNameList' %}"">
+                                       <i class="fas fa-list-ul"></i>
+                                    </a>
+                                     
+                                    <a  class="badge badge-danger" style="font-size:x-small;" href="{% url 'SpareParts:SpareNameTrachList' %}">
+                                            <i class="fas fa-trash"></i>
+                                    </a>
+                                     
+                                 </h3>
                                 
                                 {% else %}
-                                <h3 class="mb-0 ">سلة مهملات أصناف قطع الغيار</h3>
+                                <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}}
+                                    <a class="badge badge-success" style="font-size:x-small;" href="{% url 'SpareParts:SparePartsNameCreate' %}" data-toggle="modal" data-target="#action_modal">
+                                            <i class="fas fa-plus-square fx-2"></i>
+                                    </a>
+
+                                    <a class="badge badge-info" style="font-size:x-small;" href="{% url 'SpareParts:SparePartsNameList' %}"">
+                                       <i class="fas fa-list-ul"></i>
+                                    </a>
+                                     
+                                    <a  class="badge badge-danger" style="font-size:x-small;" href="{% url 'SpareParts:SpareNameTrachList' %}">
+                                            <i class="fas fa-trash"></i>
+                                    </a>
+                                     
+                                 </h3>
                             
                             {% endif %}
+                            
                              
                             
                                 <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} صنف </span>

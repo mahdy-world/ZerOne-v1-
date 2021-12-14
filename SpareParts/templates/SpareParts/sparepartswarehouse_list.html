@@ -29,13 +29,38 @@
                         <div class="page-title-box d-flex align-items-center justify-content-between">
                             
                             {% if type == "list" %}
-                                <h3 class="mb-0 ">مخزن قطع الغيار</h3>
+                                <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}}
+                                    <a class="badge badge-success" style="font-size:x-small;" href="{% url 'SpareParts:SparePartsWarehouseCreate' %}" data-toggle="modal" data-target="#action_modal">
+                                            <i class="fas fa-plus-square fx-2"></i>
+                                    </a>
+
+                                    <a class="badge badge-info" style="font-size:x-small;" href="{% url 'SpareParts:SparePartsWarehouseList' %}">
+                                       <i class="fas fa-list-ul"></i>
+                                    </a>
+                                     
+                                    <a  class="badge badge-danger" style="font-size:x-small;" href="{% url 'SpareParts:SparePartsWarehouseTrachList' %}">
+                                            <i class="fas fa-trash"></i>
+                                    </a>
+                                     
+                                 </h3>
                                 
                                 {% else %}
-                                <h3 class="mb-0 ">سلة مهملات مخزن قطع الغيار</h3>
+                                <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}} 
+                                    <a class="badge badge-success" style="font-size:x-small;" href="{% url 'SpareParts:SparePartsTypeCreate' %}" data-toggle="modal" data-target="#action_modal">
+                                            <i class="fas fa-plus-square fx-2"></i>
+                                    </a>
+
+                                    <a class="badge badge-info" style="font-size:x-small;" href="{% url 'SpareParts:SpareTypeList' %}">
+                                    <i class="fas fa-list-ul"></i>
+                                    </a>
+                                    
+                                    <a  class="badge badge-danger" style="font-size:x-small;" href="{% url 'SpareParts:SpareTypeTrachList' %}">
+                                            <i class="fas fa-trash"></i>
+                                    </a>
+                                    
+                                </h3>
                             
                             {% endif %}
-                             
                             
                                 <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} مخزن </span>
                                
@@ -46,9 +71,9 @@
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
 
                                     {% if type == "list" %}
-                                    <li class="breadcrumb-item active">مخزن قطع الغيار</li>
+                                    <li class="breadcrumb-item active">{{title}}</li>
                                     {% else %}
-                                    <li class="breadcrumb-item active">سلة مهملات مخزن قطع الغيار</li>
+                                    <li class="breadcrumb-item active">{{title}}</li>
 
                                     {% endif %}
                                 </ol>

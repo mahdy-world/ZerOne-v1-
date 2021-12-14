@@ -25,6 +25,8 @@ class SparePartsTypeList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
+        context['title'] = 'قائمة انواع قطع الغيار'
+        context['icons'] = '<i class="fas fa-shapes"></i>'
         context['page'] = 'active'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
@@ -42,6 +44,8 @@ class SparePartsTypeTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = 'trach'
+        context['title'] = 'سلة مهملات انواع قطع الغيار'
+        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -167,6 +171,8 @@ class SparePartsNameList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['page'] = 'active'
+        context['title'] = 'قائمة أصناف قطع الغيار'
+        context['icons'] = '<i class="fas fa-cubes"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
 
@@ -183,6 +189,8 @@ class SparePartsNameTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['Name'] = 'trach'
+        context['title'] = 'سلة مهملات أصناف قطع الغيار'
+        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -313,6 +321,8 @@ class SparePartsWarehouseList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['page'] = 'active'
+        context['title'] = 'مخزن قطع الغيار'
+        context['icons'] = '<i class="fas fa-warehouse"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
 
@@ -329,6 +339,8 @@ class SparePartsWarehouseTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['Name'] = 'trach'
+        context['title'] = 'سلة مهملات مخزن قطع الغيار'
+        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -455,6 +467,8 @@ class SparePartsSupplierList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['page'] = 'active'
+        context['title'] = 'قائمة موردين قطع الغيار'
+        context['icons'] = '<i class="fas fa-users"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
     
@@ -471,6 +485,8 @@ class SparePartsSupplierTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['Name'] = 'trach'
+        context['title'] = 'سلة مهملات موردين قطع الغيار'
+        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -595,6 +611,8 @@ class SparePartsOrderList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['page'] = 'active'
+        context['title'] = 'سلة مهملات موردين قطع الغيار'
+        context['icons'] = '<i class="fas fa-file-invoice"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
 
@@ -612,6 +630,8 @@ class SparePartsOrderTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['Name'] = 'trach'
+        context['title'] = 'سلة مهملات طلبيات قطع الغيار'
+        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
