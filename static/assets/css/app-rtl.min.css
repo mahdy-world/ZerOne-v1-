@@ -568,7 +568,8 @@ body[data-layout="horizontal"] .footer {
   transform: rotate(270deg);
 }
 .vertical-collpsed .vertical-menu #sidebar-menu > ul ul li.active a {
-  color: #f8f9fa;
+  color: #f46a6a
+;
 }
 body[data-sidebar="dark"] .vertical-menu {
   background: #2a3042;
@@ -580,16 +581,19 @@ body[data-sidebar="dark"] #sidebar-menu ul li a i {
   color: #6a7187;
 }
 body[data-sidebar="dark"] #sidebar-menu ul li a:hover {
-  color: #fff;
+  color: #f46a6a
+;
 }
 body[data-sidebar="dark"] #sidebar-menu ul li a:hover i {
-  color: #fff;
+  color: #f46a6a
+;
 }
 body[data-sidebar="dark"] #sidebar-menu ul li ul.sub-menu li a {
   color: #79829c;
 }
 body[data-sidebar="dark"] #sidebar-menu ul li ul.sub-menu li a:hover {
-  color: #fff;
+  color: #f46a6a
+;
 }
 body[data-sidebar="dark"].vertical-collpsed {
   min-height: 1760px;
@@ -601,7 +605,7 @@ body[data-sidebar="dark"].vertical-collpsed
   > li:hover
   > a {
   background: #2e3548;
-  color: #fff;
+  color: #f46a6a;
 }
 body[data-sidebar="dark"].vertical-collpsed
   .vertical-menu
@@ -610,7 +614,7 @@ body[data-sidebar="dark"].vertical-collpsed
   > li:hover
   > a
   i {
-  color: #fff;
+  color: #f46a6a;
 }
 body[data-sidebar="dark"].vertical-collpsed
   .vertical-menu
@@ -628,7 +632,8 @@ body[data-sidebar="dark"].vertical-collpsed
   > li:hover
   > ul
   a:hover {
-  color: #fff;
+  color: #f46a6a
+;
 }
 body[data-sidebar="dark"].vertical-collpsed
   .vertical-menu
@@ -643,7 +648,8 @@ body[data-sidebar="dark"].vertical-collpsed
   ul
   li.mm-active
   .active {
-  color: #fff !important;
+  color: #f46a6a
+ !important;
 }
 body[data-sidebar="dark"].vertical-collpsed
   .vertical-menu
@@ -652,25 +658,32 @@ body[data-sidebar="dark"].vertical-collpsed
   li.mm-active
   .active
   i {
-  color: #fff !important;
+  color:#f46a6a
+ !important;
 }
 body[data-sidebar="dark"] .mm-active {
-  color: #fff !important;
+  color: #f46a6a
+  !important;
 }
 body[data-sidebar="dark"] .mm-active > a {
-  color: #fff !important;
+  color: #f46a6a
+ !important;
 }
 body[data-sidebar="dark"] .mm-active > a i {
-  color: #fff !important;
+  color: #f46a6a
+ !important;
 }
 body[data-sidebar="dark"] .mm-active > i {
-  color: #fff !important;
+  color: #f46a6a
+ !important;
 }
 body[data-sidebar="dark"] .mm-active .active {
-  color: #fff !important;
+  color: #f46a6a
+ !important;
 }
 body[data-sidebar="dark"] .mm-active .active i {
-  color: #fff !important;
+  color: #f46a6a
+ !important;
 }
 body[data-sidebar="dark"] .menu-title {
   color: #6a7187;

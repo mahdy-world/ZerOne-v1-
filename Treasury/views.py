@@ -28,6 +28,8 @@ class WorkTreasuryList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
+        context['title'] = 'قائمة خزائن العمل'
+        context['icons'] = '<i class="fas fa-coins"></i>'
         context['page'] = 'active'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
@@ -45,6 +47,8 @@ class WorkTreasuryTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = 'trach'
+        context['title'] = 'سلة مهملات خزائن العمل'
+        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
