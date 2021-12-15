@@ -784,6 +784,7 @@ def MachinesOrdersDetail(request, pk):
     op1 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=1)
     op2 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=2)
     op3 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=3)
+    op4 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=4)
 
     form = MachinesOrderProductsForm
     type_page = "list"
@@ -802,6 +803,7 @@ def MachinesOrdersDetail(request, pk):
         'op1': op1,
         'op2': op2,
         'op3': op3,
+        'op4': op4,
         'qu': quantity
 
     }
@@ -891,7 +893,7 @@ class MachinesOrderOperationsCreateDeposit(LoginRequiredMixin, CreateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        messages.success(self.request, " تمت دفع العربون بنجاح ", extra_tags="success")
+        messages.success(self.request, " تم دفع العربون بنجاح ", extra_tags="success")
         return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
 
     def get_absolute_url(self):
@@ -946,7 +948,7 @@ class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        messages.success(self.request, " تمت دفع باقي المبلغ المستحق بنجاح ", extra_tags="success")
+        messages.success(self.request, " تم دفع باقي المبلغ المستحق بنجاح ", extra_tags="success")
         return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
 
     def get_absolute_url(self):
@@ -996,6 +998,61 @@ class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
             return redirect(self.get_absolute_url())
 
 
+class MachinesOrderOperationsCreateClearance(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = MachinesOrderOperations
+    form_class = MachinesOrderOperationsForm3
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        messages.success(self.request, " تم دفع مبلغ تخليص البضاعة بنجاح ", extra_tags="success")
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم دفع مبلغ تخليص البضاعة .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' دفع مبلغ تخليص البضاعة '
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrderOperationsCreateClearance',
+                                             kwargs={'pk': self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        form = super(MachinesOrderOperationsCreateClearance, self).get_form(*args, **kwargs)
+        form.fields['operation_value'].initial = 1.0
+        return form
+
+    def form_valid(self, form):
+        order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
+        treasury_balance = form.cleaned_data.get("treasury_name").balance
+        operation_value = form.cleaned_data.get("operation_value")
+        if float(treasury_balance) >= float(operation_value):
+            myform = MachinesOrderOperations()
+            myform.order_number = order_number
+            myform.operation_type = 3
+            myform.operation_value = form.cleaned_data.get("operation_value")
+            myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.save()
+
+            treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
+            treasury.balance -= form.cleaned_data.get("operation_value")
+            treasury.save(update_fields=['balance'])
+
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'دفع مبلغ تخليص بضاعة طلبية رقم ' + str(self.kwargs['pk'])
+            trans.treasury = form.cleaned_data.get("treasury_name")
+            trans.transaction_type = 1
+            trans.value = form.cleaned_data.get("operation_value")
+            trans.save()
+
+            return redirect(self.get_success_url())
+        else:
+            return redirect(self.get_absolute_url())
+
+
 class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
     login_url = '/auth/login/'
     model = MachinesOrderOperations
@@ -1014,17 +1071,18 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تمت العملية بنجاح ", extra_tags="success")
+        messages.success(self.request, " تمت عملية استلام البضاعة بنجاح ", extra_tags="success")
         order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
         myform = MachinesOrderOperations()
         myform.order_number = order_number
-        myform.operation_type = 3
+        myform.operation_type = 4
         myform.warehouse_name = form.cleaned_data.get("warehouse_name")
         myform.save()
 
         order_products = MachinesOrderProducts.objects.filter(product_order=order_number, deleted=0)
+        order_op3 = MachinesOrderOperations.objects.get(order_number=order_number, operation_type=3)
         for product in order_products:
-            purchase_cost = float(product.product_price) / float(product.product_quantity)
+            purchase_cost = (float(product.product_price) / float(product.product_quantity)) + (float(order_op3.operation_value) / float(product.product_quantity))
             transactions_filter = WarehouseTransactions.objects.filter(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), purchase_cost=purchase_cost)
             if transactions_filter:
                 transaction = WarehouseTransactions.objects.get(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), purchase_cost=purchase_cost)

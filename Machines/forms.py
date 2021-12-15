@@ -176,3 +176,9 @@ class MachinesOrderOperationsForm2(forms.ModelForm):
     class Meta:
         model = MachinesOrderOperations
         fields = ['warehouse_name']
+
+
+class MachinesOrderOperationsForm3(forms.ModelForm):
+    class Meta:
+        model = MachinesOrderOperations
+        fields = ['operation_value', 'treasury_name']
