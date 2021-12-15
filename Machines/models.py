@@ -89,3 +89,13 @@ class MachinesOrderOperations(models.Model):
     operation_value = models.FloatField(default=0, verbose_name="قيمة العملية")
     treasury_name = models.ForeignKey(WorkTreasury, on_delete=models.CASCADE, null=True, verbose_name='الخزنة المستخدمة')
     warehouse_name = models.ForeignKey(MachinesWarehouses, on_delete=models.CASCADE, null=True, verbose_name='المخزن المستخدم')
+
+
+class WarehouseTransactions(models.Model):
+    warehouse = models.ForeignKey(MachinesWarehouses, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='المخزن')
+    item = models.ForeignKey(MachinesNames, on_delete=models.SET_NULL, null=True, verbose_name='المنتج')
+    quantity = models.FloatField(default=0.0, verbose_name='الكمية')
+    purchase_cost = models.FloatField(default=0.0, verbose_name='سعر الشراء')
+
+    def __str__(self):
+        return self.warehouse.name
