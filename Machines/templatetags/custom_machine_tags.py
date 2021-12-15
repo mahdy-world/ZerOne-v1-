@@ -9,9 +9,24 @@ def order_products(order_id):
     return MachinesOrderProducts.objects.filter(product_order__id=order_id)
 
 
+@register.simple_tag(name='order_op1')
+def order_op1(order_id):
+    return MachinesOrderOperations.objects.filter(order_number__id=order_id, operation_type=1)
+
+
+@register.simple_tag(name='order_op2')
+def order_op2(order_id):
+    return MachinesOrderOperations.objects.filter(order_number__id=order_id, operation_type=2)
+
+
 @register.simple_tag(name='order_op3')
 def order_op3(order_id):
     return MachinesOrderOperations.objects.filter(order_number__id=order_id, operation_type=3)
+
+
+@register.simple_tag(name='order_op4')
+def order_op4(order_id):
+    return MachinesOrderOperations.objects.filter(order_number__id=order_id, operation_type=4)
 
 
 @register.simple_tag(name='order_products_val')

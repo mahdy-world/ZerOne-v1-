@@ -20,7 +20,7 @@
                         </div>
                         {% endfor %}
 
-            
+
                       {% endif %}
                     </div>
                    
@@ -51,7 +51,7 @@
                                 </h4>
 
                                 <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} طلبية </span>
-                               
+
 
                            
                             <div class="page-title-right">
@@ -74,11 +74,14 @@
                 {% if object_list %}
                 <div class="row">
                 {% for x in object_list  %}
+                {% order_op1 x.id as has_op1 %}
+                {% order_op2 x.id as has_op2 %}
                 {% order_op3 x.id as has_op3 %}
+                {% order_op4 x.id as has_op4 %}
                 {% order_products x.id as has_products %}
                 {% order_products_val x.id as products_val %}
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="card">
+                    <div class="card mini-stats-wid">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6 col-lg-6 col-md-6">
@@ -182,6 +185,23 @@
                             </div>
                             
                         </div>
+                        <div class="px-4 py-3 border-top text-center">
+                        <ul class="list-inline mb-0">
+                            <div class="mini-stat-icon bg-danger align-self-center">
+                               {% if has_op4 %}
+                                <span class="badge badge-danger font-size-16">تم استلام البضاعة</span>
+                                {% elif has_op3 %}
+                                <span class="badge badge-danger font-size-16">تم تخليص البضاعة</span>
+                                {% elif has_op2 %}
+                                <span class="badge badge-danger font-size-16">تم دفع قيمة الفاتورة بالكامل</span>
+                                {% elif has_op1 %}
+                                <span class="badge badge-danger font-size-16">تم دفع العربون</span>
+                                {% else %}
+                                <span class="badge badge-danger font-size-16">لم تتم أي عملية بعد</span>
+                                {% endif %}
+                           </div>
+                        </ul>
+                    </div>
                     </div>
                 </div>
 
