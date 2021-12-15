@@ -891,14 +891,18 @@ class MachinesOrderOperationsCreateDeposit(LoginRequiredMixin, CreateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
+        messages.success(self.request, " تمت دفع العربون بنجاح ", extra_tags="success")
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم دفع العربون .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
         return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'دفع عربون'
         context['message'] = 'create'
-        context['action_url'] = reverse_lazy('Machines:MachinesOrderOperationsCreateDeposit',
-                                             kwargs={'pk': self.kwargs['pk']})
+        context['action_url'] = reverse_lazy('Machines:MachinesOrderOperationsCreateDeposit', kwargs={'pk': self.kwargs['pk']})
         return context
 
     def get_form(self, *args, **kwargs):
@@ -908,14 +912,31 @@ class MachinesOrderOperationsCreateDeposit(LoginRequiredMixin, CreateView):
         return form
 
     def form_valid(self, form):
-        messages.success(self.request, " تمت دفع العربون بنجاح ", extra_tags="success")
         order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
-        myform = MachinesOrderOperations()
-        myform.order_number = order_number
-        myform.operation_type = 1
-        myform.operation_value = form.cleaned_data.get("operation_value")
-        myform.save()
-        return redirect(self.get_success_url())
+        treasury_balance = form.cleaned_data.get("treasury_name").balance
+        operation_value = form.cleaned_data.get("operation_value")
+        if float(treasury_balance) >= float(operation_value):
+            myform = MachinesOrderOperations()
+            myform.order_number = order_number
+            myform.operation_type = 1
+            myform.operation_value = form.cleaned_data.get("operation_value")
+            myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.save()
+
+            treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
+            treasury.balance -= form.cleaned_data.get("operation_value")
+            treasury.save(update_fields=['balance'])
+
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'دفع قيمة عربون طلبية رقم ' + str(self.kwargs['pk'])
+            trans.treasury = form.cleaned_data.get("treasury_name")
+            trans.transaction_type = 1
+            trans.value = form.cleaned_data.get("operation_value")
+            trans.save()
+
+            return redirect(self.get_success_url())
+        else:
+            return redirect(self.get_absolute_url())
 
 
 class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
@@ -925,6 +946,11 @@ class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
+        messages.success(self.request, " تمت دفع باقي المبلغ المستحق بنجاح ", extra_tags="success")
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم دفع باقي المبلغ المستحق .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
         return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
 
     def get_context_data(self, **kwargs):
@@ -937,21 +963,37 @@ class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
 
     def get_form(self, *args, **kwargs):
         order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
-        order_products_val = MachinesOrderProducts.objects.filter(product_order__id=self.kwargs['pk']).aggregate(
-            sum=Sum('product_price')).get('sum')
+        order_products_val = MachinesOrderProducts.objects.filter(product_order__id=self.kwargs['pk']).aggregate(sum=Sum('product_price')).get('sum')
         form = super(MachinesOrderOperationsCreateReset, self).get_form(*args, **kwargs)
         form.fields['operation_value'].initial = float(order_products_val) - float(order_number.order_deposit_value)
         return form
 
     def form_valid(self, form):
-        messages.success(self.request, " تمت العملية بنجاح ", extra_tags="success")
         order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
-        myform = MachinesOrderOperations()
-        myform.order_number = order_number
-        myform.operation_type = 2
-        myform.operation_value = form.cleaned_data.get("operation_value")
-        myform.save()
-        return redirect(self.get_success_url())
+        treasury_balance = form.cleaned_data.get("treasury_name").balance
+        operation_value = form.cleaned_data.get("operation_value")
+        if float(treasury_balance) >= float(operation_value):
+            myform = MachinesOrderOperations()
+            myform.order_number = order_number
+            myform.operation_type = 2
+            myform.operation_value = form.cleaned_data.get("operation_value")
+            myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.save()
+
+            treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
+            treasury.balance -= form.cleaned_data.get("operation_value")
+            treasury.save(update_fields=['balance'])
+
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'دفع باقي مبلغ طلبية رقم ' + str(self.kwargs['pk'])
+            trans.treasury = form.cleaned_data.get("treasury_name")
+            trans.transaction_type = 1
+            trans.value = form.cleaned_data.get("operation_value")
+            trans.save()
+
+            return redirect(self.get_success_url())
+        else:
+            return redirect(self.get_absolute_url())
 
 
 class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
@@ -966,7 +1008,7 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'استلام البضاعة'
-        context['message'] = 'operation'
+        context['message'] = 'create'
         context['action_url'] = reverse_lazy('Machines:MachinesOrderOperationsCreateOrder',
                                              kwargs={'pk': self.kwargs['pk']})
         return context
@@ -977,5 +1019,6 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
         myform = MachinesOrderOperations()
         myform.order_number = order_number
         myform.operation_type = 3
+        myform.warehouse_name = form.cleaned_data.get("warehouse_name")
         myform.save()
         return redirect(self.get_success_url())

@@ -1,4 +1,5 @@
 from django.db import models
+from Treasury.models import *
 
 
 # Create your models here.
@@ -86,3 +87,5 @@ class MachinesOrderOperations(models.Model):
     operation_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ العملية")
     operation_type = models.IntegerField(choices=OPERATIONS_CHOICES, default=0, verbose_name="نوع العملية")
     operation_value = models.FloatField(default=0, verbose_name="قيمة العملية")
+    treasury_name = models.ForeignKey(WorkTreasury, on_delete=models.CASCADE, null=True, verbose_name='الخزنة المستخدمة')
+    warehouse_name = models.ForeignKey(MachinesWarehouses, on_delete=models.CASCADE, null=True, verbose_name='المخزن المستخدم')

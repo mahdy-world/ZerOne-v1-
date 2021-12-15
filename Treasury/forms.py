@@ -8,7 +8,7 @@ class WorkTreasuryForm(forms.ModelForm):
 
 class WorkTreasuryDeleteForm(forms.ModelForm):
     class Meta:
-        exclude = ['name', 'initial_balance']
+        exclude = ['name', 'balance']
         model = WorkTreasury
         widgets = {
 

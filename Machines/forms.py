@@ -166,13 +166,13 @@ class MachinesOrderProductsDeleteForm(forms.ModelForm):
 class MachinesOrderOperationsForm(forms.ModelForm):
     class Meta:
         model = MachinesOrderOperations
-        fields = ['operation_value']
+        fields = ['operation_value', 'treasury_name']
+        widgets = {
+            'operation_value': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+        }
 
 
 class MachinesOrderOperationsForm2(forms.ModelForm):
     class Meta:
         model = MachinesOrderOperations
-        fields = ['operation_value']
-        widgets = {
-            'operation_value': forms.HiddenInput()
-        }
+        fields = ['warehouse_name']
