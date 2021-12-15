@@ -1021,4 +1021,21 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
         myform.operation_type = 3
         myform.warehouse_name = form.cleaned_data.get("warehouse_name")
         myform.save()
+
+        order_products = MachinesOrderProducts.objects.filter(product_order=order_number, deleted=0)
+        for product in order_products:
+            purchase_cost = float(product.product_price) / float(product.product_quantity)
+            transactions_filter = WarehouseTransactions.objects.filter(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), purchase_cost=purchase_cost)
+            if transactions_filter:
+                transaction = WarehouseTransactions.objects.get(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), purchase_cost=purchase_cost)
+                transaction.quantity += product.product_quantity
+                transaction.save(update_fields=['quantity'])
+            else:
+                transaction = WarehouseTransactions()
+                transaction.warehouse = form.cleaned_data.get("warehouse_name")
+                transaction.item = product.product_name
+                transaction.quantity = product.product_quantity
+                transaction.purchase_cost = purchase_cost
+                transaction.save()
+
         return redirect(self.get_success_url())
