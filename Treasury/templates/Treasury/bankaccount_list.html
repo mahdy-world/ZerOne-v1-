@@ -30,15 +30,15 @@
                             
                             {% if type == "list" %}
                                 <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}}
-                                    <a class="badge badge-success" style="font-size:x-small;"href="{% url 'Treasury:BankAccountCreate' %}" data-toggle="modal" data-target="#action_modal">
+                                    <a class="badge badge-success" style="font-size:small;"href="{% url 'Treasury:BankAccountCreate' %}" data-toggle="modal" data-target="#action_modal">
                                             <i class="fas fa-plus-square fx-2"></i>
                                     </a>
 
-                                    <a class="badge badge-info" style="font-size:x-small;" href="{% url 'Treasury:BankAccountList' %}">
+                                    <a class="badge badge-info" style="font-size:small;" href="{% url 'Treasury:BankAccountList' %}">
                                        <i class="fas fa-list-ul"></i>
                                     </a>
                                      
-                                    <a  class="badge badge-danger" style="font-size:x-small;"href="{% url 'Treasury:BankAccountTrachList' %}">
+                                    <a  class="badge badge-danger" style="font-size:small;"href="{% url 'Treasury:BankAccountTrachList' %}">
                                             <i class="fas fa-trash"></i>
                                     </a>
                                      
@@ -46,15 +46,15 @@
                                 
                                 {% else %}
                                 <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}}
-                                    <a class="badge badge-success" style="font-size:x-small;" href="{% url 'Treasury:BankAccountCreate' %}" data-toggle="modal" data-target="#action_modal">
+                                    <a class="badge badge-success" style="font-size:small;" href="{% url 'Treasury:BankAccountCreate' %}" data-toggle="modal" data-target="#action_modal">
                                             <i class="fas fa-plus-square fx-2"></i>
                                     </a>
 
-                                    <a class="badge badge-info" style="font-size:x-small;" href="{% url 'Treasury:BankAccountList' %}">
+                                    <a class="badge badge-info" style="font-size:small;" href="{% url 'Treasury:BankAccountList' %}">
                                        <i class="fas fa-list-ul"></i>
                                     </a>
                                      
-                                    <a  class="badge badge-danger" style="font-size:x-small;"href="{% url 'Treasury:BankAccountTrachList' %}">
+                                    <a  class="badge badge-danger" style="font-size:small;"href="{% url 'Treasury:BankAccountTrachList' %}">
                                             <i class="fas fa-trash"></i>
                                     </a>
                                      
