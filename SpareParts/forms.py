@@ -153,16 +153,26 @@ class orderProductDeleteForm(forms.ModelForm):
         }
     
 
+# دفع العربون
 class OperationForm(forms.ModelForm):
     class Meta:
         model = SparePartsOrderOperations
-        fields = ['operation_value']                
-        
-class OperationOrderForm(forms.ModelForm):
+        fields = ['operation_value', 'treasury_name']
+        widgets = {
+            'operation_value': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+        }
+
+
+# استلام البضاعة
+class OperationsForm2(forms.ModelForm):
     class Meta:
         model = SparePartsOrderOperations
-        fields = ['operation_value'] 
-        widgets = {
-            'operation_value' : forms.HiddenInput()
-        }               
-                                                                                
+        fields = ['warehouse_name']
+
+
+
+# تخليص البضاعة
+class OperationsForm3(forms.ModelForm):
+    class Meta:
+        model = SparePartsOrderOperations
+        fields = ['operation_value', 'treasury_name']                                                                                

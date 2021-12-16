@@ -1,5 +1,7 @@
 from django.db import models
 
+from Treasury.models import WorkTreasury
+
 
 # Create your models here.
 
@@ -73,7 +75,8 @@ class SparePartsOrderProducts(models.Model):
 OPERATIONS_CHOICES = (
     (1, "دفع عربون"),
     (2, "دفع باقي المبلغ"),
-    (3, "استلام البضاعة"),
+    (3, 'دفع مبلغ تخليص البضاعة'),
+    (4, "استلام البضاعة"),
     )
 
 class SparePartsOrderOperations(models.Model):
@@ -81,6 +84,14 @@ class SparePartsOrderOperations(models.Model):
     operation_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ العملية")
     operation_type = models.IntegerField(choices=OPERATIONS_CHOICES, default=0, verbose_name="نوع العملية")
     operation_value = models.FloatField(default=0, verbose_name="قيمة العملية")
+    treasury_name = models.ForeignKey(WorkTreasury, null=True, on_delete=models.CASCADE, verbose_name="الخزينة المستخدم")
+    warehouse_name = models.ForeignKey(SparePartsWarehouses,null=True, on_delete=models.CASCADE, verbose_name="المخزن المستخدم")
 
+
+class SparePartsWarehouseTransactions(models.Model):
+    warehouse = models.ForeignKey(SparePartsWarehouses,null=True, verbose_name="المخزن", on_delete=models.CASCADE)
+    item = models.ForeignKey(SparePartsNames,null=True, verbose_name="المنتجات", on_delete=models.CASCADE)
+    quantity = models.FloatField(default=0.0, verbose_name="الكمية")    
+    price_cost = models.FloatField(default=0.0, verbose_name="سعر الشراء")    
     
-    
+   

@@ -6,6 +6,8 @@ from django.views.generic import *
 from django.db.models import Count
 from django.contrib import messages
 
+from Treasury.models import WorkTreasuryTransactions
+
 from .forms import *
 from .models import *
 
@@ -779,6 +781,7 @@ def SparePartsOrderDetail(request, pk):
     op1 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=1)
     op2 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=2)
     op3 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=3)
+    op4 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=4)
 
     form = orderProductForm
     type_page = "list"
@@ -797,6 +800,7 @@ def SparePartsOrderDetail(request, pk):
         'op1':op1,
         'op2':op2,
         'op3':op3,
+        'op4':op4,
         'qu':quantity
         
     }
@@ -890,7 +894,13 @@ class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
 
 
     def get_success_url(self):
+        messages.success(self.request, " تمت دفع العربون بنجاح " , extra_tags="success")
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم دفع العربون .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk': self.kwargs['pk']})
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -906,15 +916,37 @@ class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
         return form
 
     def form_valid(self, form):
-        messages.success(self.request, " تمت العملية بنجاح " , extra_tags="success")
         order_number = get_object_or_404(SparePartsOrders, id=self.kwargs['pk'])
-        myform = SparePartsOrderOperations()
-        myform.order_number = order_number
-        myform.operation_type = 1
-        myform.operation_value = form.cleaned_data.get("operation_value")
-        myform.save()
-        return redirect(self.get_success_url())
-   
+        treasury_balance = form.cleaned_data.get("treasury_name").balance
+        operation_value = form.cleaned_data.get("operation_value")
+        
+        # اضافة في جدول عملية دفع العربون
+        if float(treasury_balance) >= float(operation_value):
+            myform = SparePartsOrderOperations()
+            myform.order_number = order_number
+            myform.operation_type = 1
+            myform.operation_value = form.cleaned_data.get("operation_value")
+            myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.save()
+        
+            # خصم قيمة العربون من الخزنة 
+            treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
+            treasury.balance -= form.cleaned_data.get("operation_value")
+            treasury.save(update_fields=['balance'])   
+            
+            # اضافة في جدول عمليات الخزنة 
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'دفع قيمة عربون طلبية رقم' + str(self.kwargs['pk'])
+            trans.treasury = form.cleaned_data.get("treasury_name")
+            trans.transaction_type = 1 
+            trans.value = form.cleaned_data.get("operation_value")
+            trans.save()
+            return redirect(self.get_success_url())
+        else:
+            return redirect(self.get_absolute_url())
+        
+        
+        
 #عملية باقي المبلغ 
 class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
     login_url = '/auth/login/'
@@ -924,7 +956,12 @@ class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
 
 
     def get_success_url(self):
+        messages.success(self.request, " تمت دفع باقي المبلغ بنجاح " , extra_tags="success")
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم دفع باقي المبلغ .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk': self.kwargs['pk']})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -941,20 +978,102 @@ class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
         return form
 
     def form_valid(self, form):
-        messages.success(self.request, " تمت العملية بنجاح " , extra_tags="success")
-        order_number = get_object_or_404(SparePartsOrders , id=self.kwargs['pk'])
-        myform = SparePartsOrderOperations()
-        myform.order_number = order_number
-        myform.operation_type = 2
-        myform.operation_value = form.cleaned_data.get("operation_value")
-        myform.save()
-        return redirect(self.get_success_url())
+        order_number = get_object_or_404(SparePartsOrders, id=self.kwargs['pk'])
+        treasury_balance = form.cleaned_data.get("treasury_name").balance
+        operation_value = form.cleaned_data.get("operation_value")
+        
+        # اضافة في جدول عملية  الطلب
+        if float(treasury_balance) >= float(operation_value):
+            myform = SparePartsOrderOperations()
+            myform.order_number = order_number
+            myform.operation_type = 2
+            myform.operation_value = form.cleaned_data.get("operation_value")
+            myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.save()
+        
+            # خصم قيمة باقي المبلغ من الخزنة 
+            treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
+            treasury.balance -= form.cleaned_data.get("operation_value")
+            treasury.save(update_fields=['balance'])   
+            
+            # اضافة في جدول عمليات الخزنة 
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'دفع باقي مبلغ طلبية رقم' + str(self.kwargs['pk'])
+            trans.treasury = form.cleaned_data.get("treasury_name")
+            trans.transaction_type = 1 
+            trans.value = form.cleaned_data.get("operation_value")
+            trans.save()
+            return redirect(self.get_success_url())
+        else:
+            return redirect(self.get_absolute_url())
+        
+
+# عملية تخليص البضاعة         
+class SparePartsOperationCreateClearance(LoginRequiredMixin ,CreateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrderOperations
+    form_class = OperationsForm3
+    template_name = 'forms/form_template.html'
+
+
+    def get_success_url(self):
+        messages.success(self.request, " تمت دفع  مبلغ تخليص البضاعة بنجاح " , extra_tags="success")
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم دفع مبلغ تخليص البضاعة .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' دفع باقي المبلغ ' 
+        context['message'] = 'add'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateClearance', kwargs={'pk':self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        form = super(SparePartsOperationCreateClearance, self).get_form(*args, **kwargs)
+        form.fields['operation_value'].initial = 1.0
+        return form
+
+
+    def form_valid(self, form):
+        order_number = get_object_or_404(SparePartsOrders, id=self.kwargs['pk'])
+        treasury_balance = form.cleaned_data.get("treasury_name").balance
+        operation_value = form.cleaned_data.get("operation_value")
+        
+        # اضافة في جدول عملية  الطلب
+        if float(treasury_balance) >= float(operation_value):
+            myform = SparePartsOrderOperations()
+            myform.order_number = order_number
+            myform.operation_type = 3
+            myform.operation_value = form.cleaned_data.get("operation_value")
+            myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.save()
+        
+            # خصم قيمة باقي المبلغ من الخزنة 
+            treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
+            treasury.balance -= form.cleaned_data.get("operation_value")
+            treasury.save(update_fields=['balance'])   
+            
+            # اضافة في جدول عمليات الخزنة 
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'دفع باقي مبلغ طلبية رقم' + str(self.kwargs['pk'])
+            trans.treasury = form.cleaned_data.get("treasury_name")
+            trans.transaction_type = 1 
+            trans.value = form.cleaned_data.get("operation_value")
+            trans.save()
+            return redirect(self.get_success_url())
+        else:
+            return redirect(self.get_absolute_url())        
+  
+  
    
 #عملية استلام  البضاعة 
 class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
     login_url = '/auth/login/'
     model = SparePartsOrderOperations
-    form_class = OperationOrderForm
+    form_class = OperationsForm2
     template_name = 'forms/form_template.html'
     
 
@@ -973,6 +1092,25 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
         order_number = get_object_or_404(SparePartsOrders , id=self.kwargs['pk'])
         myform = SparePartsOrderOperations()
         myform.order_number = order_number
-        myform.operation_type=3
+        myform.operation_type=4
+        myform.warehouse_name = form.cleaned_data.get("warehouse_name")
         myform.save()
-        return redirect(self.get_success_url())        
+        
+        order_products = SparePartsOrderProducts.objects.filter(product_order=order_number, deleted=0)
+        order_op3 = SparePartsOrderOperations.objects.get(order_number=order_number, operation_type=4)
+        for product in order_products:
+            price_cost = (float(product.product_price) / float(product.product_quantity)) + (float(order_op3.operation_value) / float(product.product_quantity))
+            transactions_filter = SparePartsWarehouseTransactions.objects.filter(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), price_cost=price_cost)
+            if transactions_filter:
+                transaction = SparePartsWarehouseTransactions.objects.get(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), price_cost=price_cost)
+                transaction.quantity += product.product_quantity
+                transaction.save(update_fields=['quantity'])
+            else:
+                transaction = SparePartsWarehouseTransactions()
+                transaction.warehouse = form.cleaned_data.get("warehouse_name")
+                transaction.item = product.product_name
+                transaction.quantity = product.product_quantity
+                transaction.price_cost = price_cost
+                transaction.save()
+
+        return redirect(self.get_success_url())   

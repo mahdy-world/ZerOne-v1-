@@ -61,5 +61,6 @@ urlpatterns = [
    # Operations
    path('sparepartsOrderOperation/<int:pk>/create_deposite/', SparePartsOperationCreateDeposit.as_view(), name='SparePartsOperationCreateDeposit'),
    path('sparepartsOrderOperation/<int:pk>/create_reset/', SparePartsOperationCreateReset.as_view(), name='SparePartsOperationCreateReset'),
+   path('sparepartsOrderOperation/<int:pk>/create_clearance/', SparePartsOperationCreateClearance.as_view(), name='SparePartsOperationCreateClearance'),
    path('sparepartsOrderOperation/<int:pk>/create_order/', SparePartsOperationCreateOrder.as_view(), name='SparePartsOperationCreateOrder'),
 ]
