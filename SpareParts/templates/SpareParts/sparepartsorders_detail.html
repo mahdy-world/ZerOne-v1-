@@ -86,7 +86,7 @@
 
                 <div class="row">
                     <!-- معلومات الطلب -->
-                    <div class="col-lg-4 col-md-4">
+                    <div class="col-lg-4 col-md-12 col-md-4">
                         <div class="card">
 
                             <div class="card-body ">
@@ -159,7 +159,7 @@
                                             
 
                                        
-                                        <div data-simplebar="init" class="mt-2" style="max-height: 400px;"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: -16.8px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+                                        <div data-simplebar="init" class="mt-2" style="height: 100%;"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: -16.8px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
                                             <ul class="verti-timeline list-unstyled">
                                                  
                                                
@@ -190,10 +190,18 @@
                                                                                  تمت العملية بنجاح
                                                                             </span>
                                                                             
-                                                                            <span class="btn btn-sm btn-info">
+                                                                            <br>
+                                                                            <span class="btn btn-sm btn-info" style="margin-top: 5px">
                                                                                 {% if op1 %}
                                                                                 {% for x in op1 %}
                                                                                 القيمة : {{x.operation_value}}  <i class="fas fa-comment-dollar"></i>
+                                                                                {% endfor %}
+                                                                                {% endif %}
+                                                                            </span>
+                                                                            <span class="btn btn-sm btn-dark" style="margin-top: 5px">
+                                                                                {% if op1 %}
+                                                                                {% for x in op1 %}
+                                                                                الخزنة : {{x.treasury_name}}  <i class="fas fa-box"></i>
                                                                                 {% endfor %}
                                                                                 {% endif %}
                                                                             </span>
@@ -266,14 +274,21 @@
                                                                     <i class="fas fa-check-double"></i>
                                                                      تمت العملية بنجاح
                                                                     </span>
-                                                                    <span class="btn btn-sm btn-info">
-                                                                        {% if op2 %}
-                                                                        {% for x in op2 %}
-                                                                        القيمة : {{x.operation_value}}  <i class="fas fa-comment-dollar"></i>
-                                                                        {% endfor %}
-                                                                        {% endif %}
-                                                                    </span>   
-                                                            </div>
+                                                                    <br>
+                                                                        <span class="btn btn-sm btn-info" style="margin-top: 5px">
+                                                                            {% if op2 %}
+                                                                            {% for x in op2 %}
+                                                                            القيمة : {{x.operation_value}}  <i class="fas fa-comment-dollar"></i>
+                                                                            {% endfor %}
+                                                                            {% endif %}
+                                                                        </span>
+                                                                        <span class="btn btn-sm btn-dark" style="margin-top: 5px">
+                                                                            {% if op2 %}
+                                                                            {% for x in op2 %}
+                                                                            الخزنة : {{x.treasury_name}}  <i class="fas fa-box"></i>
+                                                                            {% endfor %}
+                                                                            {% endif %}
+                                                                        </span>
                                                         </div>   
                                                     </div>
                                                 </li>
@@ -332,7 +347,7 @@
                                                 
                                                
                                                {% if order.order_receipt_date %}
-                                                    <!-- عملية استلام البضاعة المبلغ -->
+                                                    <!-- عملية تخليص البضاعة  -->
                                                     
                                                     {% if op3 %}
                                                     <li class="event-list active">
@@ -347,12 +362,27 @@
                                                                     <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
                                                                        <span> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
                                                                     </small>
-                                                                     <h4 class="font-weight-bold" style="text-decoration:line-through"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
+                                                                     <h4 class="font-weight-bold" style="text-decoration:line-through"> <i class="fas fa-money-bill-wave"></i> دفع مبلغ تخليص البضاعة</h4>   
                                                                         
                                                                      <span  style="width:40%" class="btn btn-sm btn-success">
                                                                     <i class="fas fa-check-double"></i>
                                                                      تمت العملية بنجاح
                                                                     </span>
+                                                                    <br>
+                                                                    <span class="btn btn-sm btn-info" style="margin-top: 5px">
+                                                                        {% if op3 %}
+                                                                        {% for x in op3 %}
+                                                                        القيمة : {{x.operation_value}}  <i class="fas fa-comment-dollar"></i>
+                                                                        {% endfor %}
+                                                                        {% endif %}
+                                                                    </span>
+                                                                    <span class="btn btn-sm btn-dark" style="margin-top: 5px">
+                                                                        {% if op3 %}
+                                                                        {% for x in op3 %}
+                                                                        الخزنة : {{x.treasury_name}}  <i class="fas fa-box"></i>
+                                                                        {% endfor %}
+                                                                        {% endif %}
+                                                                    </span> 
                                                                 </div>
                                                             </div>   
                                                         </div>
@@ -378,9 +408,90 @@
                                                                     <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
                                                                        <span> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
                                                                     </small>
-                                                                     <h4 class="font-weight-bold"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
+                                                                     <h4 class="font-weight-bold"> <i class="fas fa-money-bill-wave"></i> دفع مبلغ تخليص البضاعة </h4>   
                                                                         
                                                                       {% if op2 %}
+                                                                       <a
+                                                                    
+                                                                       href="{% url 'SpareParts:SparePartsOperationCreateClearance' order.id %}"
+                                                                       style="width:40%" data-target="#action_modal" data-toggle="modal" class="btn btn-sm btn-primary">
+                                                                       <i class='bx bx-check-circle'></i>
+                                                                          اتمام العملية
+                                                                       </a>
+
+                                                                       {% else %}
+                                                                       <span
+                                                                      
+                                                                       
+                                                                       style="width:40%" class="btn btn-sm btn-primary">
+                                                                       <i class='bx bx-check-circle'></i>
+                                                                          اتمام العملية
+                                                                       </span>
+                                                                       {% endif %}
+                                                                      
+                                                                            
+                                                                      
+                                                                </div>
+                                                            </div>   
+                                                        </div>
+                                                    </li>
+                                                    {% endif %} 
+
+                                                    {% if op4 %}
+                                                    <li class="event-list active">
+                                                        <div class="event-timeline-dot">
+                                                            <i class='bx bx-package bx-sm ' ></i>
+                                                        </div>
+                                                        <div class="media">
+                                                           
+                                                            <div class="media-body">
+                                                                <div>
+    
+                                                                    <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
+                                                                       <span> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
+                                                                    </small>
+                                                                     <h4 class="font-weight-bold" style="text-decoration:line-through"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
+                                                                        
+                                                                     <span class="btn btn-sm btn-success">
+                                                                    <i class="fas fa-check-double"></i>
+                                                                     تمت العملية بنجاح
+                                                                    </span>
+                                                                    
+                                                                    <span class="btn btn-sm btn-warning" >
+                                                                        {% if op4 %}
+                                                                        {% for x in op4 %}
+                                                                        المخزن : {{x.warehouse_name}} <i class="fas fa-warehouse"></i>
+                                                                        {% endfor %}
+                                                                        {% endif %}
+                                                                    </span>
+                                                                </div>
+                                                            </div>   
+                                                        </div>
+                                                    </li>
+                                                    {% else %}
+                                                    <li class="event-list active">
+                                                        <div class="event-timeline-dot">
+                                                            
+                                                            
+                                                            {% if op3 %}
+                                                            <i class='bx bx-package bx-sm  bx-fade-left' ></i>
+                                                            {% else %}
+                                                            <i class='bx bx-package bx-sm  ' ></i>
+                                                            {% endif %}
+                                                                
+                                                           
+                                                        </div>
+                                                        <div class="media">
+                                                           
+                                                            <div class="media-body">
+                                                                <div>
+    
+                                                                    <small class="badge badge-danger"><i class='bx bxs-calendar color-danger' ></i>
+                                                                       <span> {{ order.order_receipt_date|date:'Y-m-d' }}</span>
+                                                                    </small>
+                                                                     <h4 class="font-weight-bold"> <i class="fas fa-shipping-fast"></i>إستلام البضاعة </h4>   
+                                                                        
+                                                                      {% if op3 %}
                                                                        <a
                                                                     
                                                                        href="{% url 'SpareParts:SparePartsOperationCreateOrder' order.id %}"
@@ -406,9 +517,6 @@
                                                         </div>
                                                     </li>
                                                     {% endif %}
-                                                        
-                                                
-
                                                {% endif %}
                                                    
                                                
