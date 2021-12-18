@@ -782,6 +782,8 @@ def SparePartsOrderDetail(request, pk):
     op2 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=2)
     op3 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=3)
     op4 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=4)
+    
+    
 
     form = orderProductForm
     type_page = "list"
@@ -1114,3 +1116,18 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
                 transaction.save()
 
         return redirect(self.get_success_url())   
+    
+
+# عرض تفاصيل المخزن    
+
+class SparePartsWarehouseDetail(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    model = SparePartsWarehouses
+    template_name = 'SpareParts/sparepartswharehouse_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' معلومات المخزن: ' + str(self.object)
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsWarehouseDetail', kwargs={'pk': self.object.id})
+        return context

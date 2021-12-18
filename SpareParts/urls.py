@@ -32,6 +32,7 @@ urlpatterns = [
    path('sparepartsWarehouse/<int:pk>/delete/', SparePartsWarehouseDelete.as_view(), name='SparePartsWarehouseDelete'),
    path('sparepartsWarehouse/<int:pk>/restore/', SparePartsWarehouseRestore.as_view(), name='SparePartsWarehouseRestore'),
    path('sparepartsWarehouse/<int:pk>/super_delete/', SparePartsWarehouseSuperDelete.as_view(), name='SparePartsWarehouseSuperDelete'),
+   path('sparepartsWarehouse/<int:pk>/detail/', SparePartsWarehouseDetail.as_view(), name='SparePartsWarehouseDetail'),
    #-------------------------------------------------------------------------------------------------------
    
    

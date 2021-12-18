@@ -91,10 +91,13 @@
                 <div class="row">
                 {% for x in object_list  %}
                 {% order_op3 x.id as has_op3 %}
+                {% order_op1 x.id as has_op1 %}
+                {% order_op2 x.id as has_op2 %}
+                {% order_op4 x.id as has_op4 %}
                 {% order_products x.id as has_products %}
                 {% order_products_val x.id as products_val %}
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="card">
+                    <div class="card mini-stats-wid">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6 col-lg-6 col-md-6">
@@ -197,6 +200,33 @@
                                 </div>
                             </div>
                             
+                        </div>
+                        <div class="px-4 py-3 border-top text-center">
+                            <ul class="list-inline mb-0">
+                                {% if has_op4 %}
+                                <div class="mini-stat-icon bg-success align-self-center">
+                                    <span class="badge badge-success font-size-16">تم استلام البضاعة</span>
+                                </div>
+                                {% elif has_op3 %}
+                                <div class="mini-stat-icon bg-primary align-self-center">
+                                    <span class="badge badge-primary font-size-16">تم تخليص البضاعة</span>
+                                </div>
+                                {% elif has_op2 %}
+                                <div class="mini-stat-icon bg-warning align-self-center">
+                                    <span class="badge badge-warning font-size-16">تم دفع قيمة الفاتورة بالكامل</span>
+                                </div>
+                                {% elif has_op1 %}
+                                <div class="mini-stat-icon bg-info align-self-center">
+                                    <span class="badge badge-info font-size-16">تم دفع العربون </span>
+                                </div>
+                                {% else %}
+                                <div class="mini-stat-icon bg-dark align-self-center">
+                                    <span class="badge badge-dark font-size-16">لم تتم اي عملية بعد </span>
+                                </div>
+
+                                {% endif %}
+
+                            </ul>
                         </div>
                     </div>
                 </div>
