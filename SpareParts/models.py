@@ -48,7 +48,7 @@ class SparePartsSuppliers(models.Model):
         return self.name
 
 
-# فاتورة الطلب
+#  الطلب
 class SparePartsOrders(models.Model):
     order_number = models.CharField(max_length=50, null=True, verbose_name="رقم الطلب")
     order_date = models.DateField(null=True, verbose_name="تاريخ الطلب")
@@ -63,7 +63,7 @@ class SparePartsOrders(models.Model):
         return self.order_number
 
 
-# منتجات داخل الفاتورة
+# منتجات  الفاتورة
 class SparePartsOrderProducts(models.Model):
     product_order = models.ForeignKey(SparePartsOrders, on_delete=models.CASCADE, null=True, verbose_name='الطلبية')
     product_name = models.ForeignKey(SparePartsNames, on_delete=models.CASCADE, null=True, verbose_name='المنتج')
@@ -73,7 +73,7 @@ class SparePartsOrderProducts(models.Model):
 
 
 OPERATIONS_CHOICES = (
-    (1, "دفع عربون"),
+    (1, "دفع عربون"),  
     (2, "دفع باقي المبلغ"),
     (3, 'دفع مبلغ تخليص البضاعة'),
     (4, "استلام البضاعة"),
