@@ -1123,11 +1123,5 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
 class SparePartsWarehouseDetail(LoginRequiredMixin, DetailView):
     login_url = '/auth/login/'
     model = SparePartsWarehouses
-    template_name = 'SpareParts/sparepartswharehouse_detail.html'
     
-    def get_context_data(self, **kwargs):
-        
-        context = super().get_context_data(**kwargs)
-        context['title'] = ' معلومات المخزن: ' + str(self.object)
-        context['action_url'] = reverse_lazy('SpareParts:SparePartsWarehouseDetail', kwargs={'pk': self.object.id})
-        return context
+    
