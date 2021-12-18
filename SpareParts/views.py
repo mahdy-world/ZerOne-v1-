@@ -202,7 +202,7 @@ class SparePartsNameCreate(LoginRequiredMixin ,CreateView):
     model = SparePartsNames
     form_class = SparePartsNameForm
     template_name = 'forms/form_template.html'
-    # success_url = reverse_lazy('SpareParts:SparePartsNameList')
+    success_url = reverse_lazy('SpareParts:SparePartsNameList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1123,5 +1123,17 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
 class SparePartsWarehouseDetail(LoginRequiredMixin, DetailView):
     login_url = '/auth/login/'
     model = SparePartsWarehouses
+    template_name = 'SpareParts/sparepartswharehouse_detail.html'
     
+   
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تفاصيل المخزن' 
+        context['type'] = 'list'
+        context['icons'] = '<i class="fas fa-warehouse"></i>'
+        queryset = SparePartsWarehouseTransactions.objects.filter(warehouse=self.kwargs['pk'])
+        context['count'] = queryset.count()
+        context['all'] = queryset
+        return context
     
