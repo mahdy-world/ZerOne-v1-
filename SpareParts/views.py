@@ -1099,7 +1099,7 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
         myform.save()
         
         order_products = SparePartsOrderProducts.objects.filter(product_order=order_number, deleted=0)
-        order_op3 = SparePartsOrderOperations.objects.get(order_number=order_number, operation_type=4)
+        order_op3 = SparePartsOrderOperations.objects.get(order_number=order_number, operation_type=3)
         for product in order_products:
             price_cost = (float(product.product_price) / float(product.product_quantity)) + (float(order_op3.operation_value) / float(product.product_quantity))
             transactions_filter = SparePartsWarehouseTransactions.objects.filter(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), price_cost=price_cost)
