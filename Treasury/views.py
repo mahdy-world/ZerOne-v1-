@@ -71,7 +71,7 @@ class WorkTreasuryCreate(LoginRequiredMixin ,CreateView):
 class WorkTreasuryUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = WorkTreasury
-    form_class = WorkTreasuryForm
+    form_class = WorkTreasuryUpdateForm
     template_name = 'forms/form_template.html'
     
     def get_context_data(self, **kwargs):
@@ -217,7 +217,7 @@ class HomeTreasuryCreate(LoginRequiredMixin ,CreateView):
 class HomeTreasuryUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = HomeTreasury
-    form_class = HomeTreasuryForm
+    form_class = HomeTreasuryUpdateForm
     template_name = 'forms/form_template.html'
     
     def get_context_data(self, **kwargs):
@@ -365,7 +365,7 @@ class BankAccountCreate(LoginRequiredMixin ,CreateView):
 class BankAccountUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = BankAccount
-    form_class = BankAccountForm
+    form_class = BankAccountUpdateForm
     template_name = 'forms/form_template.html'
     
     def get_context_data(self, **kwargs):
