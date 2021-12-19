@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 from Treasury.models import *
 
 
@@ -24,6 +25,7 @@ class MachinesWarehouses(models.Model):
 # اسماء الماكينات
 class MachinesNames(models.Model):
     name = models.CharField(max_length=128, verbose_name='اسم الصنف')
+    machine_type = models.ForeignKey(MachinesTypes, on_delete=models.CASCADE,null="True", verbose_name="نوع المكينة")
     deleted = models.BooleanField(default=False)
 
     def __str__(self):
