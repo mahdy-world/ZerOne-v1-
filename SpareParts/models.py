@@ -26,6 +26,7 @@ class SparePartsWarehouses(models.Model):
 # اسماء قطع الغيار
 class SparePartsNames(models.Model):
     name = models.CharField(max_length=128, verbose_name='اسم الصنف')
+    spare_type = models.ForeignKey(SparePartsTypes, on_delete=models.CASCADE, verbose_name="نوع قطعة الغيار")
     deleted = models.BooleanField(default=False)
 
     def __str__(self):
