@@ -32,35 +32,8 @@
                             
                             {% if type == "list" %}
                                 <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}}
-                                    <a class="badge badge-success" style="font-size:small;" href="{% url 'SpareParts:SparePartsOrderCreate' %}" data-toggle="modal" data-target="#sub_modal">
-                                            <i class="fas fa-plus-square fx-2"></i>
-                                    </a>
-
-                                    <a class="badge badge-info" style="font-size:small;" href="{% url 'SpareParts:SparePartsOrderList' %}">
-                                       <i class="fas fa-list-ul"></i>
-                                    </a>
-                                     
-                                    <a  class="badge badge-danger" style="font-size:small;" href="{% url 'SpareParts:SparePartsOrderTrachList' %}">
-                                            <i class="fas fa-trash"></i>
-                                    </a>
-                                     
-                                 </h3>
-                                
-                                {% else %}
-                                <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}}
-                                    <a class="badge badge-success" style="font-size:small;" href="{% url 'SpareParts:SparePartsOrderCreate' %}" data-toggle="modal" data-target="#sub_modal">
-                                            <i class="fas fa-plus-square fx-2"></i>
-                                    </a>
-
-                                    <a class="badge badge-info" style="font-size:small;" href="{% url 'SpareParts:SparePartsOrderList' %}">
-                                       <i class="fas fa-list-ul"></i>
-                                    </a>
-                                     
-                                    <a  class="badge badge-danger" style="font-size:small;" href="{% url 'SpareParts:SparePartsOrderTrachList' %}">
-                                            <i class="fas fa-trash"></i>
-                                    </a>
-                                     
-                                 </h3>
+                  
+                                </h3>
                             
                             {% endif %}
                              
@@ -112,7 +85,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="text-center ">
-                                          {% for x in all  %}
+                                          {% for x in object_list  %}
                                           <tr>
                                             <td>
                                                 
@@ -150,41 +123,15 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <ul class="pagination pagination-rounded justify-content-center mt-4">
-                                            <li class="page-item disabled">
-                                                <a href="#" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">1</a>
-                                            </li>
-                                            <li class="page-item active">
-                                                <a href="#" class="page-link">2</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">4</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">5</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                {% if is_paginated %}
+                                {% include "components/paginator.html" %}
+                                {% endif %}
+                
                             </div>
                         </div>
                     </div>
                 </div> 
-                {% if is_paginated %}
-                {% include "components/paginator.html" %}
-                {% endif %}
-
+               
                 
 
           </div>
