@@ -97,7 +97,7 @@
 
                               </span>
                           </div>
-                          <h3 ><a href="#" class="text-dark"> {{x.name}}</a></h3>
+                          <h3 ><a href="{% url 'SpareParts:SparePartsNamesDetail' x.id x.name %}" class="text-dark"> {{x.name}}</a></h3>
                           <h4 ><a href="#" class="badge badge-primary"> النوع : {{x.spare_type}}</a></h4>
 
                       </div>

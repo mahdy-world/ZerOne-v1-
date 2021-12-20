@@ -1119,7 +1119,6 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
     
 
 # عرض تفاصيل المخزن    
-
 class SparePartsWarehouseDetail(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = SparePartsWarehouseTransactions
@@ -1137,6 +1136,27 @@ class SparePartsWarehouseDetail(LoginRequiredMixin, ListView):
         context['type'] = 'list'
         context['icons'] = '<i class="fas fa-warehouse"></i>'
         context['count'] = SparePartsWarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('warehouse').count()
+        
+        return context
+    
+    
+class SparePartsNamesDetail(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = SparePartsWarehouseTransactions
+    template_name = 'SpareParts/sparepartsnames_detail.html'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        queryset = SparePartsWarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse')
+        return queryset
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تفاصيل المنتج ' + str(self.kwargs['name'])
+        context['type'] = 'list'
+        context['icons'] = '<i class="fas fa-sticky-note"></i>'
+        context['count'] = SparePartsWarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse').count()
         
         return context
     

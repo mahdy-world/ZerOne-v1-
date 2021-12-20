@@ -18,6 +18,7 @@ urlpatterns = [
    path('sparepartsNameTrachList/', SparePartsNameTrachList.as_view(), name="SpareNameTrachList" ),
    path('sparepartsName/create/', SparePartsNameCreate.as_view(), name='SparePartsNameCreate'),
    path('sparepartsName/<int:pk>/update/', SparePartsNameUpdate.as_view(), name='SparePartsNameUpdate'),
+   path('sparepartsWarehouse/<int:pk>/<str:name>/detail/', SparePartsNamesDetail.as_view(), name='SparePartsNamesDetail'),
    path('sparepartsName/<int:pk>/delete/', SparePartsNameDelete.as_view(), name='SparePartsNameDelete'),
    path('sparepartsName/<int:pk>/restore/', SparePartsNameRestore.as_view(), name='SparePartsNameRestore'),
    path('sparepartsName/<int:pk>/super_delete/', SparePartsNameSuperDelete.as_view(), name='SparePartsNameSuperDelete'),
