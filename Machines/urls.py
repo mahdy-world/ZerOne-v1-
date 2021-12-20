@@ -18,6 +18,7 @@ urlpatterns = [
     path('warehouses_delete/<int:pk>/edit/', WarehousesDelete.as_view(), name='warehouses_delete'),
     path('warehouses_restore/<int:pk>/restore/', WarehousesRestore.as_view(), name='warehouses_restore'),
     path('warehouses_super_delete/<int:pk>/super_delete/', WarehousesSuperDelete.as_view(), name='warehouses_super_delete'),
+    path('warehouses_detail/<int:pk>/detail/', MachinesWarehouseDetail.as_view(), name='warehouses_detail'),
     ###############################################################################
     path('names_active_list/', NamesActiveList.as_view(), name='names_active_list'),
     path('names_trash_list/', NamesTrashList.as_view(), name='names_trash_list'),
