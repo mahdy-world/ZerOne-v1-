@@ -1133,7 +1133,7 @@ class SparePartsWarehouseDetail(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تفاصيل المخزن' 
+        context['title'] = 'تفاصيل ' + str(SparePartsWarehouses.objects.get(id=int(self.kwargs['pk'])).name)
         context['type'] = 'list'
         context['icons'] = '<i class="fas fa-warehouse"></i>'
         context['count'] = SparePartsWarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('warehouse').count()

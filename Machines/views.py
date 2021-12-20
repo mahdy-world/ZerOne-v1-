@@ -1097,3 +1097,23 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
                 transaction.save()
 
         return redirect(self.get_success_url())
+
+
+class MachinesWarehouseDetail(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = WarehouseTransactions
+    template_name = 'Machines/machineswarehousestransactions_detail.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = WarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('item')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تفاصيل ' + str(MachinesWarehouses.objects.get(id=int(self.kwargs['pk'])).name)
+        context['type'] = 'list'
+        context['icons'] = '<i class="fas fa-warehouse"></i>'
+        context['count'] = WarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('warehouse').count()
+
+        return context

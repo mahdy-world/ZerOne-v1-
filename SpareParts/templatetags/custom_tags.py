@@ -8,7 +8,6 @@ from SpareParts.models import *
 def order_products(order_id):
     return SparePartsOrderProducts.objects.filter(product_order__id=order_id)
 
-
 @register.simple_tag(name='order_op3')
 def order_op3(order_id):
     return SparePartsOrderOperations.objects.filter(order_number__id=order_id, operation_type=3)
@@ -29,3 +28,8 @@ def order_op1(order_id):
 @register.simple_tag(name='order_products_val')
 def order_products_val(order_id):
     return SparePartsOrderProducts.objects.filter(product_order__id=order_id).aggregate(sum=Sum('product_price')).get('sum')
+
+
+@register.simple_tag(name='warehouse_products')
+def warehouse_products(ware_id):
+    return SparePartsWarehouseTransactions.objects.filter(warehouse__id=ware_id)
