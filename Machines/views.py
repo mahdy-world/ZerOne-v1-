@@ -1,4 +1,4 @@
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -1080,9 +1080,11 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
         myform.save()
 
         order_products = MachinesOrderProducts.objects.filter(product_order=order_number, deleted=0)
+        order_products_quantity = order_products.aggregate(count=Sum('product_quantity')).get('count')
         order_op3 = MachinesOrderOperations.objects.get(order_number=order_number, operation_type=3)
+        order_one_product_op3_cost = float(order_op3.operation_value) / float(order_products_quantity)
         for product in order_products:
-            purchase_cost = (float(product.product_price) / float(product.product_quantity)) + (float(order_op3.operation_value) / float(product.product_quantity))
+            purchase_cost = (float(product.product_price) / float(product.product_quantity)) + float(order_one_product_op3_cost)
             transactions_filter = WarehouseTransactions.objects.filter(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), purchase_cost=purchase_cost)
             if transactions_filter:
                 transaction = WarehouseTransactions.objects.get(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), purchase_cost=purchase_cost)
