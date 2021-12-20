@@ -32,3 +32,8 @@ def order_op4(order_id):
 @register.simple_tag(name='order_products_val')
 def order_products_val(order_id):
     return MachinesOrderProducts.objects.filter(product_order__id=order_id).aggregate(sum=Sum('product_price')).get('sum')
+
+
+@register.simple_tag(name='warehouse_products')
+def warehouse_products(ware_id):
+    return WarehouseTransactions.objects.filter(warehouse__id=ware_id)

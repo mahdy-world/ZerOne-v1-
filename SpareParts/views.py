@@ -1099,9 +1099,11 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
         myform.save()
         
         order_products = SparePartsOrderProducts.objects.filter(product_order=order_number, deleted=0)
+        order_products_quantity = order_products.aggregate(count=Sum('product_quantity')).get('count')
         order_op3 = SparePartsOrderOperations.objects.get(order_number=order_number, operation_type=3)
+        order_one_product_op3_cost = float(order_op3.operation_value) / float(order_products_quantity)
         for product in order_products:
-            price_cost = (float(product.product_price) / float(product.product_quantity)) + (float(order_op3.operation_value) / float(product.product_quantity))
+            price_cost = (float(product.product_price) / float(product.product_quantity)) + float(order_one_product_op3_cost)
             transactions_filter = SparePartsWarehouseTransactions.objects.filter(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), price_cost=price_cost)
             if transactions_filter:
                 transaction = SparePartsWarehouseTransactions.objects.get(item=product.product_name, warehouse=form.cleaned_data.get("warehouse_name"), price_cost=price_cost)
@@ -1132,7 +1134,7 @@ class SparePartsWarehouseDetail(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تفاصيل المخزن' 
+        context['title'] = 'تفاصيل ' + str(SparePartsWarehouses.objects.get(id=int(self.kwargs['pk'])).name)
         context['type'] = 'list'
         context['icons'] = '<i class="fas fa-warehouse"></i>'
         context['count'] = SparePartsWarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('warehouse').count()

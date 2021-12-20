@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load custom_tags %}
 {% block main %}
     <div class="main-content">
 
@@ -46,15 +46,15 @@
                                 
                                 {% else %}
                                 <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}} 
-                                    <a class="badge badge-success" style="font-size:small;" href="{% url 'SpareParts:SparePartsTypeCreate' %}" data-toggle="modal" data-target="#action_modal">
+                                    <a class="badge badge-success" style="font-size:small;" href="{% url 'SpareParts:SparePartsWarehouseCreate' %}" data-toggle="modal" data-target="#action_modal">
                                             <i class="fas fa-plus-square fx-2"></i>
                                     </a>
 
-                                    <a class="badge badge-info" style="font-size:small;" href="{% url 'SpareParts:SpareTypeList' %}">
+                                    <a class="badge badge-info" style="font-size:small;" href="{% url 'SpareParts:SparePartsWarehouseList' %}">
                                     <i class="fas fa-list-ul"></i>
                                     </a>
                                     
-                                    <a  class="badge badge-danger" style="font-size:small;" href="{% url 'SpareParts:SpareTypeTrachList' %}">
+                                    <a  class="badge badge-danger" style="font-size:small;" href="{% url 'SpareParts:SparePartsWarehouseTrachList' %}">
                                             <i class="fas fa-trash"></i>
                                     </a>
                                     
@@ -86,6 +86,7 @@
                 {% if object_list %}
                 <div class="row">
                 {% for x in object_list  %}
+                {% warehouse_products x.id as has_products %}
                 <div class="col-xl-3 col-lg-3 col-sm-6">
                   <div class="card text-center">
                       <div class="card-body">
@@ -95,7 +96,7 @@
 
                               </span>
                           </div>
-                          <h3 ><a href="{% url 'SpareParts:SparePartsWarehouseDetail' x.id %}" class="text-dark"> {{x.name}}</a></h3>
+                          <h3 ><a href="#" class="text-dark"> {{x.name}}</a></h3>
 
                       </div>
                       <div class="card-footer bg-transparent border-top">
@@ -115,8 +116,18 @@
                                      </div>
             
                                     <div class="">
-                                        <a href="{% url 'SpareParts:SparePartsWarehouseDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
+                                        <a
+                                            {% if has_products %}
+                                            href="#"
+                                            {% else %}
+                                            href="{% url 'SpareParts:SparePartsWarehouseDelete' x.id %}" data-toggle="modal" data-target="#action_modal"
+                                            {% endif %}
+                                            data-placement="top" title="" data-original-title="Profile">
+                                            {% if has_products %}
+                                            <span class="badge badge-danger" style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. المخزن يحتوي علي منتجات"><i class='bx bxs-trash'  ></i>حذف</span>
+                                            {% else %}
                                             <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
+                                            {% endif %}
                                         </a>
                                     </div>
                                 {% else %}

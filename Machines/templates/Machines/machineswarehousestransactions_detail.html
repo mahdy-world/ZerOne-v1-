@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load custom_tags %}
+{% load custom_machine_tags %}
 
 {% block main %}
 
@@ -35,16 +35,14 @@
                                 </h3>
                             
                                 <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} كمية </span>
-                               
 
                            
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
 
-                                    <li class="breadcrumb-item active"><a href="{% url 'SpareParts:SparePartsWarehouseList' %}">قائمة المخازن</a></li>
+                                    <li class="breadcrumb-item active"><a href="{% url 'Machines:warehouses_active_list' %}">قائمة المخازن</a></li>
                                     <li class="breadcrumb-item active"> {{title}} </li>
-
                                 </ol>
                             </div>
 
@@ -103,7 +101,7 @@
                                             <td>
                                                 <h4 class="badge badge-danger">
                                                     <i class="fas fa-dollar-sign"></i>
-                                                    {{x.price_cost}}
+                                                    {{x.purchase_cost}}
                                                 </h4>
                                                 
                                             </td>
