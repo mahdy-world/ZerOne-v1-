@@ -96,4 +96,8 @@ class SparePartsWarehouseTransactions(models.Model):
     quantity = models.FloatField(default=0.0, verbose_name="الكمية")    
     price_cost = models.FloatField(default=0.0, verbose_name="سعر الشراء")    
     
-   
+    def __str__(self):
+        return self.quantity
+    
+    
+
