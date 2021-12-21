@@ -188,9 +188,18 @@
                         </a>
                         {% endif %}
                         
-                    <a class="dropdown-item" href="#"><i class="bx bx-wallet font-size-16 align-middle mr-1"></i> <span key="t-my-wallet">الخزينة</span></a>
-                    <a class="dropdown-item d-block" href="#"><span class="badge badge-success float-right">11</span><i class="bx bx-wrench font-size-16 align-middle mr-1"></i> <span key="t-settings">الاعدادت</span></a>
-                    <a class="dropdown-item" href="#"><i class="bx bx-lock-open font-size-16 align-middle mr-1"></i> <span key="t-lock-screen">قفل الشاشة</span></a>
+                    <a class="dropdown-item" href="{% url 'Treasury:WorkTreasuryList' %}"><i class="bx bx-wallet font-size-16 align-middle mr-1"></i> <span key="t-my-wallet">الخزينة</span></a>
+                    
+                    {% if request.user.is_superuser %}
+                        <a class="dropdown-item d-block" href="{% url 'Auth:ChangePassword' %}" data-target="#action_modal" data-toggle="modal">
+                            <i class="bx bx-wrench font-size-16 align-middle mr-1"></i>
+                            <span key="t-settings">تغير كلمة المرور</span>
+                        </a>
+                    {% else %}
+                    no                        
+                    {% endif %}
+                        
+                    
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="{% url 'Auth:logout'%}"><i class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i> <span key="t-logout">تسجيل الخروج</span></a>
                 </div>
