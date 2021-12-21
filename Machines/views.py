@@ -407,6 +407,29 @@ class NamesDelete(LoginRequiredMixin, UpdateView):
         my_form.deleted = 1
         my_form.save()
         return redirect(self.get_success_url())
+    
+
+class NamesDetail(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = WarehouseTransactions
+    template_name = 'Machines/machinesnames_detail.html'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        queryset = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse')
+        return queryset
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تفاصيل المنتج ' + str(self.kwargs['name'])
+        context['type'] = 'list'
+        context['icons'] = '<i class="fas fa-sticky-note"></i>'
+        context['count'] = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse').count()
+        
+        return context
+        
+    
 
 
 class NamesRestore(LoginRequiredMixin, UpdateView):
