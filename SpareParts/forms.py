@@ -157,17 +157,20 @@ class orderProductDeleteForm(forms.ModelForm):
 class OperationForm(forms.ModelForm):
     class Meta:
         model = SparePartsOrderOperations
-        fields = ['operation_value', 'treasury_name']
+        fields = ['operation_value', 'treasury_name', 'operation_date']
         widgets = {
             'operation_value': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
-
 
 # استلام البضاعة
 class OperationsForm2(forms.ModelForm):
     class Meta:
         model = SparePartsOrderOperations
-        fields = ['warehouse_name']
+        fields = ['warehouse_name', 'operation_date']
+        widgets = {
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
 
 
 
@@ -175,18 +178,6 @@ class OperationsForm2(forms.ModelForm):
 class OperationsForm3(forms.ModelForm):
     class Meta:
         model = SparePartsOrderOperations
-        fields = ['operation_value', 'treasury_name']
-        
-
-class StockTransferFrom(forms.ModelForm):
-    class Meta:
-        model = SparePartsWarehouseTransactions
-        fields = ['warehouse', 'item', 'quantity','warehouse']
+        fields = ['operation_value', 'treasury_name', 'operation_date']
         widgets = {
-            'warehouse':forms.Select(attrs={'class':'form-control', 'name':'from_warehouse'}),
-            'warehouse2':forms.Select(attrs={'class':'form-control', 'name':'to_warehouse'}),
-            'item':forms.Select(attrs={'class':'form-control', 'name':'stock'}),
-            'quantity':forms.NumberInput(attrs={'class':'form-control', 'name':'quantity'}),
-        }
-                
-                                                                                        
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
