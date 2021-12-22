@@ -177,7 +177,8 @@ class OperationsForm2(forms.ModelForm):
 # تخليص البضاعة
 class OperationsForm3(forms.ModelForm):
     class Meta:
-        model = SparePartsOrderOperations
+        model = SparePartsOrderOperations                                                                             
+
         fields = ['operation_value', 'treasury_name', 'operation_date']
         widgets = {
-            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),}
