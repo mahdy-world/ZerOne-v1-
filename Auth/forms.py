@@ -7,6 +7,9 @@ class ChangePasswordForm(forms.ModelForm):
     class Meta():
         model = User
         fields = ['password']
+        lables = {
+            'password': 'كلمة المرور'
+        }
         
         widgets = {
             'password': forms.PasswordInput(attrs={'class': 'form-control', }),
