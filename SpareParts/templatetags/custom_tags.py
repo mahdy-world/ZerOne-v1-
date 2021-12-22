@@ -25,6 +25,11 @@ def order_op1(order_id):
     return SparePartsOrderOperations.objects.filter(order_number__id=order_id, operation_type=1)
 
 
+@register.simple_tag(name='order_op5')
+def order_op5(order_id):
+    return SparePartsOrderOperations.objects.filter(order_number__id=order_id, operation_type=5)
+
+
 @register.simple_tag(name='order_products_val')
 def order_products_val(order_id):
     return SparePartsOrderProducts.objects.filter(product_order__id=order_id).aggregate(sum=Sum('product_price')).get('sum')

@@ -166,19 +166,26 @@ class MachinesOrderProductsDeleteForm(forms.ModelForm):
 class MachinesOrderOperationsForm(forms.ModelForm):
     class Meta:
         model = MachinesOrderOperations
-        fields = ['operation_value', 'treasury_name']
+        fields = ['operation_value', 'treasury_name', 'operation_date']
         widgets = {
             'operation_value': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
 
 
 class MachinesOrderOperationsForm2(forms.ModelForm):
     class Meta:
         model = MachinesOrderOperations
-        fields = ['warehouse_name']
+        fields = ['warehouse_name', 'operation_date']
+        widgets = {
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
 
 
 class MachinesOrderOperationsForm3(forms.ModelForm):
     class Meta:
         model = MachinesOrderOperations
-        fields = ['operation_value', 'treasury_name']
+        fields = ['operation_value', 'treasury_name', 'operation_date']
+        widgets = {
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }

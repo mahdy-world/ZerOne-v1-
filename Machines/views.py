@@ -6,6 +6,7 @@ from django.views.generic import *
 from .models import *
 from .forms import *
 from django.contrib import messages
+from datetime import datetime, timedelta
 
 
 # Create your views here.
@@ -639,7 +640,7 @@ class MachinesOrdersList(LoginRequiredMixin, ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        queryset = self.model.objects.filter(deleted=False).order_by('id')
+        queryset = self.model.objects.filter(deleted=False).order_by('-id')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -655,7 +656,7 @@ class MachinesOrdersTrashList(LoginRequiredMixin, ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        queryset = self.model.objects.filter(deleted=True).order_by('id')
+        queryset = self.model.objects.filter(deleted=True).order_by('-id')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -808,6 +809,14 @@ def MachinesOrdersDetail(request, pk):
     op2 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=2)
     op3 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=3)
     op4 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=4)
+    op5 = MachinesOrderOperations.objects.filter(order_number=order, operation_type=5)
+
+    if op4:
+        op_4 = MachinesOrderOperations.objects.get(order_number=order, operation_type=4)
+        op_4_date = op_4.operation_date
+        op_5_date = op_4_date + timedelta(days=30)
+    else:
+        op_5_date = order.order_receipt_date
 
     form = MachinesOrderProductsForm
     type_page = "list"
@@ -827,7 +836,10 @@ def MachinesOrdersDetail(request, pk):
         'op2': op2,
         'op3': op3,
         'op4': op4,
-        'qu': quantity
+        'op5': op5,
+        'qu': quantity,
+        'date': datetime.now().date(),
+        'op_5_date': op_5_date,
 
     }
     return render(request, 'Machines/machinesorders_detail.html', context)
@@ -934,6 +946,7 @@ class MachinesOrderOperationsCreateDeposit(LoginRequiredMixin, CreateView):
         order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
         form = super(MachinesOrderOperationsCreateDeposit, self).get_form(*args, **kwargs)
         form.fields['operation_value'].initial = order_number.order_deposit_value
+        form.fields['operation_date'].initial = datetime.now().date()
         return form
 
     def form_valid(self, form):
@@ -946,6 +959,7 @@ class MachinesOrderOperationsCreateDeposit(LoginRequiredMixin, CreateView):
             myform.operation_type = 1
             myform.operation_value = form.cleaned_data.get("operation_value")
             myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.operation_date = form.cleaned_data.get("operation_date")
             myform.save()
 
             treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
@@ -991,6 +1005,7 @@ class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
         order_products_val = MachinesOrderProducts.objects.filter(product_order__id=self.kwargs['pk']).aggregate(sum=Sum('product_price')).get('sum')
         form = super(MachinesOrderOperationsCreateReset, self).get_form(*args, **kwargs)
         form.fields['operation_value'].initial = float(order_products_val) - float(order_number.order_deposit_value)
+        form.fields['operation_date'].initial = datetime.now().date()
         return form
 
     def form_valid(self, form):
@@ -1003,6 +1018,7 @@ class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
             myform.operation_type = 2
             myform.operation_value = form.cleaned_data.get("operation_value")
             myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.operation_date = form.cleaned_data.get("operation_date")
             myform.save()
 
             treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
@@ -1046,6 +1062,7 @@ class MachinesOrderOperationsCreateClearance(LoginRequiredMixin, CreateView):
     def get_form(self, *args, **kwargs):
         form = super(MachinesOrderOperationsCreateClearance, self).get_form(*args, **kwargs)
         form.fields['operation_value'].initial = 1.0
+        form.fields['operation_date'].initial = datetime.now().date()
         return form
 
     def form_valid(self, form):
@@ -1058,6 +1075,7 @@ class MachinesOrderOperationsCreateClearance(LoginRequiredMixin, CreateView):
             myform.operation_type = 3
             myform.operation_value = form.cleaned_data.get("operation_value")
             myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.operation_date = form.cleaned_data.get("operation_date")
             myform.save()
 
             treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
@@ -1066,6 +1084,63 @@ class MachinesOrderOperationsCreateClearance(LoginRequiredMixin, CreateView):
 
             trans = WorkTreasuryTransactions()
             trans.transaction = 'دفع مبلغ تخليص بضاعة طلبية رقم ' + str(self.kwargs['pk'])
+            trans.treasury = form.cleaned_data.get("treasury_name")
+            trans.transaction_type = 1
+            trans.value = form.cleaned_data.get("operation_value")
+            trans.save()
+
+            return redirect(self.get_success_url())
+        else:
+            return redirect(self.get_absolute_url())
+
+
+class MachinesOrderOperationsCreateTax(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = MachinesOrderOperations
+    form_class = MachinesOrderOperationsForm3
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        messages.success(self.request, " تم دفع ضرائب البضاعة بنجاح ", extra_tags="success")
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم دفع ضرائب البضاعة .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
+        return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' دفع ضرائب البضاعة '
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Machines:MachinesOrderOperationsCreateTax',
+                                             kwargs={'pk': self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        form = super(MachinesOrderOperationsCreateTax, self).get_form(*args, **kwargs)
+        form.fields['operation_value'].initial = 1.0
+        form.fields['operation_date'].initial = datetime.now().date()
+        return form
+
+    def form_valid(self, form):
+        order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
+        treasury_balance = form.cleaned_data.get("treasury_name").balance
+        operation_value = form.cleaned_data.get("operation_value")
+        if float(treasury_balance) >= float(operation_value):
+            myform = MachinesOrderOperations()
+            myform.order_number = order_number
+            myform.operation_type = 5
+            myform.operation_value = form.cleaned_data.get("operation_value")
+            myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.operation_date = form.cleaned_data.get("operation_date")
+            myform.save()
+
+            treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
+            treasury.balance -= form.cleaned_data.get("operation_value")
+            treasury.save(update_fields=['balance'])
+
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'دفع مبلغ ضرائب بضاعة طلبية رقم ' + str(self.kwargs['pk'])
             trans.treasury = form.cleaned_data.get("treasury_name")
             trans.transaction_type = 1
             trans.value = form.cleaned_data.get("operation_value")
@@ -1093,6 +1168,11 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
                                              kwargs={'pk': self.kwargs['pk']})
         return context
 
+    def get_form(self, *args, **kwargs):
+        form = super(MachinesOrderOperationsCreateOrder, self).get_form(*args, **kwargs)
+        form.fields['operation_date'].initial = datetime.now().date()
+        return form
+
     def form_valid(self, form):
         messages.success(self.request, " تمت عملية استلام البضاعة بنجاح ", extra_tags="success")
         order_number = get_object_or_404(MachinesOrders, id=self.kwargs['pk'])
@@ -1100,6 +1180,7 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
         myform.order_number = order_number
         myform.operation_type = 4
         myform.warehouse_name = form.cleaned_data.get("warehouse_name")
+        myform.operation_date = form.cleaned_data.get("operation_date")
         myform.save()
 
         order_products = MachinesOrderProducts.objects.filter(product_order=order_number, deleted=0)

@@ -54,5 +54,6 @@ urlpatterns = [
     path('MachinesOrderOperationsCreateDeposit/<int:pk>/create_deposite/', MachinesOrderOperationsCreateDeposit.as_view(), name='MachinesOrderOperationsCreateDeposit'),
     path('MachinesOrderOperationsCreateReset/<int:pk>/create_reset/', MachinesOrderOperationsCreateReset.as_view(), name='MachinesOrderOperationsCreateReset'),
     path('MachinesOrderOperationsCreateClearance/<int:pk>/create_clearance/', MachinesOrderOperationsCreateClearance.as_view(), name='MachinesOrderOperationsCreateClearance'),
-    path('MachinesOrderOperationsCreateOrder/<int:pk>/create_order/', MachinesOrderOperationsCreateOrder.as_view(), name='MachinesOrderOperationsCreateOrder'),
+    path('MachinesOrderOperationsCreateClearance/<int:pk>/create_clearance/', MachinesOrderOperationsCreateClearance.as_view(), name='MachinesOrderOperationsCreateClearance'),
+    path('MachinesOrderOperationsCreateTax/<int:pk>/create_tax/', MachinesOrderOperationsCreateTax.as_view(), name='MachinesOrderOperationsCreateTax'),
 ]
