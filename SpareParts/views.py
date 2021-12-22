@@ -1162,3 +1162,18 @@ class SparePartsNamesDetail(LoginRequiredMixin, ListView):
         
         return context
     
+
+
+
+    
+    
+def SparePartsStockTransfer(request):
+    action_url = reverse_lazy('SpareParts:SparePartsStockTransfer')
+    form = StockTransferFrom(request.POST or None)
+    
+    
+    context = {
+        'form':form,
+        'action_url':action_url
+    }
+    return render(request,'forms/convertForm.html',context)    

@@ -175,4 +175,18 @@ class OperationsForm2(forms.ModelForm):
 class OperationsForm3(forms.ModelForm):
     class Meta:
         model = SparePartsOrderOperations
-        fields = ['operation_value', 'treasury_name']                                                                                
+        fields = ['operation_value', 'treasury_name']
+        
+
+class StockTransferFrom(forms.ModelForm):
+    class Meta:
+        model = SparePartsWarehouseTransactions
+        fields = ['warehouse', 'item', 'quantity','warehouse']
+        widgets = {
+            'warehouse':forms.Select(attrs={'class':'form-control', 'name':'from_warehouse'}),
+            'warehouse2':forms.Select(attrs={'class':'form-control', 'name':'to_warehouse'}),
+            'item':forms.Select(attrs={'class':'form-control', 'name':'stock'}),
+            'quantity':forms.NumberInput(attrs={'class':'form-control', 'name':'quantity'}),
+        }
+                
+                                                                                        
