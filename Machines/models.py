@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
+from SpareParts.models import SparePartsNames
 from Treasury.models import *
 
 
@@ -68,7 +69,7 @@ class MachinesOrders(models.Model):
 # منتجات داخل فاتورة طلب الماكينات
 class MachinesOrderProducts(models.Model):
     product_order = models.ForeignKey(MachinesOrders, on_delete=models.CASCADE, null=True, verbose_name='الطلبية')
-    product_name = models.ForeignKey(MachinesNames, on_delete=models.CASCADE, null=True, verbose_name='المنج')
+    product_name = models.ForeignKey(MachinesNames, on_delete=models.CASCADE, null=True, verbose_name='المنتج')
     product_quantity = models.IntegerField(default=0, null=True, verbose_name="الكمية")
     product_price = models.FloatField(default=0, null=True, verbose_name="سعر الشراء")
     deleted = models.BooleanField(default=False, verbose_name='حذف')
@@ -103,3 +104,15 @@ class WarehouseTransactions(models.Model):
 
     def __str__(self):
         return self.warehouse.name
+    
+    
+
+class Maintenance(models.Model):
+    date = models.DateTimeField(null=True, verbose_name='تاريخ الصيانة')
+    machine = models.ForeignKey(MachinesWarehouses, verbose_name="المكينة", on_delete=models.CASCADE)
+    spareparts = models.ForeignKey(SparePartsNames, verbose_name="قطعة الغيار", on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.machine.name
+    
+   

@@ -90,13 +90,14 @@
                         <div class="card">
 
                             <div class="card-body ">
-                                <div class="bg-soft-danger">
+                                <div class="bg-primary">
                                                         <div class="row">
                                                             <div class="col-lg-12">
                                                                 <div class=" p-3">
                                                                     
-                                                                        <h3 class="text-center font-weight-bold" >معلومات الطلب</h3>
-                                                                </div>
+                                                                    <h3 class="text-center font-weight-bold" style="color: white;">
+                                                                        <i class="fas fa-info"></i> معلومات الطلب
+                                                                    </h3>                                                   </div>
                                                             </div>
                                                         
                                                         </div>
@@ -105,31 +106,31 @@
                                                         <table class="table table-nowrap mb-0">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th scope="row"><i class='bx bx-bookmark-minus bx-sm' style='color:#c658c2'  ></i> رقم الطلب :</th>
+                                                                    <th scope="row"><i class='bx bx-bookmark-minus bx-sm' style='color:#556ee6'  ></i> رقم الطلب :</th>
                                                                     <td>{{ order.order_number }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ الطلب : </th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i>تاريخ الطلب : </th>
                                                                     <td>{{ order.order_date|date:'Y-m-d' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"><i class='bx bx-user-pin bx-sm' style='color:#c658c2' ></i>المورد : </th>
+                                                                    <th scope="row"><i class='bx bx-user-pin bx-sm' style='color:#556ee6' ></i>المورد : </th>
                                                                     <td>{{ order.order_supplier }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#c658c2' ></i>قيمة العربون : </th>
+                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#556ee6' ></i>قيمة العربون : </th>
                                                                     <td><span class="badge badge-danger font-size-14">{{ order.order_deposit_value }} جنية</span></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ دفع العربون :</th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i>تاريخ دفع العربون :</th>
                                                                     <td > <span class="badge badge-danger font-size-14">{{ order.order_deposit_date|date:'Y-m-d' }}</span></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"><i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i> تاريخ دفع باقي المبلغ :</th>
+                                                                    <th scope="row"><i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i> تاريخ دفع باقي المبلغ :</th>
                                                                     <td>{{ order.order_rest_date|date:'Y-m-d' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ استلام البضاعة  :</th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i>تاريخ استلام البضاعة  :</th>
                                                                     <td>{{ order.order_receipt_date|date:'Y-m-d' }}</td>
 
                                                                 </tr>
@@ -148,13 +149,15 @@
                                     <div class="card-body">
                                         
                                         
-                                            <div class="row bg-soft-info">
+                                            <div class="row bg-danger">
                                                 <div class="col-lg-12">
                                                     
                                                     <div class="text-primary p-3">
-                                                            
-                                                        <h3 class="text-center font-weight-bold" >عمليات الطلب</h3>
-                                                </div>                                                </div>
+                                                        <h3 class="text-center font-weight-bold" style="color: white;" >
+                                                            <i class="fas fa-project-diagram"></i>
+                                                            عمليات الطلب
+                                                        </h3>
+                                                    </div>                                                </div>
                                             </div>
                                             
 
@@ -610,13 +613,15 @@
                                 <div class="tab-pane" id="processing" role="tabpanel">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <div class="bg-soft-primary">
+                                                <div class="bg-primary">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="text-primary p-3">
                                                                 
-                                                                    <h3 class="text-center font-weight-bold" >أصناف الطلب</h3>
-                                                            </div>
+                                                                <h3 class="text-center font-weight-bold" style="color: white;">
+                                                                    <i class="fas fa-layer-group"></i>
+                                                                     أصناف الطلب
+                                                                </h3>                                                            </div>
                                                         </div>
                                                        
                                                     </div>
