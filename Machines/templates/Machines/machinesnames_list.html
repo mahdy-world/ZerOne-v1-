@@ -84,12 +84,14 @@
                           <div class="contact-links d-flex justify-content-center font-size-20">
                               {% if message == 'active' %}
 
-                                <div class="mr-3">
-                                    <a href="{% url 'Machines:NamesDetail' x.id x.name %}" >
-                                        <span class="badge badge-dark">
-                                            <i class="bx bx-area font-size-16"></i>تفاصيل</span>
-                                    </a>
-                                </div>
+                                
+
+                              <div class="mr-3">
+                                  <a href="{% url 'Machines:NamesDetail' x.id x.name %}"  class="badge badge-dark waves-effect text-white waves-light">
+                                    <i class="bx bx-area font-size-16 align-middle "></i> تفاصيل
+                                  </a>
+                              </div>
+
 
                               <div class="mr-3">
                                   <a href="{% url 'Machines:names_update' x.id %}" data-toggle="modal" data-target="#action_modal" class="badge badge-info waves-effect text-white waves-light">

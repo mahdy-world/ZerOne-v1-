@@ -66,5 +66,6 @@ urlpatterns = [
    path('sparepartsOrderOperation/<int:pk>/create_clearance/', SparePartsOperationCreateClearance.as_view(), name='SparePartsOperationCreateClearance'),
    path('sparepartsOrderOperation/<int:pk>/create_order/', SparePartsOperationCreateOrder.as_view(), name='SparePartsOperationCreateOrder'),
    path('sparepartsOrderOperation/<int:pk>/create_tax/', SparePartsOperationCreateTax.as_view(), name='SparePartsOperationCreateTax'),
+   path('sparepartsOrderOperation/SparePartsStockTransfer/', SparePartsStockTransfer, name='SparePartsStockTransfer'),
 
 ]

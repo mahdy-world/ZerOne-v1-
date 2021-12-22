@@ -48,116 +48,52 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {% if message == 'delete' %}
-                            {% csrf_token %}
-                           
-                            
-                                        {{form.deleted|as_crispy_field}}
-                                 
-
-                            <h5 class="font-weight-bold text-center">هل انت متأكد من نقل العنصر
-                                "{{ object.order_number }}"
-                                الي سلة المهملات
-                                ؟
-                            </h5>
-                        {% elif message == 'restore' %}
-                            {% csrf_token %}
-                          
-                            {{form.deleted|as_crispy_field}}
-                       
-                            
-                            <h5 class="font-weight-bold text-center">هل انت متأكد من ارجاع العنصر
-                                "{{ object.order_number }}"
-                                الى القائمة النشطة مرة اخري
-                                ؟
-                            </h5>
-                        {% elif message == 'super_delete' %}
+                        
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        {{form.warehouse|as_crispy_field}}
+                                        <label for="from_warehouse">من مخزن</label>
+                                        <select class="form-control" name="from_warehouse" id="from_warehouse" required>
+                                            {% for x in warehouse  %}
+                                              <option value="{{x.id}}">{{x.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div> 
+                                
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="to_warehouse">الي مخزن</label>
+                                        <select class="form-control" name="to_warehouse" id="to_warehouse" required>
+                                            {% for x in warehouse  %}
+                                              <option value="{{x.id}}">{{x.name}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                 </div>    
-                                <!-- <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.warehouse2|as_crispy_field}}
-                                     </div>
-                                </div> -->
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.item|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.quantity|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
-                          
-                            </div>
-
-                            <h5 class="font-weight-bold text-center">هل انت متأكد من حذف العنصر
-                                "{{ object.name }}"
-                                بشكل نهائي
-                                ؟
-                            </h5>
-                        {% else %}
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_number|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_date|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_supplier|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{form.order_deposit_value|as_crispy_field}}
-                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        {{form.order_deposit_date|as_crispy_field}}
-                                    </div>
-                                </div>    
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        {{form.order_rest_date|as_crispy_field}}
-                                     </div>
-                                </div>
-
-                             <div class="col-4">
-                                    <div class="form-group">
-                                        {{form.order_receipt_date|as_crispy_field}}
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-
                             </div>
                             
-                            <input name="url" type="hidden" class="url_input">
-                            <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
-                        {% endif %}
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="to_warehouse">المنتج</label>
+                                        <select class="form-control" name="item" id="item" required>
+                                            {% for x in items  %}
+                                              <option value="{{x.id}}">{{x.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>    
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="to_warehouse">الكمية</label>
+                                        <input class="form-control" type="number" id="quantity" name="quantity" required placeholder="ادخل الكمية.....">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                      
                     </div>
                     <div class="card-footer text-center">
                         {% if message == 'delete' or message == 'super_delete' %}
@@ -180,7 +116,7 @@
                          {% else %}
                             <button type="submit" class="btn btn-success">
                             <i class="fa fa-save"></i>
-                            حفظ
+                            فظ
                         </button>
                         {% endif %}
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">

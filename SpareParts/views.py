@@ -1260,11 +1260,33 @@ class SparePartsNamesDetail(LoginRequiredMixin, ListView):
     
 def SparePartsStockTransfer(request):
     action_url = reverse_lazy('SpareParts:SparePartsStockTransfer')
-    form = StockTransferFrom(request.POST or None)
+    message = "add"
     
+    warehouse = SparePartsWarehouses.objects.filter(deleted=False)
+    items = SparePartsNames.objects.filter(deleted=False)
+    
+    
+    if request.POST:
+        from_warehouse = request.POST.get("from_warehouse")
+        print(from_warehouse)
+    
+        to_warehouse = request.POST.get("to_warehouse")
+        print(to_warehouse)
+    
+        item = request.POST.get("item")
+        print(item)
+    
+        quantity = request.POST.get("quantity")
+        print(quantity)
+        
+        return redirect('Core:index')
+
     
     context = {
-        'form':form,
-        'action_url':action_url
+        
+        'message':message,
+        'action_url':action_url,
+        'warehouse' :warehouse,
+        'items':items
     }
     return render(request,'forms/convertForm.html',context)    
