@@ -82,12 +82,13 @@ OPERATIONS_CHOICES = (
     (2, "دفع باقي المبلغ"),
     (3, "دفع مبلغ تخليص البضاعة"),
     (4, "استلام البضاعة"),
+    (5, "دفع الضرائب"),
     )
 
 
 class MachinesOrderOperations(models.Model):
     order_number = models.ForeignKey(MachinesOrders, on_delete=models.CASCADE, verbose_name="رقم الطلب")
-    operation_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ العملية")
+    operation_date = models.DateTimeField(null=True, verbose_name="تاريخ العملية")
     operation_type = models.IntegerField(choices=OPERATIONS_CHOICES, default=0, verbose_name="نوع العملية")
     operation_value = models.FloatField(default=0, verbose_name="قيمة العملية")
     treasury_name = models.ForeignKey(WorkTreasury, on_delete=models.CASCADE, null=True, verbose_name='الخزنة المستخدمة')

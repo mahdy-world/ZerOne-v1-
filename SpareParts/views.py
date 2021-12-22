@@ -7,7 +7,7 @@ from django.db.models import Count
 from django.contrib import messages
 
 from Treasury.models import WorkTreasuryTransactions
-
+from datetime import datetime, timedelta
 from .forms import *
 from .models import *
 
@@ -606,7 +606,7 @@ class SparePartsOrderList(LoginRequiredMixin ,ListView):
     template_name = 'SpareParts/sparepartsorders_list.html'
 
     def get_queryset(self):
-        queryset = self.model.objects.filter(deleted=False).order_by('id')
+        queryset = self.model.objects.filter(deleted=False).order_by('-id')
         return queryset
     
     def get_context_data(self, **kwargs):
@@ -626,7 +626,7 @@ class SparePartsOrderTrachList(LoginRequiredMixin ,ListView):
     template_name = 'SpareParts/sparepartsorders_list.html'
 
     def get_queryset(self):
-        queryset = self.model.objects.filter(deleted=True).order_by('id')
+        queryset = self.model.objects.filter(deleted=True).order_by('-id')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -782,8 +782,14 @@ def SparePartsOrderDetail(request, pk):
     op2 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=2)
     op3 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=3)
     op4 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=4)
-    
-    
+    op5 = SparePartsOrderOperations.objects.filter(order_number=order, operation_type=5)
+
+    if op4:
+        op_4 = SparePartsOrderOperations.objects.get(order_number=order, operation_type=4)
+        op_4_date = op_4.operation_date
+        op_5_date = op_4_date + timedelta(days=30)
+    else:
+        op_5_date = order.order_receipt_date
 
     form = orderProductForm
     type_page = "list"
@@ -803,8 +809,11 @@ def SparePartsOrderDetail(request, pk):
         'op2':op2,
         'op3':op3, 
         'op4':op4,
-        'qu':quantity
-        
+        'op5':op5,
+        'qu':quantity,
+        'date': datetime.now().date(),
+        'op_5_date': op_5_date,
+
     }
     return render(request, 'SpareParts/sparepartsorders_detail.html', context)
 
@@ -915,6 +924,7 @@ class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
         order_number = get_object_or_404(SparePartsOrders, id=self.kwargs['pk'])
         form = super(SparePartsOperationCreateDeposit, self).get_form(*args, **kwargs)
         form.fields['operation_value'].initial = order_number.order_deposit_value
+        form.fields['operation_date'].initial = datetime.now().date()
         return form
 
     def form_valid(self, form):
@@ -929,6 +939,7 @@ class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
             myform.operation_type = 1
             myform.operation_value = form.cleaned_data.get("operation_value")
             myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.operation_date = form.cleaned_data.get("operation_date")
             myform.save()
         
             # خصم قيمة العربون من الخزنة 
@@ -977,6 +988,7 @@ class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
         order_products_val = SparePartsOrderProducts.objects.filter(product_order__id=self.kwargs['pk']).aggregate(sum=Sum('product_price')).get('sum')
         form = super(SparePartsOperationCreateReset, self).get_form(*args, **kwargs)
         form.fields['operation_value'].initial = float(order_products_val) - float(order_number.order_deposit_value)
+        form.fields['operation_date'].initial = datetime.now().date()
         return form
 
     def form_valid(self, form):
@@ -991,6 +1003,7 @@ class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
             myform.operation_type = 2
             myform.operation_value = form.cleaned_data.get("operation_value")
             myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.operation_date = form.cleaned_data.get("operation_date")
             myform.save()
         
             # خصم قيمة باقي المبلغ من الخزنة 
@@ -1036,6 +1049,7 @@ class SparePartsOperationCreateClearance(LoginRequiredMixin ,CreateView):
     def get_form(self, *args, **kwargs):
         form = super(SparePartsOperationCreateClearance, self).get_form(*args, **kwargs)
         form.fields['operation_value'].initial = 1.0
+        form.fields['operation_date'].initial = datetime.now().date()
         return form
 
 
@@ -1051,6 +1065,7 @@ class SparePartsOperationCreateClearance(LoginRequiredMixin ,CreateView):
             myform.operation_type = 3
             myform.operation_value = form.cleaned_data.get("operation_value")
             myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.operation_date = form.cleaned_data.get("operation_date")
             myform.save()
         
             # خصم قيمة باقي المبلغ من الخزنة 
@@ -1071,7 +1086,75 @@ class SparePartsOperationCreateClearance(LoginRequiredMixin ,CreateView):
   
   
    
-#عملية استلام  البضاعة 
+#عملية استلام  البضاعة
+
+
+# عملية ضرائب البضاعة
+class SparePartsOperationCreateTax(LoginRequiredMixin ,CreateView):
+    login_url = '/auth/login/'
+    model = SparePartsOrderOperations
+    form_class = OperationsForm3
+    template_name = 'forms/form_template.html'
+
+
+    def get_success_url(self):
+        messages.success(self.request, " تم دفع  مبلغ ضرائب البضاعة بنجاح " , extra_tags="success")
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم دفع مبلغ ضرائب البضاعة .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
+        return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' دفع ضرائب البضاعة '
+        context['message'] = 'add'
+        context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateTax', kwargs={'pk':self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        form = super(SparePartsOperationCreateTax, self).get_form(*args, **kwargs)
+        form.fields['operation_value'].initial = 1.0
+        form.fields['operation_date'].initial = datetime.now().date()
+        return form
+
+
+    def form_valid(self, form):
+        order_number = get_object_or_404(SparePartsOrders, id=self.kwargs['pk'])
+        treasury_balance = form.cleaned_data.get("treasury_name").balance
+        operation_value = form.cleaned_data.get("operation_value")
+
+        # اضافة في جدول عملية  الطلب
+        if float(treasury_balance) >= float(operation_value):
+            myform = SparePartsOrderOperations()
+            myform.order_number = order_number
+            myform.operation_type = 5
+            myform.operation_value = form.cleaned_data.get("operation_value")
+            myform.treasury_name = form.cleaned_data.get("treasury_name")
+            myform.operation_date = form.cleaned_data.get("operation_date")
+            myform.save()
+
+            # خصم قيمة باقي المبلغ من الخزنة
+            treasury = WorkTreasury.objects.get(id=int(form.cleaned_data.get("treasury_name").id))
+            treasury.balance -= form.cleaned_data.get("operation_value")
+            treasury.save(update_fields=['balance'])
+
+            # اضافة في جدول عمليات الخزنة
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'دفع مبلغ ضرائب طلبية رقم' + str(self.kwargs['pk'])
+            trans.treasury = form.cleaned_data.get("treasury_name")
+            trans.transaction_type = 1
+            trans.value = form.cleaned_data.get("operation_value")
+            trans.save()
+            return redirect(self.get_success_url())
+        else:
+            return redirect(self.get_absolute_url())
+
+
+
+#عملية استلام  البضاعة
+
+
 class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
     login_url = '/auth/login/'
     model = SparePartsOrderOperations
@@ -1089,6 +1172,11 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateOrder', kwargs={'pk':self.kwargs['pk']})
         return context
 
+    def get_form(self, *args, **kwargs):
+        form = super(SparePartsOperationCreateOrder, self).get_form(*args, **kwargs)
+        form.fields['operation_date'].initial = datetime.now().date()
+        return form
+
     def form_valid(self, form):
         messages.success(self.request, " تمت العملية بنجاح " , extra_tags="success")
         order_number = get_object_or_404(SparePartsOrders , id=self.kwargs['pk'])
@@ -1096,6 +1184,7 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
         myform.order_number = order_number
         myform.operation_type=4
         myform.warehouse_name = form.cleaned_data.get("warehouse_name")
+        myform.operation_date = form.cleaned_data.get("operation_date")
         myform.save()
         
         order_products = SparePartsOrderProducts.objects.filter(product_order=order_number, deleted=0)
@@ -1120,7 +1209,9 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
         return redirect(self.get_success_url())   
     
 
-# عرض تفاصيل المخزن    
+# عرض تفاصيل المخزن
+
+
 class SparePartsWarehouseDetail(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = SparePartsWarehouseTransactions

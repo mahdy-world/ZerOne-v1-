@@ -157,22 +157,28 @@ class orderProductDeleteForm(forms.ModelForm):
 class OperationForm(forms.ModelForm):
     class Meta:
         model = SparePartsOrderOperations
-        fields = ['operation_value', 'treasury_name']
+        fields = ['operation_value', 'treasury_name', 'operation_date']
         widgets = {
             'operation_value': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
-
 
 # استلام البضاعة
 class OperationsForm2(forms.ModelForm):
     class Meta:
         model = SparePartsOrderOperations
-        fields = ['warehouse_name']
+        fields = ['warehouse_name', 'operation_date']
+        widgets = {
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
 
 
 
 # تخليص البضاعة
 class OperationsForm3(forms.ModelForm):
     class Meta:
-        model = SparePartsOrderOperations
-        fields = ['operation_value', 'treasury_name']                                                                                
+        model = SparePartsOrderOperations                                                                             
+
+        fields = ['operation_value', 'treasury_name', 'operation_date']
+        widgets = {
+            'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),}
