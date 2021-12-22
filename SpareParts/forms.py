@@ -163,7 +163,6 @@ class OperationForm(forms.ModelForm):
             'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
 
-
 # استلام البضاعة
 class OperationsForm2(forms.ModelForm):
     class Meta:
@@ -182,4 +181,3 @@ class OperationsForm3(forms.ModelForm):
         fields = ['operation_value', 'treasury_name', 'operation_date']
         widgets = {
             'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-        }
