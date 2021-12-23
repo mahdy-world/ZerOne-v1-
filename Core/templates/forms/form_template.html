@@ -86,7 +86,8 @@
                         {% else %}
                         {% csrf_token %}
                         {% bootstrap_form form %}
-
+                        <input name="url" type="hidden" class="url_input">
+                        <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
                         {% endif %}
                     </div>
                     <div class="card-footer text-center">

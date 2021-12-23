@@ -90,13 +90,14 @@
                         <div class="card">
 
                             <div class="card-body ">
-                                <div class="bg-soft-danger">
+                                <div class="bg-primary">
                                                         <div class="row">
                                                             <div class="col-lg-12">
                                                                 <div class=" p-3">
                                                                     
-                                                                        <h3 class="text-center font-weight-bold" >معلومات الطلب</h3>
-                                                                </div>
+                                                                    <h3 class="text-center font-weight-bold" style="color: white;">
+                                                                        <i class="fas fa-info"></i> معلومات الطلب
+                                                                    </h3>                                                   </div>
                                                             </div>
                                                         
                                                         </div>
@@ -105,31 +106,31 @@
                                                         <table class="table table-nowrap mb-0">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th scope="row"><i class='bx bx-bookmark-minus bx-sm' style='color:#c658c2'  ></i> رقم الطلب :</th>
+                                                                    <th scope="row"><i class='bx bx-bookmark-minus bx-sm' style='color:#556ee6'  ></i> رقم الطلب :</th>
                                                                     <td>{{ order.order_number }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ الطلب : </th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i>تاريخ الطلب : </th>
                                                                     <td>{{ order.order_date|date:'Y-m-d' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"><i class='bx bx-user-pin bx-sm' style='color:#c658c2' ></i>المورد : </th>
+                                                                    <th scope="row"><i class='bx bx-user-pin bx-sm' style='color:#556ee6' ></i>المورد : </th>
                                                                     <td>{{ order.order_supplier }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#c658c2' ></i>قيمة العربون : </th>
+                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#556ee6' ></i>قيمة العربون : </th>
                                                                     <td><span class="badge badge-danger font-size-14">{{ order.order_deposit_value }} جنية</span></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ دفع العربون :</th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i>تاريخ دفع العربون :</th>
                                                                     <td > <span class="badge badge-danger font-size-14">{{ order.order_deposit_date|date:'Y-m-d' }}</span></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"><i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i> تاريخ دفع باقي المبلغ :</th>
+                                                                    <th scope="row"><i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i> تاريخ دفع باقي المبلغ :</th>
                                                                     <td>{{ order.order_rest_date|date:'Y-m-d' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#c855c4'  ></i>تاريخ استلام البضاعة  :</th>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i>تاريخ استلام البضاعة  :</th>
                                                                     <td>{{ order.order_receipt_date|date:'Y-m-d' }}</td>
 
                                                                 </tr>
@@ -148,13 +149,15 @@
                                     <div class="card-body">
                                         
                                         
-                                            <div class="row bg-soft-info">
+                                            <div class="row bg-danger">
                                                 <div class="col-lg-12">
                                                     
                                                     <div class="text-primary p-3">
-                                                            
-                                                        <h3 class="text-center font-weight-bold" >عمليات الطلب</h3>
-                                                </div>                                                </div>
+                                                        <h3 class="text-center font-weight-bold" style="color: white;" >
+                                                            <i class="fas fa-project-diagram"></i>
+                                                            عمليات الطلب
+                                                        </h3>
+                                                    </div>                                                </div>
                                             </div>
                                             
 
@@ -604,178 +607,199 @@
                     {% if order.deleted == 0 %}
                     <div class="col-lg-8">
 
-                         <div class="card">
-                            <div class="card-body">
+                        <div class="card">
+                           <div class="card-body">
 
-                                <div class="tab-pane" id="processing" role="tabpanel">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="bg-soft-primary">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="text-primary p-3">
-                                                                
-                                                                    <h3 class="text-center font-weight-bold" >أصناف الطلب</h3>
-                                                            </div>
-                                                        </div>
-                                                       
-                                                    </div>
-                                                </div>
-
-                                                    <div class="table-responsive" id="order_list">
-                                                        <table class="table table-nowrap mb-0">
-                                                            <thead>
-                                                                <form method="post" action="{{action_url}}">
-                                                                {% csrf_token %}
-                                                                <tr>
-                                                                    <th class="col-lg-1">
-                                                                    <span style="width: 100%" role="button" class="btn btn-light">م</span>
-
-                                                                    </th>
-                                                                    <th class="col-lg-5 col-xl-5 col-md-5" style="width: 100%;">
-                                                                            
-                                                                            <div class=" d-inline-block sel" style="width: 75%;">
-                                                                                {{form.product_name|as_crispy_field}}                                                                           
-                                                                            </div> 
-                                                                            
-                                                                            <a href="{% url 'SpareParts:SparePartsNameCreate' %}" style="width: 25%; " data-target="#action_modal" data-toggle="modal" class=" btn btn-success d-inline-block">
-                                                                                   منتج جديد                                                                        
-                                                                            </a>
-                                        
-                                                                    </th>
-                                                                    <th class="col-lg-2 col-xl-2 col-md-2">{{form.product_quantity|as_crispy_field}} </th>
-                                                                    <th class="col-lg-2 col-xl-2 col-md-2">{{form.product_price|as_crispy_field}}</th>
-                                                                    {% if not op1 %}
-                                                                    <th class="col-lg-2 col-xl-2 col-md-2">
-                                                                        <button style="width: 100%" type="submit" class="btn btn-success">اضافة</button>
-                                                                    </th>
-                                                                    {% endif %}
-                                                                </tr>
-                                                                </form>
-                                                            </thead>
-                                                            <tbody class=" text-center" >
-
-                                                                {% if product %}
-                                                                {% for x in product  %}
-                                                                <tr class="shadow  bg-white ">
-                                                                    <td>{{x.id}}</td>
-                                                                    <td>
-                                                                        <h4 class="text-truncate font-size-14"><a href="#" class="text-dark">{{x.product_name}}</a></h4>
-
-                                                                    </td>
-                                                                    <td ><h4><i class="fas fa-copy fx-7"></i> {{x.product_quantity}}</h4></td>
-                                                                    <td><h4><span class="badge badge-primary"> <i class='bx bx-dollar'></i>{{ x.product_price }}</span></h4></td>
-                                                                    {% if not op1 %}
-                                                                    <td>
-                                                                        <div class="team">
-                                                                            <a href="{% url 'SpareParts:SparePartsOrderAddProductUpdate' x.id x.product_order.id %}" class="team-member d-inline-block btn btn-info btn-sm" data-target="#action_modal" data-toggle="modal">
-                                                                                <i class='bx bx-edit' ></i>
-                                                                            </a>
-
-                                                                            <a href="{% url 'SpareParts:SparePartsOrderAddProductDelete' x.id x.product_order.id  %}"  class="team-member d-inline-block btn btn-danger btn-sm" data-target="#action_modal" data-toggle="modal">
-                                                                                <i class='bx bxs-trash' ></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </td>
-                                                                    {% endif %}
-
-                                                                </tr>
-                                                                {% endfor %}
-
-                                                                {% endif %}
-
-
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                            </div>
-                        </div>
-
-                        <!-- اجمالي  -->
-                        <div class="row">
-                            <!-- القطع -->
-                            <div class="col-lg-4 col-md-4">
-                                       <div class="card mini-stats-wid">
-                                           <div class="card-body">
-                                               <div class="media">
-                                                   <div class="media-body">
-                                                       <p class="text-muted font-weight-bold">عدد الأصناف</p>
-                                                       <h4 class="mb-0">{{count_product}} صنف</h4>
-                                                   </div>
-
-                                                   <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                                                       <span class="avatar-title">
-                                                           <i class="bx bx-copy-alt bx-sm"></i>
-                                                       </span>
+                               <div class="tab-pane" id="processing" role="tabpanel">
+                                       <div class="row">
+                                           <div class="col-lg-12">
+                                               <div class="bg-primary">
+                                                   <div class="row">
+                                                       <div class="col-lg-12">
+                                                           <div class="text-primary p-3">
+                                                               
+                                                                   <h3 class="text-center font-weight-bold" style="color: white;">
+                                                                       <i class="fas fa-layer-group"></i>
+                                                                        أصناف الطلب
+                                                                   </h3>
+                                                           </div>
+                                                       </div>
+                                                      
                                                    </div>
                                                </div>
+
+                                                   <div class="table-responsive" id="order_list">
+                                                       <table class="table table-nowrap mb-0">
+                                                           <thead>
+                                                               <form method="post" action="{{action_url}}">
+                                                               {% csrf_token %}
+                                                               <tr>
+                                                                   
+                                                                   <th class="col-lg-5 col-xl-5 col-md-5" style="width: 100%;">
+                                                                           
+                                                                           <div class=" d-inline-block sel" style="width: 75%;">
+                                                                               {{form.product_name|as_crispy_field}}                                                                           
+                                                                           </div> 
+                                                                           
+                                                                           <a href="{% url 'SpareParts:SparePartsNameCreate' %}" style="width: 25%; " data-target="#action_modal" data-toggle="modal" class=" btn btn-success d-inline-block">
+                                                                                  منتج جديد                                                                        
+                                                                           </a>
+                                       
+                                                                   </th>
+                                                                   <th class="col-lg-2 col-xl-2 col-md-2">{{form.product_quantity|as_crispy_field}} </th>
+                                                                   <th class="col-lg-2 col-xl-2 col-md-2">{{form.product_price|as_crispy_field}}</th>
+                                                                   {% if not op1 %}
+                                                                   <th class="col-lg-2 col-xl-2 col-md-2">
+                                                                       <button style="width: 100%" type="submit" class="btn btn-success">اضافة</button>
+                                                                   </th>
+                                                                   {% endif %}
+                                                               </tr>
+                                                               </form>
+                                                           </thead>
+                                                          
+                                                       </table>
+                                                   </div>
+
+                                                   <div class="card-body">
+                                                       
+                               
+                                                       <div class="table-responsive">
+                                                           <table class="table table-centered table-nowrap">
+                                                               <thead class="thead-light">
+                                                                   <tr style="text-align: center;">
+                                                                      
+                                                                       <th>م</th>
+                                                                       <th>المنتج</th>
+                                                                       <th>الكمية</th>
+                                                                       <th>سعر الشراء</th>
+                                                                       <th></th>
+                                                                   </tr>
+                                                               </thead>
+                                                               <tbody>
+                                                                   
+                                                                   {% if product %}
+                                                                   {% for x in product  %}
+                                                                   <tr style="text-align: center;">
+                                                                       
+                                                                       <td>{{forloop.counter}}</td>
+                                                                       <td>{{x.product_name}}</td>
+                                                                       <td>
+                                                                           {{x.product_quantity}}
+                                                                       </td>
+                                                                       
+                                                                       <td>
+                                                                           <span class="badge badge-pill badge-soft-success font-size-12">
+                                                                               <i class='bx bx-dollar'></i> {{ x.product_price }}
+                                                                           </span>
+                                                                       </td>
+                                                                       {% if not op1 %}
+                                                                       <td>
+                                                                           <a href="{% url 'SpareParts:SparePartsOrderAddProductUpdate' x.id x.product_order.id %}" class="mr-3 text-primary" data-toggle="modal" data-target="#action_modal" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                                           <a href="{% url 'SpareParts:SparePartsOrderAddProductDelete' x.id x.product_order.id  %}" class="text-danger" data-target="#action_modal" data-toggle="modal" title="" data-original-title="Delete"><i class="mdi mdi-close font-size-18"></i></a>
+                                                                       </td>
+                                                                       {% endif %}
+                                                                   </tr>
+               
+                                                                   {% endfor %}
+                                                                  
+                                                                   {% endif %}
+                                                                       
+                                                                   
+                                                                
+                                                                   
+                                                               </tbody>
+                                                           </table>
+                                                       </div>
+
+                                                      
+                                                   </div>
+
                                            </div>
                                        </div>
+
                                    </div>
-                                 
-                                <!-- الكمية -->
-                               <div class="col-lg-4 col-md-4">
-                                               <div class="card mini-stats-wid">
-                                                   <div class="card-body">
-                                                       <div class="media">
-                                                           <div class="media-body">
-                                                               <p class="text-muted font-weight-bold ">اجمالي الكمية </p>
-                                                               <h4 class="mb-0">
-                                                                   {% if qu %}
-                                                                   {{qu}}
-                                                                   {% else %}
-                                                                   0
-                                                                   {% endif %}
-                                                                   قطعة
-                                                               </h4>
-                                                           </div>
-
-                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                                                               <span class="avatar-title">
-                                                                <i class="fas fa-balance-scale"></i>
-                                                               </span>
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                               </div>
-                               
-                               <!-- المبلغ -->
-                               <div class="col-lg-4 col-md-4">
-                                               <div class="card mini-stats-wid">
-                                                   <div class="card-body">
-                                                       <div class="media">
-                                                           <div class="media-body">
-                                                               <p class="text-muted font-weight-bold ">اجمالي المبلغ </p>
-                                                               <h4 class="mb-0">
-                                                                   {% if total %}
-                                                                   {{total}}
-                                                                   {% else %}
-                                                                   0
-                                                                   {% endif %}
-                                                                   جنية
-                                                               </h4>
-                                                           </div>
-
-                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                                                               <span class="avatar-title">
-                                                                   <i class='bx bx-dollar-circle bx-sm'  ></i>
-                                                               </span>
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                               </div>
+                           </div>
                        </div>
 
+                       <!-- اجمالي  -->
+                       <div class="row">
+                           <!-- القطع -->
+                           <div class="col-lg-4 col-md-4">
+                                      <div class="card mini-stats-wid">
+                                          <div class="card-body">
+                                              <div class="media">
+                                                  <div class="media-body">
+                                                      <p class="text-muted font-weight-bold">عدد الأصناف</p>
+                                                      <h4 class="mb-0">{{count_product}} صنف</h4>
+                                                  </div>
 
-                    </div>
+                                                  <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                      <span class="avatar-title">
+                                                          <i class="bx bx-copy-alt bx-sm"></i>
+                                                      </span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                
+                               <!-- الكمية -->
+                              <div class="col-lg-4 col-md-4">
+                                              <div class="card mini-stats-wid">
+                                                  <div class="card-body">
+                                                      <div class="media">
+                                                          <div class="media-body">
+                                                              <p class="text-muted font-weight-bold ">اجمالي الكمية </p>
+                                                              <h4 class="mb-0">
+                                                                  {% if qu %}
+                                                                  {{qu}}
+                                                                  {% else %}
+                                                                  0
+                                                                  {% endif %}
+                                                                  قطعة
+                                                              </h4>
+                                                          </div>
+
+                                                          <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                              <span class="avatar-title">
+                                                               <i class="fas fa-balance-scale"></i>
+                                                              </span>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                              </div>
+                              
+                              <!-- المبلغ -->
+                              <div class="col-lg-4 col-md-4">
+                                              <div class="card mini-stats-wid">
+                                                  <div class="card-body">
+                                                      <div class="media">
+                                                          <div class="media-body">
+                                                              <p class="text-muted font-weight-bold ">اجمالي المبلغ </p>
+                                                              <h4 class="mb-0">
+                                                                  {% if total %}
+                                                                  {{total}}
+                                                                  {% else %}
+                                                                  0
+                                                                  {% endif %}
+                                                                  جنية
+                                                              </h4>
+                                                          </div>
+
+                                                          <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                              <span class="avatar-title">
+                                                                  <i class='bx bx-dollar-circle bx-sm'  ></i>
+                                                              </span>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                              </div>
+                      </div>
+
+
+                   </div>
                     {% endif %}
                 </div>
 
@@ -801,13 +825,7 @@
     });
 </script>
 
-<!-- <script>
-    
-    function updateDiv()
-    { 
-        $( "#order_list" ).load(window.location.href + " #order_list" );
-    }
- 
-</script> -->
+>
 
 {% endblock js %}
+

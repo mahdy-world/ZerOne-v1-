@@ -473,6 +473,8 @@ class SparePartsSupplierList(LoginRequiredMixin ,ListView):
         context['icons'] = '<i class="fas fa-users"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
+  
+  
     
 class SparePartsSupplierTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
@@ -492,6 +494,10 @@ class SparePartsSupplierTrachList(LoginRequiredMixin ,ListView):
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
+
+
+
+
 class SparePartsSupplierCreate(LoginRequiredMixin ,CreateView):
     login_url = '/auth/login/'
     model = SparePartsSuppliers
@@ -508,6 +514,9 @@ class SparePartsSupplierCreate(LoginRequiredMixin ,CreateView):
     def get_success_url(self):
         messages.success(self.request, "  تم اضافة مورد قطع غيار بنجاح", extra_tags="success")
         return reverse('SpareParts:SparePartsSupplierList',)
+  
+  
+  
     
 class SparePartsSupplierUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
@@ -525,6 +534,9 @@ class SparePartsSupplierUpdate(LoginRequiredMixin ,UpdateView):
     def get_success_url(self):
         messages.success(self.request, "تم تعديل مورد قطع غيار بنجاح ", extra_tags="info")
         return reverse('SpareParts:SparePartsSupplierList',)
+
+
+
 
 class SparePartsSupplierDelete(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
@@ -550,6 +562,8 @@ class SparePartsSupplierDelete(LoginRequiredMixin ,UpdateView):
         myform.save()
         return redirect(self.get_success_url())
 
+
+
 class SparePartsSupplierRestore(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = SparePartsSuppliers
@@ -573,6 +587,8 @@ class SparePartsSupplierRestore(LoginRequiredMixin ,UpdateView):
         myform.deleted = 0
         myform.save()
         return redirect(self.get_success_url())
+
+
 
 class SparePartsSupplierSuperDelete(LoginRequiredMixin, UpdateView):
     login_url = '/auth/login/'
@@ -619,6 +635,7 @@ class SparePartsOrderList(LoginRequiredMixin ,ListView):
         return context
 
 
+
 class SparePartsOrderTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsOrders
@@ -638,6 +655,7 @@ class SparePartsOrderTrachList(LoginRequiredMixin ,ListView):
         return context
 
 
+
 class SparePartsOrderCreate(LoginRequiredMixin ,CreateView):
     login_url = '/auth/login/'
     model = SparePartsOrders
@@ -654,6 +672,7 @@ class SparePartsOrderCreate(LoginRequiredMixin ,CreateView):
     def get_success_url(self, **kwargs):
         messages.success(self.request, "  تم اضافة طلبية قطع غيار بنجاح", extra_tags="success")
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.object.id})
+
 
 
 class SparePartsOrderUpdate(LoginRequiredMixin ,UpdateView):
@@ -694,6 +713,7 @@ class SparePartsOrderUpdate(LoginRequiredMixin ,UpdateView):
         return reverse('SpareParts:SparePartsOrderList')
 
 
+
 class SparePartsOrderDelete(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = SparePartsOrders
@@ -717,6 +737,7 @@ class SparePartsOrderDelete(LoginRequiredMixin ,UpdateView):
         myform.deleted = 1
         myform.save()
         return redirect(self.get_success_url())
+
 
 
 class SparePartsOrderRestore(LoginRequiredMixin ,UpdateView):
@@ -766,6 +787,7 @@ class SparePartsOrderSuperDelete(LoginRequiredMixin, UpdateView):
         my_form = SparePartsOrders.objects.get(id=self.kwargs['pk'])
         my_form.delete()
         return redirect(self.get_success_url()) 
+
 
 
 def SparePartsOrderDetail(request, pk):
@@ -818,6 +840,7 @@ def SparePartsOrderDetail(request, pk):
     return render(request, 'SpareParts/sparepartsorders_detail.html', context)
 
 
+
 def AddProductOrder(request, pk):
     order = get_object_or_404(SparePartsOrders , id=pk)
     product = SparePartsOrderProducts.objects.filter(product_order=order).order_by('id')
@@ -849,6 +872,8 @@ def AddProductOrder(request, pk):
     return render(request, 'SpareParts/sparepartsorders_detail.html', context)        
 
 
+
+
 class SparePartsOrderAddProductUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
     model = SparePartsOrderProducts
@@ -870,6 +895,8 @@ class SparePartsOrderAddProductUpdate(LoginRequiredMixin ,UpdateView):
         # else:
         #     return self.success_url
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk': self.kwargs['id']})
+
+
 
 class SparePartsOrderAddProductDelete(LoginRequiredMixin,UpdateView):
     login_url = '/auth/login/'
@@ -895,6 +922,8 @@ class SparePartsOrderAddProductDelete(LoginRequiredMixin,UpdateView):
         my_form.delete()
         return redirect(self.get_success_url())
         
+
+
 
 # عملية دفع العربون
 class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
@@ -1086,8 +1115,6 @@ class SparePartsOperationCreateClearance(LoginRequiredMixin ,CreateView):
   
   
    
-#عملية استلام  البضاعة
-
 
 # عملية ضرائب البضاعة
 class SparePartsOperationCreateTax(LoginRequiredMixin ,CreateView):
