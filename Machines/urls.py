@@ -27,6 +27,7 @@ urlpatterns = [
     path('names_delete/<int:pk>/edit/', NamesDelete.as_view(), name='names_delete'),
     path('names_restore/<int:pk>/restore/', NamesRestore.as_view(), name='names_restore'),
     path('names_detail/<int:pk>/<str:name>/detail/', NamesDetail.as_view(), name='NamesDetail'),
+    path('names_maintance/', MaintenanceCreate.as_view(), name='MaintenanceCreate'),
     path('names_super_delete/<int:pk>/super_delete/', NamesSuperDelete.as_view(), name='names_super_delete'),
     ###############################################################################
     path('suppliers_active_list/', SuppliersActiveList.as_view(), name='suppliers_active_list'),

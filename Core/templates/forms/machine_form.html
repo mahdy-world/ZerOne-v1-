@@ -14,6 +14,7 @@
 </style>
 {% block main %}
     {% load bootstrap4 %}
+    {% load  crispy_forms_tags %}
     <form method="post" action="{{ action_url }}">
         <div class="row">
             <div class="col-lg-12">
@@ -49,45 +50,118 @@
                     <div class="card-body">
                         {% if message == 'delete' %}
                             {% csrf_token %}
-                            {% bootstrap_form form %}
+                           
+                            
+                                        {{form.deleted|as_crispy_field}}
+                                 
+
                             <h5 class="font-weight-bold text-center">هل انت متأكد من نقل العنصر
-                                "{{ object.name }}"
+                                "{{ object.order_number }}"
                                 الي سلة المهملات
                                 ؟
                             </h5>
                         {% elif message == 'restore' %}
                             {% csrf_token %}
-                            {% bootstrap_form form %}
+                          
+                            {{form.deleted|as_crispy_field}}
+                       
+                            
                             <h5 class="font-weight-bold text-center">هل انت متأكد من ارجاع العنصر
-                                "{{ object.name }}"
+                                "{{ object.order_number }}"
                                 الى القائمة النشطة مرة اخري
                                 ؟
                             </h5>
                         {% elif message == 'super_delete' %}
                             {% csrf_token %}
-                            {% bootstrap_form form %}
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.order_number|as_crispy_field}}
+                                    </div>
+                                </div>    
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.order_date|as_crispy_field}}
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.date|as_crispy_field}}
+                                    </div>
+                                </div>    
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.machine|as_crispy_field}}
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.sparepasrt|as_crispy_field}}
+                                    </div>
+                                </div>    
+                              
+
                             <h5 class="font-weight-bold text-center">هل انت متأكد من حذف العنصر
-                                
-                                {% if object.name %}
                                 "{{ object.name }}"
-                                {% elif object.order_number %}
-                                "{{object.order_number}}"
-                                {% else %}
-                                "{{ object.product_name }}"
-                                {% endif %}
-                                    
                                 بشكل نهائي
                                 ؟
                             </h5>
-                        {% elif message == 'operation' %} 
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            <h5 class="font-weight-bold text-center"> تأكيد العملية !</h5>   
                         {% else %}
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        <input name="url" type="hidden" class="url_input">
-                        <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.order_number|as_crispy_field}}
+                                    </div>
+                                </div>    
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.order_date|as_crispy_field}}
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.order_supplier|as_crispy_field}}
+                                    </div>
+                                </div>    
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{form.order_deposit_value|as_crispy_field}}
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        {{form.order_deposit_date|as_crispy_field}}
+                                    </div>
+                                </div>    
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        {{form.order_rest_date|as_crispy_field}}
+                                     </div>
+                                </div>
+
+                             <div class="col-4">
+                                    <div class="form-group">
+                                        {{form.order_receipt_date|as_crispy_field}}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                            </div>
+                            
+                            <input name="url" type="hidden" class="url_input">
+                            <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
                         {% endif %}
                     </div>
                     <div class="card-footer text-center">
@@ -108,13 +182,8 @@
                             <i class="fa fa-save"></i>
                             تعديل
                         </button>
-                        {% elif message == 'operation' %} 
-                        <button type="submit" class="btn btn-info ">
-                            <i class="fa fa-save"></i>
-                             نعم
                          {% else %}
                             <button type="submit" class="btn btn-success">
-                                                            
                             <i class="fa fa-save"></i>
                             حفظ
                         </button>
@@ -148,11 +217,7 @@
 
    
 
-    <script>
-        $(document).ready(function() {
-            $('#spare').select2();
-        });
-    </script>
+ 
 
 
 {% endblock %} 

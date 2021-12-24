@@ -1,4 +1,4 @@
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, query
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -425,6 +425,7 @@ class NamesDetail(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'تفاصيل المنتج ' + str(self.kwargs['name'])
         context['type'] = 'list'
+        context['maintance'] = Maintenance.objects.filter(machine=self.kwargs['pk'])
         context['icons'] = '<i class="fas fa-sticky-note"></i>'
         context['count'] = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse').count()
         
@@ -1223,3 +1224,25 @@ class MachinesWarehouseDetail(LoginRequiredMixin, ListView):
         context['count'] = WarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('warehouse').count()
 
         return context
+    
+
+class MaintenanceCreate(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = Maintenance
+    form_class = MaintenceForm
+    template_name = 'forms/form_template.html'
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'اضافة صيانة'
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Machines:MaintenanceCreate')
+        return context
+    
+    def get_success_url(self):
+        return reverse('Machines:NamesDetail', kwargs={'pk': self.kwargs['pk'], 'name':self.kwargs['name']})
+
+    
+       
+     

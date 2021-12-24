@@ -62,17 +62,74 @@
 
               
                 <div class="row">
-                    
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="card" style="margin-left: 10%; margin-right:10%">
                             <div class="card-body">
+                                <h4 class="card-title badge badge-danger font-weight-bold mb-4">
+                                    <i class="fas fa-tools"></i>
+                                    الصيانة الخاصة بالمكينة
+                                </h4>
+
+                                <a style="margin-right: 2px;" class="badge badge-success" style="font-size:small;" href="{% url 'Machines:MaintenanceCreate' %}" data-toggle="modal" data-target="#sub_modal">
+                                    اضافة صيانة
+                                    <i class="fas fa-plus-square fx-2"></i>
+                                </a>
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-nowrap mb-0">
+                                        <thead class="thead-light" style="text-align: center;">
+                                            <tr>
+                                                
+                                                <th>#</th>
+                                                <th>تاريخ الصيانة</th>
+                                                <th>قطع الغيار</th>
+                                                <th>اجمالي التكلفة</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody style="text-align: center;">
+                                            {% for x in maintance %}
+                                            <tr>
+                                                <td>
+                                                    {{forloop.counter}}
+                                                </td>
+                                                <td>
+                                                    {{x.date}}
+                                                </td>
+                                                <td>
+                                                    {{x.spareparts}}
+                                                </td>
+
+                                                <td>
+                                                    {{x.cost}}
+                                                </td>
+                                                
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- end table-responsive -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col-lg-12">
+                        <div class="card" style="margin-left: 10%; margin-right:10%">
+                            <div class="card-body">
+                                <h4 class="card-title badge badge-warning font-weight-bold mb-4">
+                                    <i class="fas fa-tools"></i>
+                                      المخزون الخاص بالمكينة
+                                </h4>
                                 <div class="table-responsive">
                                     <table class="table table-centered   ">
                                         <thead class="thead-light text-center">
                                             <tr>
                                                 <th scope="col" >#</th>
                                                 <th scope="col">
-                                                    <i class="fas fa-warehouse"></i>                                                        المخزن
+                                                    <i class="fas fa-warehouse"></i>                                             المخزن
                                                 </th>
                                                 <th scope="col">
                                                     <i class="fas fa-calculator"></i>
@@ -105,6 +162,8 @@
                                                 <h5 class="badge  badge-info font-size-16">
                                                    
                                                     {{x.quantity}}
+
+                                                    
                                                 </h5>
                                                 
                                             </td>
@@ -139,4 +198,16 @@
       </div>
   </div>
 {% endblock main %}
+
+{% block js %}
+
+<script>
+    $(document).ready(function() {
+        $('#product').select2();
+    });
+</script>
+
+
+
+{% endblock js %}
 
