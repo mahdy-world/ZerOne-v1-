@@ -1,4 +1,6 @@
 from django import forms
+from django.db.models import fields
+from django.forms import widgets
 from .models import *
 
 
@@ -146,7 +148,7 @@ class MachinesOrderProductsForm(forms.ModelForm):
         fields = ['product_name', 'product_quantity', 'product_price']
         widgets = {
 
-            'product_name': forms.Select(attrs={'class': 'form-control', 'id': 'product'}),
+            'product_name': forms.SelectMultiple(attrs={'class': 'form-control', 'id': 'product'}),
             'product_quantity': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
             'product_price': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
 
@@ -189,3 +191,13 @@ class MachinesOrderOperationsForm3(forms.ModelForm):
         widgets = {
             'operation_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
+        
+        
+class MaintenceForm(forms.ModelForm):
+    class Meta:
+        model = Maintenance
+        fields = '__all__'
+        widgets = {
+            'spareparts': forms.SelectMultiple(attrs={'class': 'form-control', 'id': 'spare'}),
+            'date':forms.DateInput(attrs={'type':'date'})
+        }        
