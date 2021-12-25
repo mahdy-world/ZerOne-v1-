@@ -148,7 +148,7 @@ class MachinesOrderProductsForm(forms.ModelForm):
         fields = ['product_name', 'product_quantity', 'product_price']
         widgets = {
 
-            'product_name': forms.SelectMultiple(attrs={'class': 'form-control', 'id': 'product'}),
+            'product_name': forms.Select(attrs={'class': 'form-control', 'id': 'product'}),
             'product_quantity': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
             'product_price': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
 
@@ -193,13 +193,3 @@ class MachinesOrderOperationsForm3(forms.ModelForm):
         }
         
         
-class MaintenceForm(forms.ModelForm):
-    class Meta:
-        model = Maintenance
-        fields = ['date', 'spareparts','cost',]
-        widgets = {
-            'spareparts': forms.Select(attrs={'class': 'form-control', 'id': 'spareparts', 'name':'spareparts'}),
-            'cost':forms.NumberInput(attrs={ 'name':'cost'}),
-            'date':forms.DateInput(attrs={'type':'date', 'name':'date'}),
-            
-        }        

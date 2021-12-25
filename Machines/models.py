@@ -29,6 +29,8 @@ class MachinesNames(models.Model):
     machine_type = models.ForeignKey(MachinesTypes, on_delete=models.CASCADE,null="True", verbose_name="نوع المكينة")
     deleted = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.name
     
 
 
@@ -106,13 +108,3 @@ class WarehouseTransactions(models.Model):
     
     
 
-class Maintenance(models.Model):
-    date = models.DateField(null=True, verbose_name='تاريخ الصيانة')
-    machine = models.ForeignKey(MachinesNames, verbose_name="المكينة", on_delete=models.CASCADE)
-    spareparts = models.ForeignKey(SparePartsNames, verbose_name="قطعة الغيار", on_delete=models.CASCADE)
-    cost = models.FloatField(default=0.0, verbose_name="التكلفة")
-    
-    def __str__(self):
-        return self.machine.name
-    
-   
