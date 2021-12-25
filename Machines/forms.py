@@ -196,8 +196,8 @@ class MachinesOrderOperationsForm3(forms.ModelForm):
 class MaintenceForm(forms.ModelForm):
     class Meta:
         model = Maintenance
-        fields = '__all__'
+        fields = ['date', 'spareparts','cost','machine']
         widgets = {
-            'spareparts': forms.SelectMultiple(attrs={'class': 'form-control', 'id': 'spare'}),
+            'spareparts': forms.Select(attrs={'class': 'form-control', 'id': 'spare', 'name':'spare'}),
             'date':forms.DateInput(attrs={'type':'date'})
         }        

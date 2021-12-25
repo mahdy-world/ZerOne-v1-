@@ -425,6 +425,7 @@ class NamesDetail(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'تفاصيل المنتج ' + str(self.kwargs['name'])
         context['type'] = 'list'
+        context['machine'] = MachinesNames.objects.get(id=int(self.kwargs['pk']))
         context['maintance'] = Maintenance.objects.filter(machine=self.kwargs['pk'])
         context['icons'] = '<i class="fas fa-sticky-note"></i>'
         context['count'] = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse').count()
@@ -1232,17 +1233,22 @@ class MaintenanceCreate(LoginRequiredMixin, CreateView):
     form_class = MaintenceForm
     template_name = 'forms/form_template.html'
     
-    
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs): 
         context = super().get_context_data(**kwargs)
         context['title'] = 'اضافة صيانة'
         context['message'] = 'create'
-        context['action_url'] = reverse_lazy('Machines:MaintenanceCreate')
+        context['action_url'] = reverse_lazy('Machines:MaintenanceCreate',kwargs={'pk':self.kwargs['pk']})
         return context
     
     def get_success_url(self):
-        return reverse('Machines:NamesDetail', kwargs={'pk': self.kwargs['pk'], 'name':self.kwargs['name']})
-
+        return reverse('Machines:MachinesNamesDetail', kwargs={'pk': self.kwargs['pk']})
     
-       
+    
+    def form_valid(self, form):
+        messages.success(self.request, " تمت عملية الصيانة بنجاح ", extra_tags="success")
+        machine = get_object_or_404(MachinesNames, id=self.kwargs['pk'])
+        myform = MaintenceForm()
+        myform.machine = machine
+        myform.save()
+    
      

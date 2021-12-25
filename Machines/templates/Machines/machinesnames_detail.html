@@ -7,7 +7,6 @@
 
       <div class="page-content">
           <div class="container-fluid">
-           
                 <div class="row">
                     <div class="col-12"> {% if messages %}
                         {% for message in messages %}
@@ -68,9 +67,10 @@
                                 <h4 class="card-title badge badge-danger font-weight-bold mb-4">
                                     <i class="fas fa-tools"></i>
                                     الصيانة الخاصة بالمكينة
+                                    {{machine}}
                                 </h4>
 
-                                <a style="margin-right: 2px;" class="badge badge-success" style="font-size:small;" href="{% url 'Machines:MaintenanceCreate' %}" data-toggle="modal" data-target="#sub_modal">
+                                <a style="margin-right: 2px;" class="badge badge-success" style="font-size:small;" href="{% url 'Machines:MaintenanceCreate' machine.id %}" data-toggle="modal" data-target="#sub_modal">
                                     اضافة صيانة
                                     <i class="fas fa-plus-square fx-2"></i>
                                 </a>
@@ -199,15 +199,5 @@
   </div>
 {% endblock main %}
 
-{% block js %}
 
-<script>
-    $(document).ready(function() {
-        $('#product').select2();
-    });
-</script>
-
-
-
-{% endblock js %}
 
