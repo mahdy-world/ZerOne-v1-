@@ -29,8 +29,7 @@ class MachinesNames(models.Model):
     machine_type = models.ForeignKey(MachinesTypes, on_delete=models.CASCADE,null="True", verbose_name="نوع المكينة")
     deleted = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.name
+    
 
 
 # # موردين الماكينات

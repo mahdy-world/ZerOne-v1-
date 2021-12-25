@@ -196,8 +196,10 @@ class MachinesOrderOperationsForm3(forms.ModelForm):
 class MaintenceForm(forms.ModelForm):
     class Meta:
         model = Maintenance
-        fields = ['date', 'spareparts','cost','machine']
+        fields = ['date', 'spareparts','cost',]
         widgets = {
-            'spareparts': forms.Select(attrs={'class': 'form-control', 'id': 'spare', 'name':'spare'}),
-            'date':forms.DateInput(attrs={'type':'date'})
+            'spareparts': forms.Select(attrs={'class': 'form-control', 'id': 'spareparts', 'name':'spareparts'}),
+            'cost':forms.NumberInput(attrs={ 'name':'cost'}),
+            'date':forms.DateInput(attrs={'type':'date', 'name':'date'}),
+            
         }        
