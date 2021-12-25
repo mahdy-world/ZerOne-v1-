@@ -7,7 +7,6 @@
 
       <div class="page-content">
           <div class="container-fluid">
-           
                 <div class="row">
                     <div class="col-12"> {% if messages %}
                         {% for message in messages %}
@@ -31,18 +30,12 @@
                         <div class="page-title-box d-flex align-items-center justify-content-between">
                             
                             {% if type == "list" %}
-                                <h3 class="mb-0 font-weight-bold"> {{icons|safe}} {{title}}
-                  
+                                <h3 class="mb-0 font-weight-bold"> 
+                                    {{icons|safe}} {{title}}
                                 </h3>
                             
                             {% endif %}
-                             
-                             
                             
-                                <span class="badge badge-dark font-size-15"> الاجمالي : {{count}} قطع </span>
-                               
-
-                           
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
@@ -64,17 +57,23 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card" style="margin-left: 10%; margin-right:10%">
+                            
                             <div class="card-body">
-                                <h4 class="card-title badge badge-danger font-weight-bold mb-4">
+                                <h4 class="card-title badge badge-primary font-weight-bold mb-4">
                                     <i class="fas fa-tools"></i>
                                     الصيانة الخاصة بالمكينة
+                                   
                                 </h4>
-
-                                <a style="margin-right: 2px;" class="badge badge-success" style="font-size:small;" href="{% url 'Machines:MaintenanceCreate' %}" data-toggle="modal" data-target="#sub_modal">
+                                <h4>
+                                    <a style="margin-right: 2px;" class="badge badge-success" 
+                                 href="{% url 'Machines:MaintenanceCreate' machine.id %}" data-toggle="modal" data-target="#sub_modal">
                                     اضافة صيانة
                                     <i class="fas fa-plus-square fx-2"></i>
                                 </a>
+                                </h4>
+
                                 <div class="table-responsive">
+                                    
                                     <table class="table table-centered table-nowrap mb-0">
                                         <thead class="thead-light" style="text-align: center;">
                                             <tr>
@@ -93,22 +92,36 @@
                                                     {{forloop.counter}}
                                                 </td>
                                                 <td>
-                                                    {{x.date}}
+                                                    {{x.date|date:'Y-m-d'}}
                                                 </td>
                                                 <td>
                                                     {{x.spareparts}}
                                                 </td>
 
                                                 <td>
-                                                    {{x.cost}}
+                                                   <span class="badge badge-danger">
+                                                    <i class="fas fa-dollar-sign"></i>
+                                                       {{x.cost}} جنية
+                                                   </span> 
                                                 </td>
                                                 
                                             </tr>
                                             {% endfor %}
                                         </tbody>
+                                        <h5 class="font-weight-bold " >
+                                            اجمالي تكلفة الصيانة  : 
+                                            <span class="badge badge-danger font-size-14">
+        
+                                                {{cost_sum}} جنية
+                                            </span>
+                                        </h5>
                                     </table>
                                 </div>
-                                <!-- end table-responsive -->
+                                    
+                                {% if is_paginated %}
+                                {% include "components/paginator.html" %}
+                                {% endif %}
+                
                             </div>
                         </div>
                     </div>
@@ -120,8 +133,8 @@
                         <div class="card" style="margin-left: 10%; margin-right:10%">
                             <div class="card-body">
                                 <h4 class="card-title badge badge-warning font-weight-bold mb-4">
-                                    <i class="fas fa-tools"></i>
-                                      المخزون الخاص بالمكينة
+                                    <i class="fas fa-warehouse"></i>
+                                    المخزون الخاص بالمكينة
                                 </h4>
                                 <div class="table-responsive">
                                     <table class="table table-centered   ">
@@ -129,14 +142,14 @@
                                             <tr>
                                                 <th scope="col" >#</th>
                                                 <th scope="col">
-                                                    <i class="fas fa-warehouse"></i>                                             المخزن
+                                                    المخزن
                                                 </th>
                                                 <th scope="col">
-                                                    <i class="fas fa-calculator"></i>
+                                                  
                                                     الكمية
                                                 </th>
                                                 <th scope="col">
-                                                    <i class="fas fa-dollar-sign"></i>
+                                                    
                                                     سعر الشراء
                                                 </th>
                                             </tr>
@@ -145,24 +158,18 @@
                                           {% for x in object_list  %}
                                           <tr>
                                             <td>
-                                                
-                                                    <span class="avatar-title rounded">
-                                                        {{forloop.counter}}
-                                                    </span>
-                                                
+                                                {{forloop.counter}}
                                             </td>
                                             <td>
-                                                <h5 class="font-size-16 badge badge-warning">
+                                                <h5 class="font-size-16 ">
                                                     <i class="fas fa-warehouse"></i>
                                                     {{x.warehouse}}
                                                 </h5>
-                                                <p class="text-muted mb-0"></p>
+                                                
                                             </td>
                                             <td>
-                                                <h5 class="badge  badge-info font-size-16">
-                                                   
-                                                    {{x.quantity}}
-
+                                                <h5 class="badge">
+                                                    {{x.quantity|floatformat }} قطعة  
                                                     
                                                 </h5>
                                                 
@@ -170,7 +177,7 @@
                                             <td>
                                                 <h4 class="badge badge-danger">
                                                     <i class="fas fa-dollar-sign"></i>
-                                                    {{x.purchase_cost}}
+                                                    {{x.purchase_cost}} جنية
                                                 </h4>
                                                 
                                             </td>
@@ -199,15 +206,5 @@
   </div>
 {% endblock main %}
 
-{% block js %}
 
-<script>
-    $(document).ready(function() {
-        $('#product').select2();
-    });
-</script>
-
-
-
-{% endblock js %}
 

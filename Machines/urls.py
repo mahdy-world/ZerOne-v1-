@@ -11,6 +11,9 @@ urlpatterns = [
     path('types_restore/<int:pk>/restore/', TypesRestore.as_view(), name='types_restore'),
     path('types_super_delete/<int:pk>/super_delete/', TypesSuperDelete.as_view(), name='types_super_delete'),
     ###############################################################################
+    
+    
+    
     path('warehouses_active_list/', WarehousesActiveList.as_view(), name='warehouses_active_list'),
     path('warehouses_trash_list/', WarehousesTrashList.as_view(), name='warehouses_trash_list'),
     path('warehouses_create/', WarehousesCreate.as_view(), name='warehouses_create'),
@@ -20,6 +23,8 @@ urlpatterns = [
     path('warehouses_super_delete/<int:pk>/super_delete/', WarehousesSuperDelete.as_view(), name='warehouses_super_delete'),
     path('warehouses_detail/<int:pk>/detail/', MachinesWarehouseDetail.as_view(), name='warehouses_detail'),
     ###############################################################################
+    
+    
     path('names_active_list/', NamesActiveList.as_view(), name='names_active_list'),
     path('names_trash_list/', NamesTrashList.as_view(), name='names_trash_list'),
     path('names_create/', NamesCreate.as_view(), name='names_create'),
@@ -27,9 +32,11 @@ urlpatterns = [
     path('names_delete/<int:pk>/edit/', NamesDelete.as_view(), name='names_delete'),
     path('names_restore/<int:pk>/restore/', NamesRestore.as_view(), name='names_restore'),
     path('names_detail/<int:pk>/<str:name>/detail/', NamesDetail.as_view(), name='NamesDetail'),
-    path('names_maintance/', MaintenanceCreate.as_view(), name='MaintenanceCreate'),
+    path('names_maintance/<int:pk>/', MaintenanceCreate.as_view(), name='MaintenanceCreate'),
     path('names_super_delete/<int:pk>/super_delete/', NamesSuperDelete.as_view(), name='names_super_delete'),
     ###############################################################################
+    
+    
     path('suppliers_active_list/', SuppliersActiveList.as_view(), name='suppliers_active_list'),
     path('suppliers_trash_list/', SuppliersTrashList.as_view(), name='suppliers_trash_list'),
     path('suppliers_create/', SuppliersCreate.as_view(), name='suppliers_create'),
@@ -39,6 +46,8 @@ urlpatterns = [
     path('suppliers_super_delete/<int:pk>/super_delete/', SuppliersSuperDelete.as_view(), name='suppliers_super_delete'),
     ###############################################################################
     ###############################################################################
+    
+    
     path('MachinesOrdersList/', MachinesOrdersList.as_view(), name="MachinesOrdersList"),
     path('MachinesOrdersTrashList/', MachinesOrdersTrashList.as_view(), name="MachinesOrdersTrashList"),
     path('MachinesOrdersCreate/create/', MachinesOrdersCreate.as_view(), name='MachinesOrdersCreate'),
@@ -48,10 +57,14 @@ urlpatterns = [
     path('MachinesOrdersRestore/<int:pk>/restore/', MachinesOrdersRestore.as_view(), name='MachinesOrdersRestore'),
     path('MachinesOrdersSuperDelete/<int:pk>/super_delete/', MachinesOrdersSuperDelete.as_view(), name='MachinesOrdersSuperDelete'),
     ###############################################################################
+    
+    
     path('AddProductOrder/<int:pk>/create/', AddProductOrder, name='AddProductOrder'),
     path('MachinesOrderProductsUpdate/<int:pk>/<int:id>/update/', MachinesOrderProductsUpdate.as_view(), name='MachinesOrderProductsUpdate'),
     path('MachinesOrderProductsDelete/<int:pk>/<int:id>/Delete/', MachinesOrderProductsDelete.as_view(), name='MachinesOrderProductsDelete'),
     ###############################################################################
+    
+    
     path('MachinesOrderOperationsCreateDeposit/<int:pk>/create_deposite/', MachinesOrderOperationsCreateDeposit.as_view(), name='MachinesOrderOperationsCreateDeposit'),
     path('MachinesOrderOperationsCreateReset/<int:pk>/create_reset/', MachinesOrderOperationsCreateReset.as_view(), name='MachinesOrderOperationsCreateReset'),
     path('MachinesOrderOperationsCreateClearance/<int:pk>/create_clearance/', MachinesOrderOperationsCreateClearance.as_view(), name='MachinesOrderOperationsCreateClearance'),

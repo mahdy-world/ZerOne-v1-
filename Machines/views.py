@@ -414,7 +414,7 @@ class NamesDetail(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = WarehouseTransactions
     template_name = 'Machines/machinesnames_detail.html'
-    paginate_by = 10
+    paginate_by = 5
     
     def get_queryset(self):
         queryset = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse')
@@ -422,10 +422,15 @@ class NamesDetail(LoginRequiredMixin, ListView):
     
     
     def get_context_data(self, **kwargs):
+        maintenance =  Maintenance.objects.filter(machine=self.kwargs['pk'])
+        total= maintenance.aggregate(total=Sum('cost')).get('total')
+        
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تفاصيل المنتج ' + str(self.kwargs['name'])
+        context['title'] = 'تفاصيل المكينة ' + str(self.kwargs['name'])
         context['type'] = 'list'
+        context['machine'] = MachinesNames.objects.get(id=int(self.kwargs['pk']))
         context['maintance'] = Maintenance.objects.filter(machine=self.kwargs['pk'])
+        context['cost_sum'] = total
         context['icons'] = '<i class="fas fa-sticky-note"></i>'
         context['count'] = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse').count()
         
@@ -1232,17 +1237,29 @@ class MaintenanceCreate(LoginRequiredMixin, CreateView):
     form_class = MaintenceForm
     template_name = 'forms/form_template.html'
     
-    
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs): 
         context = super().get_context_data(**kwargs)
         context['title'] = 'اضافة صيانة'
         context['message'] = 'create'
-        context['action_url'] = reverse_lazy('Machines:MaintenanceCreate')
+        context['action_url'] = reverse_lazy('Machines:MaintenanceCreate',kwargs={'pk':self.kwargs['pk']})
         return context
     
     def get_success_url(self):
-        return reverse('Machines:NamesDetail', kwargs={'pk': self.kwargs['pk'], 'name':self.kwargs['name']})
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        
+    # you must use cleand data when you using Form_valid()
+    def form_valid(self, form):
+        messages.success(self.request, " تمت عملية الصيانة بنجاح ", extra_tags="success")
+        machine_id = get_object_or_404(MachinesNames, id=self.kwargs['pk'])
+        myform = Maintenance()
+        myform.machine = machine_id
+        myform.spareparts = form.cleaned_data.get("spareparts")
+        myform.date = form.cleaned_data.get("date")
+        myform.cost = form.cleaned_data.get("cost")
+        myform.save()
+        print("done")
+        return redirect(self.get_success_url())
 
     
-       
      
