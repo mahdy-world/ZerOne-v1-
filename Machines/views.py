@@ -422,11 +422,15 @@ class NamesDetail(LoginRequiredMixin, ListView):
     
     
     def get_context_data(self, **kwargs):
+        maintenance =  Maintenance.objects.filter(machine=self.kwargs['pk'])
+        total= maintenance.aggregate(total=Sum('cost')).get('total')
+        
         context = super().get_context_data(**kwargs)
         context['title'] = 'تفاصيل المكينة ' + str(self.kwargs['name'])
         context['type'] = 'list'
         context['machine'] = MachinesNames.objects.get(id=int(self.kwargs['pk']))
         context['maintance'] = Maintenance.objects.filter(machine=self.kwargs['pk'])
+        context['cost_sum'] = total
         context['icons'] = '<i class="fas fa-sticky-note"></i>'
         context['count'] = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse').count()
         

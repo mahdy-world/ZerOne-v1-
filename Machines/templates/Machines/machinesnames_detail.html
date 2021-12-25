@@ -59,7 +59,7 @@
                         <div class="card" style="margin-left: 10%; margin-right:10%">
                             
                             <div class="card-body">
-                                <h4 class="card-title badge badge-danger font-weight-bold mb-4">
+                                <h4 class="card-title badge badge-primary font-weight-bold mb-4">
                                     <i class="fas fa-tools"></i>
                                     الصيانة الخاصة بالمكينة
                                    
@@ -73,13 +73,7 @@
                                 </h4>
 
                                 <div class="table-responsive">
-                                    <h4>
-                                        <a style="margin-right: 2px;" class="badge badge-primary" 
-                                     href="{% url 'Machines:MaintenanceCreate' machine.id %}" data-toggle="modal" data-target="#sub_modal">
-                                        اجمالي تكلفة الصيانة صيانة : 
-                                        <i class="fas fa-plus-square fx-2"></i>
-                                    </a>
-                                    </h4>
+                                    
                                     <table class="table table-centered table-nowrap mb-0">
                                         <thead class="thead-light" style="text-align: center;">
                                             <tr>
@@ -114,8 +108,16 @@
                                             </tr>
                                             {% endfor %}
                                         </tbody>
+                                        <h5 class="font-weight-bold " >
+                                            اجمالي تكلفة الصيانة  : 
+                                            <span class="badge badge-danger font-size-14">
+        
+                                                {{cost_sum}} جنية
+                                            </span>
+                                        </h5>
                                     </table>
                                 </div>
+                                    
                                 {% if is_paginated %}
                                 {% include "components/paginator.html" %}
                                 {% endif %}
@@ -131,8 +133,8 @@
                         <div class="card" style="margin-left: 10%; margin-right:10%">
                             <div class="card-body">
                                 <h4 class="card-title badge badge-warning font-weight-bold mb-4">
-                                    <i class="fas fa-tools"></i>
-                                      المخزون الخاص بالمكينة
+                                    <i class="fas fa-warehouse"></i>
+                                    المخزون الخاص بالمكينة
                                 </h4>
                                 <div class="table-responsive">
                                     <table class="table table-centered   ">
@@ -156,10 +158,7 @@
                                           {% for x in object_list  %}
                                           <tr>
                                             <td>
-                                                
-                                                        {{forloop.counter}}
-                                                    
-                                                
+                                                {{forloop.counter}}
                                             </td>
                                             <td>
                                                 <h5 class="font-size-16 ">
