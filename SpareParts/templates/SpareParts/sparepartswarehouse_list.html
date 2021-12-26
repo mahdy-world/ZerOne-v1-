@@ -104,7 +104,9 @@
                                 {% if type == "list"  %}
 
                                     <div class="mr-3">
-                                        <a href="{% url 'SpareParts:SparePartsWarehouseDetail' x.id %}" data-placement="top" title="" data-original-title="Message">
+                                        <a href="{% url 'SpareParts:SparePartsWarehouseDetail' x.id %}"
+                                        data-target="#sub_modal" data-toggle="modal"
+                                        data-placement="top" title="" data-original-title="Message">
                                             <span class="badge badge-dark"><i class="bx bx-area"></i>تفاصيل</span>
                                     </a>
                                     </div>
