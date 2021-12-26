@@ -61,3 +61,32 @@ class BankAccountDeleteForm(forms.ModelForm):
 
             'deleted': forms.HiddenInput(),
         }
+
+
+
+class WorkTreasuryTransactionsForm(forms.ModelForm):
+    class Meta:
+        model = WorkTreasuryTransactions
+        fields = ['transaction_type', 'value', 'date']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
+
+
+class HomeTreasuryTransactionsForm(forms.ModelForm):
+    class Meta:
+        model = HomeTreasuryTransactions
+        fields = ['transaction_type', 'value', 'date']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
+
+
+class BankAccountTransactionsForm(forms.ModelForm):
+    class Meta:
+        model = BankAccountTransactions
+        fields = ['transaction_type', 'value', 'date']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
+
