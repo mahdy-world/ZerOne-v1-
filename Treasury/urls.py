@@ -11,6 +11,8 @@ urlpatterns = [
    path('WorkTreasury/<int:pk>/delete/', WorkTreasuryDelete.as_view(), name='WorkTreasuryDelete'),
    path('WorkTreasury/<int:pk>/restore/', WorkTreasuryRestore.as_view(), name='WorkTreasuryRestore'),
    path('WorkTreasury/<int:pk>/super_delete/', WorkTreasurySuperDelete.as_view(), name='WorkTreasurySuperDelete'),
+   path('WorkTreasury/<int:pk>/withdraw_deposit/', WorkTreasuryWithdrawDeposit.as_view(), name='WorkTreasuryWithdrawDeposit'),
+   path('WorkTreasury/<int:pk>/detail/', WorkTreasuryDetail.as_view(), name='WorkTreasuryDetail'),
    #-------------------------------------------------------------------------------------------------------
    
    
@@ -21,6 +23,8 @@ urlpatterns = [
    path('HomeTreasury/<int:pk>/delete/', HomeTreasuryDelete.as_view(), name='HomeTreasuryDelete'),
    path('HomeTreasury/<int:pk>/restore/', HomeTreasuryRestore.as_view(), name='HomeTreasuryRestore'),
    path('HomeTreasury/<int:pk>/super_delete/', HomeTreasurySuperDelete.as_view(), name='HomeTreasurySuperDelete'),
+   path('HomeTreasury/<int:pk>/withdraw_deposit/', HomeTreasuryWithdrawDeposit.as_view(), name='HomeTreasuryWithdrawDeposit'),
+   path('HomeTreasury/<int:pk>/detail/', HomeTreasuryDetail.as_view(), name='HomeTreasuryDetail'),
    #-------------------------------------------------------------------------------------------------------
    
    
@@ -32,5 +36,7 @@ urlpatterns = [
    path('BankAccount/<int:pk>/delete/', BankAccountDelete.as_view(), name='BankAccountDelete'),
    path('BankAccount/<int:pk>/restore/', BankAccountRestore.as_view(), name='BankAccountRestore'),
    path('BankAccount/<int:pk>/super_delete/', BankAccountSuperDelete.as_view(), name='BankAccountSuperDelete'),
+   path('BankAccount/<int:pk>/withdraw_deposit/', BankAccountWithdrawDeposit.as_view(), name='BankAccountWithdrawDeposit'),
+   path('BankAccount/<int:pk>/detail/', BankAccountDetail.as_view(), name='BankAccountDetail'),
    #-------------------------------------------------------------------------------------------------------
 ]   

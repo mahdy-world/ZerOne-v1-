@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMix
 from django.views.generic import *
 from django.db.models import Count
 from django.contrib import messages
+from datetime import datetime
 
 from .forms import *
 from .models import *
@@ -452,3 +453,246 @@ class BankAccountSuperDelete(LoginRequiredMixin, UpdateView):
         return redirect(self.get_success_url())    
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+class WorkTreasuryWithdrawDeposit(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = WorkTreasuryTransactions
+    form_class = WorkTreasuryTransactionsForm
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Treasury:WorkTreasuryList')
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم سحب المبلغ .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
+        return reverse('Treasury:WorkTreasuryList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' سحب/ايداع مبلغ من/في الخزنة ' + str(WorkTreasury.objects.get(id=int(self.kwargs['pk'])).name)
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Treasury:WorkTreasuryWithdrawDeposit', kwargs={'pk': self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        form = super(WorkTreasuryWithdrawDeposit, self).get_form(*args, **kwargs)
+        form.fields['value'].initial = 1.0
+        form.fields['date'].initial = datetime.now().date()
+        form.fields['transaction_type'].choices = ((3, "سحب يدوي"), (4, "ايداع يدوي"))
+        return form
+
+    def form_valid(self, form):
+        treasury_balance = WorkTreasury.objects.get(id=int(self.kwargs['pk'])).balance
+        value = form.cleaned_data.get("value")
+        transaction_type = form.cleaned_data.get("transaction_type")
+        if transaction_type == 3:
+            if float(treasury_balance) >= float(value):
+                treasury = WorkTreasury.objects.get(id=int(self.kwargs['pk']))
+                treasury.balance -= form.cleaned_data.get("value")
+                treasury.save(update_fields=['balance'])
+
+                trans = WorkTreasuryTransactions()
+                trans.transaction = 'سحب مبلغ مالي من الخزنة '
+                trans.treasury = WorkTreasury.objects.get(id=int(self.kwargs['pk']))
+                trans.transaction_type = 3
+                trans.value = form.cleaned_data.get("value")
+                trans.date = form.cleaned_data.get("date")
+                trans.save()
+                messages.success(self.request, " تم سحب المبلغ بنجاح ", extra_tags="success")
+                return redirect(self.get_success_url())
+            else:
+                return redirect(self.get_absolute_url())
+        else:
+            treasury = WorkTreasury.objects.get(id=int(self.kwargs['pk']))
+            treasury.balance += form.cleaned_data.get("value")
+            treasury.save(update_fields=['balance'])
+
+            trans = WorkTreasuryTransactions()
+            trans.transaction = 'ايداع مبلغ مالي في الخزنة '
+            trans.treasury = WorkTreasury.objects.get(id=int(self.kwargs['pk']))
+            trans.transaction_type = 4
+            trans.value = form.cleaned_data.get("value")
+            trans.date = form.cleaned_data.get("date")
+            trans.save()
+            messages.success(self.request, " تم ايداع المبلغ بنجاح ", extra_tags="success")
+            return redirect(self.get_success_url())
+
+
+class HomeTreasuryWithdrawDeposit(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = HomeTreasuryTransactions
+    form_class = HomeTreasuryTransactionsForm
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Treasury:HomeTreasuryList')
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم سحب المبلغ .. لايوجد مال كافي داخل الخزنة ", extra_tags="danger")
+        return reverse('Treasury:HomeTreasuryList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' سحب/ايداع مبلغ من/في الخزنة ' + str(HomeTreasury.objects.get(id=int(self.kwargs['pk'])).name)
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Treasury:HomeTreasuryWithdrawDeposit', kwargs={'pk': self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        form = super(HomeTreasuryWithdrawDeposit, self).get_form(*args, **kwargs)
+        form.fields['value'].initial = 1.0
+        form.fields['date'].initial = datetime.now().date()
+        form.fields['transaction_type'].choices = ((3, "سحب يدوي"), (4, "ايداع يدوي"))
+        return form
+
+    def form_valid(self, form):
+        treasury_balance = HomeTreasury.objects.get(id=int(self.kwargs['pk'])).balance
+        value = form.cleaned_data.get("value")
+        transaction_type = form.cleaned_data.get("transaction_type")
+        if transaction_type == 3:
+            if float(treasury_balance) >= float(value):
+                treasury = HomeTreasury.objects.get(id=int(self.kwargs['pk']))
+                treasury.balance -= form.cleaned_data.get("value")
+                treasury.save(update_fields=['balance'])
+
+                trans = HomeTreasuryTransactions()
+                trans.transaction = 'سحب مبلغ مالي من الخزنة '
+                trans.treasury = HomeTreasury.objects.get(id=int(self.kwargs['pk']))
+                trans.transaction_type = 3
+                trans.value = form.cleaned_data.get("value")
+                trans.date = form.cleaned_data.get("date")
+                trans.save()
+                messages.success(self.request, " تم سحب المبلغ بنجاح ", extra_tags="success")
+                return redirect(self.get_success_url())
+            else:
+                return redirect(self.get_absolute_url())
+        else:
+            treasury = HomeTreasury.objects.get(id=int(self.kwargs['pk']))
+            treasury.balance += form.cleaned_data.get("value")
+            treasury.save(update_fields=['balance'])
+
+            trans = HomeTreasuryTransactions()
+            trans.transaction = 'ايداع مبلغ مالي في الخزنة '
+            trans.treasury = HomeTreasury.objects.get(id=int(self.kwargs['pk']))
+            trans.transaction_type = 4
+            trans.value = form.cleaned_data.get("value")
+            trans.date = form.cleaned_data.get("date")
+            trans.save()
+            messages.success(self.request, " تم ايداع المبلغ بنجاح ", extra_tags="success")
+            return redirect(self.get_success_url())
+
+
+class BankAccountWithdrawDeposit(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = BankAccountTransactions
+    form_class = BankAccountTransactionsForm
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Treasury:BankAccountList')
+
+    def get_absolute_url(self):
+        messages.success(self.request, "لم يتم سحب المبلغ .. لايوجد مال كافي داخل الحساب ", extra_tags="danger")
+        return reverse('Treasury:BankAccountList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' سحب/ايداع مبلغ من/في الحساب ' + str(BankAccount.objects.get(id=int(self.kwargs['pk'])).name)
+        context['message'] = 'create'
+        context['action_url'] = reverse_lazy('Treasury:BankAccountWithdrawDeposit', kwargs={'pk': self.kwargs['pk']})
+        return context
+
+    def get_form(self, *args, **kwargs):
+        form = super(BankAccountWithdrawDeposit, self).get_form(*args, **kwargs)
+        form.fields['value'].initial = 1.0
+        form.fields['date'].initial = datetime.now().date()
+        form.fields['transaction_type'].choices = ((3, "سحب يدوي"), (4, "ايداع يدوي"))
+        return form
+
+    def form_valid(self, form):
+        treasury_balance = BankAccount.objects.get(id=int(self.kwargs['pk'])).balance
+        value = form.cleaned_data.get("value")
+        transaction_type = form.cleaned_data.get("transaction_type")
+        if transaction_type == 3:
+            if float(treasury_balance) >= float(value):
+                treasury = BankAccount.objects.get(id=int(self.kwargs['pk']))
+                treasury.balance -= form.cleaned_data.get("value")
+                treasury.save(update_fields=['balance'])
+
+                trans = BankAccountTransactions()
+                trans.transaction = 'سحب مبلغ مالي من الحساب '
+                trans.account = BankAccount.objects.get(id=int(self.kwargs['pk']))
+                trans.transaction_type = 3
+                trans.value = form.cleaned_data.get("value")
+                trans.date = form.cleaned_data.get("date")
+                trans.save()
+                messages.success(self.request, " تم سحب المبلغ بنجاح ", extra_tags="success")
+                return redirect(self.get_success_url())
+            else:
+                return redirect(self.get_absolute_url())
+        else:
+            treasury = BankAccount.objects.get(id=int(self.kwargs['pk']))
+            treasury.balance += form.cleaned_data.get("value")
+            treasury.save(update_fields=['balance'])
+
+            trans = BankAccountTransactions()
+            trans.transaction = 'ايداع مبلغ مالي في الحساب '
+            trans.account = BankAccount.objects.get(id=int(self.kwargs['pk']))
+            trans.transaction_type = 4
+            trans.value = form.cleaned_data.get("value")
+            trans.date = form.cleaned_data.get("date")
+            trans.save()
+            messages.success(self.request, " تم ايداع المبلغ بنجاح ", extra_tags="success")
+            return redirect(self.get_success_url())
+
+
+class WorkTreasuryDetail(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = WorkTreasuryTransactions
+    template_name = 'Treasury/treasury_detail.html'
+    # paginate_by = 5
+
+    def get_queryset(self):
+        queryset = WorkTreasuryTransactions.objects.filter(treasury__id=self.kwargs['pk']).order_by('-date')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' تفاصيل الخزنة ' + str(WorkTreasury.objects.get(id=int(self.kwargs['pk'])).name)
+        context['treasury'] = 'العمليات الخاصة بالخزينة'
+        return context
+
+
+class HomeTreasuryDetail(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = HomeTreasuryTransactions
+    template_name = 'Treasury/treasury_detail.html'
+    # paginate_by = 5
+
+    def get_queryset(self):
+        queryset = HomeTreasuryTransactions.objects.filter(treasury__id=self.kwargs['pk']).order_by('-date')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' تفاصيل الخزنة ' + str(HomeTreasury.objects.get(id=int(self.kwargs['pk'])).name)
+        context['treasury'] = 'العمليات الخاصة بالخزينة'
+        return context
+
+
+class BankAccountDetail(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = BankAccountTransactions
+    template_name = 'Treasury/treasury_detail.html'
+    # paginate_by = 5
+
+    def get_queryset(self):
+        queryset = BankAccountTransactions.objects.filter(account__id=self.kwargs['pk']).order_by('-date')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = ' تفاصيل الخزنة ' + str(BankAccount.objects.get(id=int(self.kwargs['pk'])).name)
+        context['treasury'] = 'العمليات الخاصة بالحساب'
+        return context
