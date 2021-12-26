@@ -97,7 +97,7 @@
 
                               </span>
                           </div>
-                          <h3 ><a href="{% url 'SpareParts:SparePartsNamesDetail' x.id x.name %}" class="text-dark"> {{x.name}}</a></h3>
+                          <h3 >{{x.name}}</h3>
                           <h4 ><a href="#" class="badge badge-primary"> النوع : {{x.spare_type}}</a></h4>
 
                       </div>
@@ -107,7 +107,8 @@
 
 
                                     <div class="mr-3">
-                                        <a href="{% url 'SpareParts:SparePartsNamesDetail' x.id x.name %}">
+                                        <a href="{% url 'SpareParts:SparePartsNamesDetail' x.id x.name %}"
+                                         data-target="#sub_modal" data-toggle="modal" >
                                             <span class="badge badge-dark"><i class='bx bx-area' ></i>تفاصيل</span>
                                        </a>
                                     </div>

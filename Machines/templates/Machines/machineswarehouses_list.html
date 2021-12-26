@@ -83,7 +83,9 @@
                           <div class="contact-links d-flex justify-content-center font-size-20">
                               {% if message == 'active' %}
                               <div class="mr-3">
-                                  <a href="{% url 'Machines:warehouses_detail' x.id %}" class="badge badge-dark waves-effect text-white waves-light">
+                                  <a href="{% url 'Machines:warehouses_detail' x.id %}"
+                                  data-target="#sub_modal" data-toggle="modal"
+                                  class="badge badge-dark waves-effect text-white waves-light">
                                       <i class="bx bx-area font-size-16 align-middle mr-2"></i> تفاصيل
                                   </a>
                               </div>
