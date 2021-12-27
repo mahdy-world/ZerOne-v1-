@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import *
 from django.urls import reverse_lazy
 
-from Auth.forms import ChangePasswordForm
+from Auth.forms import ChangePasswordForm , RegisterForm
 
 
 # Create your views here.
@@ -52,7 +52,6 @@ def ChangePassword(request):
         'action_url' : action_url
     }
     
-    
     if form.is_valid():
         user = User.objects.get(username=request.user)
         user.set_password(password) 
@@ -60,3 +59,32 @@ def ChangePassword(request):
         return redirect('Core:index')
 
     return render(request,'forms/form_template.html', context)        
+
+
+def create_user(request,):
+    action_url = reverse_lazy('Auth:create_user')
+    form = RegisterForm(request.POST or None)
+    if form.is_valid():
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data['password'])
+        form.save()
+        return redirect('Core:index')
+    context = {
+        'title': 'إضافة مستخدم جديد',
+        'form': form,
+        'action_url':action_url
+    }
+    return render(request, 'forms/user_form.html', context)
+
+
+class Users(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = User 
+    template_name = 'users.html'
+    
+
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] =  'قائمة المستخدمين'
+        return context

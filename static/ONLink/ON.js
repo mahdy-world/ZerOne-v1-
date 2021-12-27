@@ -26,6 +26,10 @@ $('#sub_modal').on('show.bs.modal', function (x) {
     $('#sub_body').load(x.relatedTarget.href);
 });
 
+$('#user_modal').on('show.bs.modal', function (y) {
+    $('#user_body').load(y.relatedTarget.href);
+});
+
 $('body').on('hidden.bs.modal', function () {
     if ($('.modal.in').length > 0) {
         $('body').addClass('modal-open');
