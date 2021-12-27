@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views.generic import *
@@ -82,9 +83,42 @@ class Users(LoginRequiredMixin, ListView):
     model = User 
     template_name = 'users.html'
     
-
-    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] =  'قائمة المستخدمين'
         return context
+    
+    
+class UsersUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = User 
+    template_name = 'forms/user_form.html'
+    form_class = RegisterForm
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل المستخدم  : ' + str(self.object)
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('Auth:UsersUpdate', kwargs={'pk': self.object.id})
+        return context
+    
+    def get_success_url(self):
+        messages.success(self.request, "تم التعديل بنجاح", extra_tags="success")
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        
+        
+    def form_valid(self, form):
+        messages.success(self.request, "تم التعديل بنجاح", extra_tags="success")
+        myform = User.objects.get(id=self.kwargs['pk'])
+        myform.set_password(form.cleaned_data['password'])
+        myform.username = form.cleaned_data.get("username")
+        myform.first_name = form.cleaned_data.get("first_name")
+        myform.last_name = form.cleaned_data.get("last_name")
+        myform.is_staff = form.cleaned_data.get("is_staff")
+        myform.is_active = form.cleaned_data.get("is_active")
+        myform.is_superuser = form.cleaned_data.get("is_superuser")
+        myform.save()
+        return redirect(self.get_success_url())
