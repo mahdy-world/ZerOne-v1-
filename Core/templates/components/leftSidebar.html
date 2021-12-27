@@ -340,12 +340,18 @@
                     </a>
                     <ul class="sub-menu bg-light" aria-expanded="false">
                         
-                        <li><a href="ecommerce-products.html" key="t-products"><i class='bx bx-list-ul' ></i>
+                        <li><a href="{% url 'Auth:Users' %}"
+                            data-target="#sub_modal" data-toggle="modal"
+                            key="t-products"><i class='bx bx-list-ul' ></i>
                             قائمة المستخدمين </a></li>
 
-                        <li><a href="ecommerce-product-detail.html" key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
-                        اضافة مستخدم جديد</a></li>
-
+                            
+                            {% if request.user.is_superuser  %}
+                            <li><a href="{% url 'Auth:create_user' %}" data-target="#sub_modal" data-toggle="modal"> <i class='bx bxs-add-to-queue'></i>
+                                اضافة مستخدم جديد</a></li>        
+                            {% endif %}
+                                
+                        
                         
                         
                     </ul>
