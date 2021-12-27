@@ -25,11 +25,10 @@ class RegisterForm(forms.ModelForm):
         ]
         
         widgets = {
-            'password': forms.PasswordInput(attrs={'class':'form-control', 'name':'password'}),
-            'username': forms.TextInput(attrs={'class':'form-control'}),
-            'first_name': forms.TextInput(attrs={'class':'form-control'}),
-            'last_name': forms.TextInput(attrs={'class':'form-control'}),
-            
+            'password': forms.PasswordInput(attrs={'class':'form-control', 'name':'password' , 'placeholder':'ضع كلمة سر جديدة ....'}),
+            'username': forms.TextInput(attrs={'class':'form-control','name':'username'}),
+            'first_name': forms.TextInput(attrs={'class':'form-control','name':'first_name'}),
+            'last_name': forms.TextInput(attrs={'class':'form-control','name':'last_name'}),
         }
     
     def __init__(self, *args, **kwargs):
@@ -37,6 +36,36 @@ class RegisterForm(forms.ModelForm):
         self.fields['username'].label = "اسم المستخدم" 
         self.fields['username'].help_text = "" 
         self.fields['password'].label = "كلمة المرور"   
+        self.fields['password'].required = False  
+        self.fields['first_name'].label = "الاسم الاول"   
+        self.fields['last_name'].label = " الاسم الاخير"   
+        self.fields['is_staff'].label = "موظف"   
+        self.fields['is_staff'].help_text = "لدية صلاحيات محدودة"   
+        self.fields['is_active'].label = "نشط"   
+        self.fields['is_active'].help_text = "يعمل / لا يعمل .... بديل للحذف"   
+        self.fields['is_superuser'].label = "مسئول"   
+        self.fields['is_superuser'].help_text = "لدية كل الصلاحيات لعمل كل شئ "   
+class RegisterForm(forms.ModelForm):
+    
+    class Meta:
+        model = User
+        fields = [
+            'username','password','first_name','last_name','is_staff','is_active','is_superuser'
+        ]
+        
+        widgets = {
+            'password': forms.PasswordInput(attrs={'class':'form-control', 'name':'password' , 'placeholder':'ضع كلمة سر جديدة ....'}),
+            'username': forms.TextInput(attrs={'class':'form-control','name':'username'}),
+            'first_name': forms.TextInput(attrs={'class':'form-control','name':'first_name'}),
+            'last_name': forms.TextInput(attrs={'class':'form-control','name':'last_name'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = "اسم المستخدم" 
+        self.fields['username'].help_text = "" 
+        self.fields['password'].label = "كلمة المرور"   
+        self.fields['password'].required = False  
         self.fields['first_name'].label = "الاسم الاول"   
         self.fields['last_name'].label = " الاسم الاخير"   
         self.fields['is_staff'].label = "موظف"   

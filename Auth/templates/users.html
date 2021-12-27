@@ -106,13 +106,19 @@
                                         {% endif %}
                                     </td>
 
+                                    
+                                    {% if request.user.is_superuser %}
                                     <td>
-                                        <a href="{% url 'Auth:create_user' %}" data-dismiss="modal" 
+                                        <a href="{% url 'Auth:UsersUpdate' x.id %}" data-dismiss="modal" 
                                         data-toggle="modal" data-target="#action_modal">
 
                                             <i class='bx bx-edit bx-sm'  style='color:#2ca3b7' ></i>
                                         </a>
                                     </td>
+                                    {% endif %}
+                                        
+                                    
+                                    
                                 </tr>
                                 {% endfor %}
                      
