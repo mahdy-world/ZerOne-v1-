@@ -88,9 +88,9 @@ WSGI_APPLICATION = 'ZerOne.wsgi.application'
 # }
 
 DATABASES = {
-    'default': {
+   'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'SaadSys',
+         'NAME': 'SaadSys',
         'USER': 'zerone',
         'PASSWORD': 'zerone2021',
         'HOST': '127.0.0.1',

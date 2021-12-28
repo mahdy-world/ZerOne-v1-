@@ -49,7 +49,7 @@ class MachinesNamesForm(forms.ModelForm):
 class MachinesNamesFormDelete(forms.ModelForm):
     class Meta:
         model = MachinesNames
-        exclude = ['name']
+        exclude = ['name', 'machine_type']
         widgets = {
             'deleted': forms.HiddenInput(),
         }
