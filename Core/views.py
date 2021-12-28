@@ -1,13 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models.aggregates import Sum
-from django.shortcuts import get_object_or_404, redirect ,HttpResponseRedirect, render
+from django.shortcuts import  render
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import *
-from django.db.models import Count
 from django.contrib import messages
 from Core.forms import SystemInfoForm
-
+from Machines.models import *
 from Core.models import SystemInformation
 
 # Create your views here.
@@ -52,3 +50,21 @@ class SystemInfoUpdate(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, " تم التعديل بنجاح", extra_tags="success")
         return reverse('Core:index')
+ 
+ 
+class MachineSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = MachinesNames
+    template_name = 'Machines/machinesnames_list.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'active'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+    
+    def get_queryset(self):
+        machine_search = self.request.GET.get("machine")  
+        queryset = self.model.objects.filter(name__icontains=machine_search, deleted=False)
+        return queryset
+        
