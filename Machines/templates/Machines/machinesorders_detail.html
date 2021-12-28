@@ -185,7 +185,7 @@
                                                                     </span>
                                                                     <span class="btn btn-sm btn-info" style="margin-top: 5px">
                                                                         {% for x in op1 %}
-                                                                        الخزنة : {{x.treasury_name}}  <i class="fas fa-comment-dollar"></i>
+                                                                        الخزنة : {{x.treasury_name}}  <i class="fas fa-box"></i>
                                                                         {% endfor %}
                                                                     </span>
                                                                 </div>
@@ -260,7 +260,7 @@
                                                                     <span class="btn btn-sm btn-info" style="margin-top: 5px">
                                                                         {% if op2 %}
                                                                         {% for x in op2 %}
-                                                                        الخزنة : {{x.treasury_name}}  <i class="fas fa-comment-dollar"></i>
+                                                                        الخزنة : {{x.treasury_name}}  <i class="fas fa-box"></i>
                                                                         {% endfor %}
                                                                         {% endif %}
                                                                     </span>
@@ -347,7 +347,7 @@
                                                                 <span class="btn btn-sm btn-info" style="margin-top: 5px">
                                                                         {% if op3 %}
                                                                         {% for x in op3 %}
-                                                                        الخزنة : {{x.treasury_name}}  <i class="fas fa-comment-dollar"></i>
+                                                                        الخزنة : {{x.treasury_name}}  <i class="fas fa-box"></i>
                                                                         {% endfor %}
                                                                         {% endif %}
                                                                 </span>
@@ -428,7 +428,7 @@
                                                                 <span class="btn btn-sm btn-info" style="margin-top: 5px">
                                                                     {% if op4 %}
                                                                     {% for x in op4 %}
-                                                                    المخزن : {{x.warehouse_name}}  <i class="fas fa-comment-dollar"></i>
+                                                                    المخزن : {{x.warehouse_name}}  <i class="fas fa-warehouse"></i>
                                                                     {% endfor %}
                                                                     {% endif %}
                                                                 </span>
@@ -519,7 +519,7 @@
                                                                 <span class="btn btn-sm btn-info" style="margin-top: 5px">
                                                                     {% if op5 %}
                                                                     {% for x in op5 %}
-                                                                    الخزنة : {{x.treasury_name}}  <i class="fas fa-comment-dollar"></i>
+                                                                    الخزنة : {{x.treasury_name}}  <i class="fas fa-box"></i>
                                                                     {% endfor %}
                                                                     {% endif %}
                                                                 </span>
@@ -609,6 +609,7 @@
                                                     </div>
                                                 </div>
 
+                                                    {% if not op1 %}
                                                     <div class="table-responsive" id="order_list">
                                                         <table class="table table-nowrap mb-0">
                                                             <thead>
@@ -640,20 +641,20 @@
                                                            
                                                         </table>
                                                     </div>
+                                                    {% endif %}
 
                                                     <div class="card-body">
-                                                        
-                                
                                                         <div class="table-responsive">
-                                                            <table class="table table-centered table-nowrap">
+                                                            <table class="table table-centered table-nowrap text-center">
                                                                 <thead class="thead-light">
-                                                                    <tr style="text-align: center;">
-                                                                       
+                                                                    <tr>
                                                                         <th>م</th>
                                                                         <th>المنتج</th>
                                                                         <th>الكمية</th>
                                                                         <th>سعر الشراء</th>
+                                                                        {% if not op1 %}
                                                                         <th></th>
+                                                                        {% endif %}
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -669,7 +670,7 @@
                                                                         </td>
                                                                         
                                                                         <td>
-                                                                            <span class="badge badge-pill badge-soft-success font-size-12">
+                                                                            <span class="badge badge-pill badge-soft-success font-size-12 text-danger">
                                                                                 <i class='bx bx-dollar'></i> {{ x.product_price }}
                                                                             </span>
                                                                         </td>
