@@ -95,7 +95,7 @@
 
                               </span>
                           </div>
-                          <h3 ><a href="#" class="text-dark"> {{x.name}}</a></h3>
+                          <h3 ><a href="{% url 'SpareParts:SparePartsWarehouseDetail' x.id %}"  data-target="#sub_modal" data-toggle="modal" class="text-dark"> {{x.name}}</a></h3>
 
                       </div>
                       <div class="card-footer bg-transparent border-top">
