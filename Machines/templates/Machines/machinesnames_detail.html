@@ -49,10 +49,6 @@
                     <div class="col-lg-12">
                         <div class="card" >
                             <div class="card-body">
-                                <h4 class="card-title badge badge-warning font-weight-bold mb-4">
-                                    <i class="fas fa-warehouse"></i>
-                                    المخزون الخاص بالمكينة
-                                </h4>
                                 <div class="table-responsive">
                                     <table class="table table-centered   ">
                                         <thead class="thead-light text-center">
@@ -85,7 +81,7 @@
                                                 
                                             </td>
                                             <td>
-                                                <h5 class="badge">
+                                                <h5 class="font-size-16">
                                                     {{x.quantity|floatformat }} قطعة  
                                                     
                                                 </h5>
@@ -94,7 +90,7 @@
                                             <td>
                                                 <h4 class="badge badge-danger">
                                                     <i class="fas fa-dollar-sign"></i>
-                                                    {{x.purchase_cost}} جنية
+                                                    {{x.purchase_cost|floatformat:'2'}} جنية
                                                 </h4>
                                                 
                                             </td>

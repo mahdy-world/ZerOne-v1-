@@ -17,7 +17,7 @@ from .models import *
 class SparePartsTypeList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsTypes
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'SpareParts/sparepartstypes_list.html'
 
     def get_queryset(self):
@@ -36,7 +36,7 @@ class SparePartsTypeList(LoginRequiredMixin ,ListView):
 class SparePartsTypeTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsTypes
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'SpareParts/sparepartstypes_list.html'
 
     def get_queryset(self):
@@ -46,8 +46,6 @@ class SparePartsTypeTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = 'trach'
-        context['title'] = 'سلة مهملات انواع قطع الغيار'
-        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -56,6 +54,7 @@ class SparePartsTypeCreate(LoginRequiredMixin ,CreateView):
     model = SparePartsTypes
     form_class = SparePartsTypeForm
     template_name = 'forms/form_template.html'
+    success_url = reverse_lazy('SpareParts:SpareTypeList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,7 +65,12 @@ class SparePartsTypeCreate(LoginRequiredMixin ,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, "  تم إضافة نوع قطعة غيار بنجاح", extra_tags="success")
-        return reverse('SpareParts:SpareTypeList',)
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('SpareParts:SpareTypeList',)
 
 class SparePartsTypeUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
@@ -82,7 +86,7 @@ class SparePartsTypeUpdate(LoginRequiredMixin ,UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم تعديل نوع قطعة غيار بنجاح ", extra_tags="info")
+        messages.success(self.request,  " تم تعديل نوع قطعة غيار " + str(self.object) + " بنجاح ", extra_tags="success")
         return reverse('SpareParts:SpareTypeList',)
 
 class SparePartsTypeDelete(LoginRequiredMixin ,UpdateView):
@@ -97,13 +101,13 @@ class SparePartsTypeDelete(LoginRequiredMixin ,UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'حذف نوع قطعة غيار: ' + str(self.object)
+        context['title'] = 'نقل نوع قطعة غيار الي سلة المهملات: ' + str(self.object)
         context['message'] = 'delete'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsTypeDelete', kwargs={'pk': self.object.id})
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف نوع قطعة غيار " + str(self.object) + ' بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم نقل نوع قطعة غيار " + str(self.object) + ' الي سلة المهملات بنجاح ' , extra_tags="success")
         myform = SparePartsTypes.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -127,7 +131,7 @@ class SparePartsTypeRestore(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع نوع قطعة غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع نوع قطعة غيار " + str(self.object) + ' الي القائمة بنجاح ' , extra_tags="success")
         myform = SparePartsTypes.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -162,8 +166,8 @@ class SparePartsTypeSuperDelete(LoginRequiredMixin, UpdateView):
 class SparePartsNameList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsNames
-    paginate_by = 8
-    template_name = 'SpareParts/sparepartstnames_list.html'
+    paginate_by = 12
+    template_name = 'SpareParts/sparepartsnames_list.html'
 
     def get_queryset(self):
         queryset = self.model.objects.filter(deleted=False).order_by('id')
@@ -173,15 +177,13 @@ class SparePartsNameList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['page'] = 'active'
-        context['title'] = 'قائمة أصناف قطع الغيار'
-        context['icons'] = '<i class="fas fa-cubes"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
 
 class SparePartsNameTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsNames
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'SpareParts/sparepartsnames_list.html'
 
     def get_queryset(self):
@@ -191,8 +193,6 @@ class SparePartsNameTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['Name'] = 'trach'
-        context['title'] = 'سلة مهملات أصناف قطع الغيار'
-        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -233,7 +233,7 @@ class SparePartsNameUpdate(LoginRequiredMixin ,UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم تعديل صنف قطعة غيار بنجاح ", extra_tags="info")
+        messages.success(self.request, " تم تعديل صنف قطعة غيار " + str(self.object) + " بنجاح ", extra_tags="success")
         return reverse('SpareParts:SparePartsNameList',)
 
 class SparePartsNameDelete(LoginRequiredMixin ,UpdateView):
@@ -254,7 +254,7 @@ class SparePartsNameDelete(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم نقل صنف قطعة غيار " + str(self.object) + ' الي سلة المهملات بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم نقل صنف قطعة غيار " + str(self.object) + ' الي سلة المهملات بنجاح ' , extra_tags="success")
         myform = SparePartsNames.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -268,7 +268,7 @@ class SparePartsNameRestore(LoginRequiredMixin ,UpdateView):
     
 
     def get_success_url(self):
-        return reverse('SpareParts:SparePartsNameList',)
+        return reverse('SpareParts:SpareNameTrachList',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -278,7 +278,7 @@ class SparePartsNameRestore(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع صنف قطعة غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع صنف قطعة غيار " + str(self.object) + ' الي القائمة بنجاح ' , extra_tags="success")
         myform = SparePartsNames.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -312,7 +312,7 @@ class SparePartsNameSuperDelete(LoginRequiredMixin, UpdateView):
 class SparePartsWarehouseList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsWarehouses
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'SpareParts/sparepartswarehouse_list.html'
 
     def get_queryset(self):
@@ -323,15 +323,13 @@ class SparePartsWarehouseList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['page'] = 'active'
-        context['title'] = 'مخزن قطع الغيار'
-        context['icons'] = '<i class="fas fa-warehouse"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
 
 class SparePartsWarehouseTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsWarehouses
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'SpareParts/sparepartswarehouse_list.html'
 
     def get_queryset(self):
@@ -341,8 +339,6 @@ class SparePartsWarehouseTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['Name'] = 'trach'
-        context['title'] = 'سلة مهملات مخزن قطع الغيار'
-        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -351,6 +347,7 @@ class SparePartsWarehouseCreate(LoginRequiredMixin ,CreateView):
     model = SparePartsWarehouses
     form_class = SparePartsWarehouseForm
     template_name = 'forms/form_template.html'
+    success_url = reverse_lazy('SpareParts:SparePartsWarehouseList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -361,7 +358,12 @@ class SparePartsWarehouseCreate(LoginRequiredMixin ,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, "  تم اضافة مخزن قطع غيار بنجاح", extra_tags="success")
-        return reverse('SpareParts:SparePartsWarehouseList',)
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('SpareParts:SparePartsWarehouseList',)
 
 class SparePartsWarehouseUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
@@ -377,7 +379,7 @@ class SparePartsWarehouseUpdate(LoginRequiredMixin ,UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم تعديل مخزن قطع غيار بنجاح ", extra_tags="info")
+        messages.success(self.request, "تم تعديل مخزن قطع غيار " + str(self.object) + " بنجاح ", extra_tags="success")
         return reverse('SpareParts:SparePartsWarehouseList',)
 
 class SparePartsWarehouseDelete(LoginRequiredMixin ,UpdateView):
@@ -398,7 +400,7 @@ class SparePartsWarehouseDelete(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم نقل مخزن قطع غيار " + str(self.object) + ' الي سلة المهملات بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم نقل مخزن قطع غيار " + str(self.object) + ' الي سلة المهملات بنجاح ' , extra_tags="success")
         myform = SparePartsWarehouses.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -412,7 +414,7 @@ class SparePartsWarehouseRestore(LoginRequiredMixin ,UpdateView):
     
 
     def get_success_url(self):
-        return reverse('SpareParts:SparePartsWarehouseList',)
+        return reverse('SpareParts:SparePartsWarehouseTrachList',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -422,7 +424,7 @@ class SparePartsWarehouseRestore(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع مخزن قطع غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع مخزن قطع غيار " + str(self.object) + ' الي القائمة بنجاح ' , extra_tags="success")
         myform = SparePartsWarehouses.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -458,7 +460,7 @@ class SparePartsSupplierList(LoginRequiredMixin ,ListView):
 
     login_url = '/auth/login/'
     model = SparePartsSuppliers
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'SpareParts/sparepartssuppliers_list.html'
 
     def get_queryset(self):
@@ -469,8 +471,6 @@ class SparePartsSupplierList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['page'] = 'active'
-        context['title'] = 'قائمة موردين قطع الغيار'
-        context['icons'] = '<i class="fas fa-users"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
   
@@ -479,8 +479,8 @@ class SparePartsSupplierList(LoginRequiredMixin ,ListView):
 class SparePartsSupplierTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsSuppliers
-    paginate_by = 8
-    template_name = 'SpareParts/sparepartssupplier_list.html'
+    paginate_by = 12
+    template_name = 'SpareParts/sparepartssuppliers_list.html'
 
     def get_queryset(self):
         queryset = self.model.objects.filter(deleted=True).order_by('id')
@@ -489,8 +489,6 @@ class SparePartsSupplierTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['Name'] = 'trach'
-        context['title'] = 'سلة مهملات موردين قطع الغيار'
-        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -503,6 +501,7 @@ class SparePartsSupplierCreate(LoginRequiredMixin ,CreateView):
     model = SparePartsSuppliers
     form_class = SparePartSupplierForm
     template_name = 'forms/form_template.html'
+    success_url = reverse_lazy('SpareParts:SparePartsSupplierList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -513,7 +512,12 @@ class SparePartsSupplierCreate(LoginRequiredMixin ,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, "  تم اضافة مورد قطع غيار بنجاح", extra_tags="success")
-        return reverse('SpareParts:SparePartsSupplierList',)
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('SpareParts:SparePartsSupplierList',)
   
   
   
@@ -532,7 +536,7 @@ class SparePartsSupplierUpdate(LoginRequiredMixin ,UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم تعديل مورد قطع غيار بنجاح ", extra_tags="info")
+        messages.success(self.request, "تم تعديل مورد قطع غيار " + str(self.object) + " بنجاح ", extra_tags="success")
         return reverse('SpareParts:SparePartsSupplierList',)
 
 
@@ -556,7 +560,7 @@ class SparePartsSupplierDelete(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم نقل مورد قطع غيار " + str(self.object) + ' الي سلة المهملات بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم نقل مورد قطع غيار " + str(self.object) + ' الي سلة المهملات بنجاح ' , extra_tags="success")
         myform = SparePartsSuppliers.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -572,7 +576,7 @@ class SparePartsSupplierRestore(LoginRequiredMixin ,UpdateView):
     
 
     def get_success_url(self):
-        return reverse('SpareParts:SparePartsSupplierList',)
+        return reverse('SpareParts:SparePartsSupplierTrachList',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -582,7 +586,7 @@ class SparePartsSupplierRestore(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع مورد قطع غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع مورد قطع غيار " + str(self.object) + ' الي القائمة بنجاح ' , extra_tags="success")
         myform = SparePartsSuppliers.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -618,7 +622,7 @@ class SparePartsSupplierSuperDelete(LoginRequiredMixin, UpdateView):
 class SparePartsOrderList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsOrders
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'SpareParts/sparepartsorders_list.html'
 
     def get_queryset(self):
@@ -629,8 +633,6 @@ class SparePartsOrderList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['page'] = 'active'
-        context['title'] = 'سلة مهملات موردين قطع الغيار'
-        context['icons'] = '<i class="fas fa-file-invoice"></i>'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
 
@@ -639,7 +641,7 @@ class SparePartsOrderList(LoginRequiredMixin ,ListView):
 class SparePartsOrderTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = SparePartsOrders
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'SpareParts/sparepartsorders_list.html'
 
     def get_queryset(self):
@@ -649,8 +651,6 @@ class SparePartsOrderTrachList(LoginRequiredMixin ,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['Name'] = 'trach'
-        context['title'] = 'سلة مهملات طلبيات قطع الغيار'
-        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -709,7 +709,7 @@ class SparePartsOrderUpdate(LoginRequiredMixin ,UpdateView):
         return form
     
     def get_success_url(self,**kwargs):
-        messages.success(self.request, "تم تعديل طلبية' قطع غيار بنجاح ", extra_tags="info")
+        messages.success(self.request, "تم تعديل طلبية قطع غيار رقم " + str(self.object) + " بنجاح ", extra_tags="success")
         return reverse('SpareParts:SparePartsOrderList')
 
 
@@ -726,13 +726,13 @@ class SparePartsOrderDelete(LoginRequiredMixin ,UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'حذف طلب قطع غيار: ' + str(self.object)
+        context['title'] = 'نقل طلبية قطع غيار الي سلة المهملات: ' + str(self.object)
         context['message'] = 'delete'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderDelete', kwargs={'pk': self.object.id})
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف طلب قطع غيار " + str(self.object) + ' بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم نقل طلبية قطع غيار " + str(self.object) + ' الي سلة المهملات بنجاح ' , extra_tags="success")
         myform = SparePartsOrders.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -748,17 +748,17 @@ class SparePartsOrderRestore(LoginRequiredMixin ,UpdateView):
     
 
     def get_success_url(self):
-        return reverse('SpareParts:SparePartsOrderList',)
+        return reverse('SpareParts:SparePartsOrderTrachList',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'استرجاع طلب قطع غيار: ' + str(self.object)
+        context['title'] = 'استرجاع طلبية قطع غيار: ' + str(self.object)
         context['message'] = 'restore'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderRestore', kwargs={'pk': self.object.id})
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع طلب قطع غيار " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع طلبية قطع غيار " + str(self.object) + ' الي القائمة بنجاح ' , extra_tags="success")
         myform = SparePartsOrders.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -777,13 +777,13 @@ class SparePartsOrderSuperDelete(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'حذف طلب قطع الغيار : ' + str(self.object.order_number) + 'بشكل نهائي'
+        context['title'] = 'حذف طلبية قطع الغيار : ' + str(self.object.order_number) + 'بشكل نهائي'
         context['message'] = 'super_delete'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderSuperDelete', kwargs={'pk': self.object.id})
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف طلب قطع الغيار " + str(self.object.order_number) + " نهائيا بنجاح ", extra_tags="success")
+        messages.success(self.request, " تم حذف طلبية قطع الغيار " + str(self.object.order_number) + " نهائيا بنجاح ", extra_tags="success")
         my_form = SparePartsOrders.objects.get(id=self.kwargs['pk'])
         my_form.delete()
         return redirect(self.get_success_url()) 
@@ -851,7 +851,8 @@ def AddProductOrder(request, pk):
     type_page = "list"
     page = "active"
     action_url = reverse_lazy('SpareParts:AddProductOrder',kwargs={'pk':order.id})
-    
+    messages.success(request, " تم اضافة منتج الي الطلبية بنجاح ", extra_tags="success")
+
     context = {
         'order' : order,
         'type' : type_page,
@@ -882,13 +883,13 @@ class SparePartsOrderAddProductUpdate(LoginRequiredMixin ,UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تعديل المنتج: ' 
+        context['title'] = 'تعديل منتج داخل الطلبية: ' + str(self.object.product_name)
         context['message'] = 'update'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderAddProductUpdate', kwargs={'pk': self.object.id, 'id': self.object.product_order.id})
         return context
     
     def get_success_url(self,**kwargs):
-        messages.success(self.request, "تم تعديل بنجاح ", extra_tags="info")
+        messages.success(self.request, "تم تعديل المنتج " + str(self.object.product_name) + " بنجاح ", extra_tags="success")
 
         # if self.request.POST.get('url'):
         #     return self.request.POST.get('url')
@@ -910,14 +911,14 @@ class SparePartsOrderAddProductDelete(LoginRequiredMixin,UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'حذف المنتج: ' 
+        context['title'] = 'حذف منتج داخل الطلبية: ' + str(self.object.product_name)
         context['message'] = 'super_delete'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderAddProductDelete', kwargs={'pk': self.object.id, 'id': self.object.product_order.id})
         return context
     
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف  المنتج " + str(self.object.product_name) + " نهائيا بنجاح ", extra_tags="success")
+        messages.success(self.request, " تم حذف المنتج " + str(self.object.product_name) + " نهائيا بنجاح ", extra_tags="success")
         my_form = SparePartsOrderProducts.objects.get(id=self.kwargs['pk'])
         my_form.delete()
         return redirect(self.get_success_url())
@@ -934,7 +935,7 @@ class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
 
 
     def get_success_url(self):
-        messages.success(self.request, " تمت دفع العربون بنجاح " , extra_tags="success")
+        messages.success(self.request, " تم دفع العربون بنجاح " , extra_tags="success")
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
 
     def get_absolute_url(self):
@@ -944,7 +945,7 @@ class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = ' دفع عربون ' 
+        context['title'] = ' دفع عربون '
         context['message'] = 'add'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateDeposit', kwargs={'pk':self.kwargs['pk']})
         return context
@@ -998,7 +999,7 @@ class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
 
 
     def get_success_url(self):
-        messages.success(self.request, " تمت دفع باقي المبلغ بنجاح " , extra_tags="success")
+        messages.success(self.request, " تم دفع باقي المبلغ بنجاح " , extra_tags="success")
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
 
     def get_absolute_url(self):
@@ -1007,7 +1008,7 @@ class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = ' دفع باقي المبلغ ' 
+        context['title'] = ' دفع باقي المبلغ المستحق'
         context['message'] = 'add'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateReset', kwargs={'pk':self.kwargs['pk']})
         return context
@@ -1061,7 +1062,7 @@ class SparePartsOperationCreateClearance(LoginRequiredMixin ,CreateView):
 
 
     def get_success_url(self):
-        messages.success(self.request, " تمت دفع  مبلغ تخليص البضاعة بنجاح " , extra_tags="success")
+        messages.success(self.request, " تم دفع مبلغ تخليص البضاعة بنجاح " , extra_tags="success")
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
 
     def get_absolute_url(self):
@@ -1070,7 +1071,7 @@ class SparePartsOperationCreateClearance(LoginRequiredMixin ,CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = ' دفع باقي المبلغ ' 
+        context['title'] = ' دفع مبلغ تخليص البضاعة '
         context['message'] = 'add'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOperationCreateClearance', kwargs={'pk':self.kwargs['pk']})
         return context
@@ -1125,7 +1126,7 @@ class SparePartsOperationCreateTax(LoginRequiredMixin ,CreateView):
 
 
     def get_success_url(self):
-        messages.success(self.request, " تم دفع  مبلغ ضرائب البضاعة بنجاح " , extra_tags="success")
+        messages.success(self.request, " تم دفع مبلغ ضرائب البضاعة بنجاح " , extra_tags="success")
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.kwargs['pk']})
 
     def get_absolute_url(self):
@@ -1243,7 +1244,7 @@ class SparePartsWarehouseDetail(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = SparePartsWarehouseTransactions
     template_name = 'SpareParts/sparepartswharehouse_detail.html'
-    paginate_by = 10
+    # paginate_by = 10
     
     def get_queryset(self):
         queryset = SparePartsWarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('item')
@@ -1252,9 +1253,8 @@ class SparePartsWarehouseDetail(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تفاصيل ' + str(SparePartsWarehouses.objects.get(id=int(self.kwargs['pk'])).name)
+        context['title'] = 'المخزون الخاص بمخزن قطع الغيار: ' + str(SparePartsWarehouses.objects.get(id=int(self.kwargs['pk'])).name)
         context['type'] = 'list'
-        context['icons'] = '<i class="fas fa-warehouse"></i>'
         context['count'] = SparePartsWarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('warehouse').count()
         
         return context
@@ -1264,7 +1264,7 @@ class SparePartsNamesDetail(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = SparePartsWarehouseTransactions
     template_name = 'SpareParts/sparepartsnames_detail.html'
-    paginate_by = 10
+    # paginate_by = 10
     
     def get_queryset(self):
         queryset = SparePartsWarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse')
@@ -1273,16 +1273,8 @@ class SparePartsNamesDetail(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تفاصيل المنتج ' + str(self.kwargs['name'])
+        context['title'] = 'المخزون الخاص بقطعة الغيار: ' + str(self.kwargs['name'])
         context['type'] = 'list'
-        context['icons'] = '<i class="fas fa-sticky-note"></i>'
         context['count'] = SparePartsWarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse').count()
         
         return context
-    
-
-
-
-    
-    
- 

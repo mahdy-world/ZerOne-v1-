@@ -18,7 +18,7 @@ from .models import *
 class WorkTreasuryList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = WorkTreasury
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'Treasury/worktreasury_list.html'
 
     def get_queryset(self):
@@ -29,7 +29,6 @@ class WorkTreasuryList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['title'] = 'قائمة خزائن العمل'
-        context['icons'] = '<i class="fas fa-coins"></i>'
         context['page'] = 'active'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
@@ -37,7 +36,7 @@ class WorkTreasuryList(LoginRequiredMixin ,ListView):
 class WorkTreasuryTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = WorkTreasury
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'Treasury/worktreasury_list.html'
 
     def get_queryset(self):
@@ -48,7 +47,6 @@ class WorkTreasuryTrachList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'trach'
         context['title'] = 'سلة مهملات خزائن العمل'
-        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -57,6 +55,7 @@ class WorkTreasuryCreate(LoginRequiredMixin ,CreateView):
     model = WorkTreasury
     form_class = WorkTreasuryForm
     template_name = 'forms/form_template.html'
+    success_url = reverse_lazy('Treasury:WorkTreasuryList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,7 +66,12 @@ class WorkTreasuryCreate(LoginRequiredMixin ,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, "تم اضافة خزينة عمل بنجاح", extra_tags="success")
-        return reverse('Treasury:WorkTreasuryList',)
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Treasury:WorkTreasuryList',)
 
 class WorkTreasuryUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
@@ -83,7 +87,7 @@ class WorkTreasuryUpdate(LoginRequiredMixin ,UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم تعديل خزينة العمل بنجاح ", extra_tags="info")
+        messages.success(self.request, "تم تعديل خزينة العمل بنجاح ", extra_tags="success")
         return reverse('Treasury:WorkTreasuryList',)
 
 class WorkTreasuryDelete(LoginRequiredMixin ,UpdateView):
@@ -98,13 +102,13 @@ class WorkTreasuryDelete(LoginRequiredMixin ,UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'حذف خزينةالعمل: ' + str(self.object)
+        context['title'] = 'حذف خزينة العمل: ' + str(self.object)
         context['message'] = 'delete'
         context['action_url'] = reverse_lazy('Treasury:WorkTreasuryDelete', kwargs={'pk': self.object.id})
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف خزينة العمل " + str(self.object) + ' بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم حذف خزينة العمل " + str(self.object) + ' بنجاح ' , extra_tags="success")
         myform = WorkTreasury.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -129,7 +133,7 @@ class WorkTreasuryRestore(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع خزينة العمل " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع خزينة العمل " + str(self.object) + ' بنجاح ' , extra_tags="success")
         myform = WorkTreasury.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -147,7 +151,7 @@ class WorkTreasurySuperDelete(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'حذف خزينة العمل: ' + str(self.object)
+        context['title'] = 'حذف خزينة العمل بشكل نهائي: ' + str(self.object)
         context['message'] = 'super_delete'
         context['action_url'] = reverse_lazy('Treasury:WorkTreasurySuperDelete', kwargs={'pk': self.object.id})
         return context
@@ -164,7 +168,7 @@ class WorkTreasurySuperDelete(LoginRequiredMixin, UpdateView):
 class HomeTreasuryList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = HomeTreasury
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'Treasury/hometreasury_list.html'
 
     def get_queryset(self):
@@ -175,7 +179,6 @@ class HomeTreasuryList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['title'] = 'قائمة خزائن البيت'
-        context['icons'] = '<i class="fas fa-coins"></i>'
         context['page'] = 'active'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
@@ -183,7 +186,7 @@ class HomeTreasuryList(LoginRequiredMixin ,ListView):
 class HomeTreasuryTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = HomeTreasury
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'Treasury/hometreasury_list.html'
 
     def get_queryset(self):
@@ -194,7 +197,6 @@ class HomeTreasuryTrachList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'trach'
         context['title'] = 'سلة مهملات خزائن البيت'
-        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -203,6 +205,7 @@ class HomeTreasuryCreate(LoginRequiredMixin ,CreateView):
     model = HomeTreasury
     form_class = HomeTreasuryForm
     template_name = 'forms/form_template.html'
+    success_url = reverse_lazy('Treasury:HomeTreasuryList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -213,7 +216,12 @@ class HomeTreasuryCreate(LoginRequiredMixin ,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, "تم اضافة خزينة البيت بنجاح", extra_tags="success")
-        return reverse('Treasury:HomeTreasuryList',)
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Treasury:HomeTreasuryList',)
 
 class HomeTreasuryUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
@@ -229,7 +237,7 @@ class HomeTreasuryUpdate(LoginRequiredMixin ,UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم تعديل خزينة البيت بنجاح ", extra_tags="info")
+        messages.success(self.request, "تم تعديل خزينة البيت بنجاح ", extra_tags="success")
         return reverse('Treasury:HomeTreasuryList',)
 
 class HomeTreasuryDelete(LoginRequiredMixin ,UpdateView):
@@ -250,7 +258,7 @@ class HomeTreasuryDelete(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف خزينة البيت " + str(self.object) + ' بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم حذف خزينة البيت " + str(self.object) + ' بنجاح ' , extra_tags="success")
         myform = HomeTreasury.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -275,7 +283,7 @@ class HomeTreasuryRestore(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع خزينة البيت " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع خزينة البيت " + str(self.object) + ' بنجاح ' , extra_tags="success")
         myform = HomeTreasury.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -312,8 +320,8 @@ class HomeTreasurySuperDelete(LoginRequiredMixin, UpdateView):
 class BankAccountList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = BankAccount
-    paginate_by = 8
-    template_name = 'Treasury/bankccount_list.html'
+    paginate_by = 12
+    template_name = 'Treasury/bankaccount_list.html'
 
     def get_queryset(self):
         queryset = self.model.objects.filter(deleted=False).order_by('id')
@@ -323,7 +331,6 @@ class BankAccountList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'list'
         context['title'] = 'قائمة حسابات البنك'
-        context['icons'] = '<i class="fas fa-coins"></i>'
         context['page'] = 'active'
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
@@ -331,7 +338,7 @@ class BankAccountList(LoginRequiredMixin ,ListView):
 class BankAccountTrachList(LoginRequiredMixin ,ListView):
     login_url = '/auth/login/'
     model = BankAccount
-    paginate_by = 8
+    paginate_by = 12
     template_name = 'Treasury/bankaccount_list.html'
 
     def get_queryset(self):
@@ -342,7 +349,6 @@ class BankAccountTrachList(LoginRequiredMixin ,ListView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'trach'
         context['title'] = 'سلة مهملات حسابات البنك'
-        context['icons'] = '<i class="fas fa-trash-alt"></i>'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
@@ -351,6 +357,7 @@ class BankAccountCreate(LoginRequiredMixin ,CreateView):
     model = BankAccount
     form_class = BankAccountForm
     template_name = 'forms/form_template.html'
+    success_url = reverse_lazy('Treasury:BankAccountList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -361,7 +368,12 @@ class BankAccountCreate(LoginRequiredMixin ,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, "تم اضافة حساب البنك بنجاح", extra_tags="success")
-        return reverse('Treasury:BankAccountList',)
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Treasury:BankAccountList',)
 
 class BankAccountUpdate(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
@@ -377,7 +389,7 @@ class BankAccountUpdate(LoginRequiredMixin ,UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم تعديل حساب البنك بنجاح ", extra_tags="info")
+        messages.success(self.request, "تم تعديل حساب البنك بنجاح ", extra_tags="success")
         return reverse('Treasury:BankAccountList',)
 
 class BankAccountDelete(LoginRequiredMixin ,UpdateView):
@@ -398,7 +410,7 @@ class BankAccountDelete(LoginRequiredMixin ,UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم حذف  حساب البنك " + str(self.object) + ' بنجاح ' , extra_tags="danger")
+        messages.success(self.request, " تم حذف  حساب البنك " + str(self.object) + ' بنجاح ' , extra_tags="success")
         myform = BankAccount.objects.get(id=self.kwargs['pk'])
         myform.deleted = 1
         myform.save()
@@ -417,13 +429,13 @@ class BankAccountRestore(LoginRequiredMixin ,UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'استرجاع  حساب البنك: ' + str(self.object)
+        context['title'] = 'استرجاع حساب البنك: ' + str(self.object)
         context['message'] = 'restore'
         context['action_url'] = reverse_lazy('Treasury:BankAccountRestore', kwargs={'pk': self.object.id})
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, " تم ارجاع  حساب البنك " + str(self.object) + ' بنجاح ' , extra_tags="dark")
+        messages.success(self.request, " تم ارجاع حساب البنك " + str(self.object) + ' بنجاح ' , extra_tags="success")
         myform = BankAccount.objects.get(id=self.kwargs['pk'])
         myform.deleted = 0
         myform.save()
@@ -441,7 +453,7 @@ class BankAccountSuperDelete(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'حذف  حساب البنك: ' + str(self.object)
+        context['title'] = 'حذف حساب البنك: ' + str(self.object)
         context['message'] = 'super_delete'
         context['action_url'] = reverse_lazy('Treasury:WorkTreasurySuperDelete', kwargs={'pk': self.object.id})
         return context
@@ -659,8 +671,7 @@ class WorkTreasuryDetail(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = ' تفاصيل الخزنة ' + str(WorkTreasury.objects.get(id=int(self.kwargs['pk'])).name)
-        context['treasury'] = 'العمليات الخاصة بالخزينة'
+        context['title'] = ' تفاصيل العمليات: ' + str(WorkTreasury.objects.get(id=int(self.kwargs['pk'])).name)
         return context
 
 
@@ -676,8 +687,7 @@ class HomeTreasuryDetail(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = ' تفاصيل الخزنة ' + str(HomeTreasury.objects.get(id=int(self.kwargs['pk'])).name)
-        context['treasury'] = 'العمليات الخاصة بالخزينة'
+        context['title'] = ' تفاصيل العمليات ' + str(HomeTreasury.objects.get(id=int(self.kwargs['pk'])).name)
         return context
 
 
@@ -693,6 +703,5 @@ class BankAccountDetail(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = ' تفاصيل الخزنة ' + str(BankAccount.objects.get(id=int(self.kwargs['pk'])).name)
-        context['treasury'] = 'العمليات الخاصة بالحساب'
+        context['title'] = ' تفاصيل العمليات ' + str(BankAccount.objects.get(id=int(self.kwargs['pk'])).name)
         return context

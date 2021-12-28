@@ -47,7 +47,7 @@ class TypesCreate(LoginRequiredMixin, CreateView):
     model = MachinesTypes
     form_class = MachinesTypesForm
     template_name = 'forms/form_template.html'
-    # success_url = reverse_lazy('Machines:types_active_list')
+    success_url = reverse_lazy('Machines:types_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,7 +58,12 @@ class TypesCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, "  تم إضافة نوع ماكينة بنجاح", extra_tags="success")
-        return reverse('Machines:types_active_list')
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Machines:types_active_list')
 
     # def get_success_url(self):
     #     if self.request.POST.get('url'):
@@ -93,7 +98,7 @@ class TypesDelete(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Machines:types_trash_list')
+        return reverse('Machines:types_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -117,7 +122,7 @@ class TypesRestore(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Machines:types_active_list')
+        return reverse('Machines:types_trash_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -197,7 +202,7 @@ class WarehousesCreate(LoginRequiredMixin, CreateView):
     model = MachinesWarehouses
     form_class = MachinesWarehousesForm
     template_name = 'forms/form_template.html'
-    # success_url = reverse_lazy('Machines:types_active_list')
+    success_url = reverse_lazy('Machines:warehouses_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -208,7 +213,12 @@ class WarehousesCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, "  تم إضافة مخزن ماكينات بنجاح", extra_tags="success")
-        return reverse('Machines:warehouses_active_list')
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Machines:warehouses_active_list')
 
     # def get_success_url(self):
     #     if self.request.POST.get('url'):
@@ -243,7 +253,7 @@ class WarehousesDelete(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Machines:warehouses_trash_list')
+        return reverse('Machines:warehouses_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -267,7 +277,7 @@ class WarehousesRestore(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Machines:warehouses_active_list')
+        return reverse('Machines:warehouses_trash_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -347,7 +357,7 @@ class NamesCreate(LoginRequiredMixin, CreateView):
     model = MachinesNames
     form_class = MachinesNamesForm
     template_name = 'forms/form_template.html'
-    # success_url = reverse_lazy('Machines:types_active_list')
+    success_url = reverse_lazy('Machines:names_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -358,7 +368,12 @@ class NamesCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, "  تم إضافة صنف ماكينة بنجاح", extra_tags="success")
-        return reverse('Machines:names_active_list')
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Machines:names_active_list')
 
     # def get_success_url(self):
     #     if self.request.POST.get('url'):
@@ -393,7 +408,7 @@ class NamesDelete(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Machines:names_trash_list')
+        return reverse('Machines:names_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -414,7 +429,7 @@ class NamesDetail(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = WarehouseTransactions
     template_name = 'Machines/machinesnames_detail.html'
-    paginate_by = 5
+    # paginate_by = 5
     
     def get_queryset(self):
         queryset = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse')
@@ -425,11 +440,9 @@ class NamesDetail(LoginRequiredMixin, ListView):
         
         
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تفاصيل المكينة ' + str(self.kwargs['name'])
+        context['title'] = 'تفاصيل المخزون الخاص بالماكينة: ' + str(self.kwargs['name'])
         context['type'] = 'list'
         context['machine'] = MachinesNames.objects.get(id=int(self.kwargs['pk']))
-        
-        context['icons'] = '<i class="fas fa-sticky-note"></i>'
         context['count'] = WarehouseTransactions.objects.filter(item=self.kwargs['pk']).order_by('warehouse').count()
         
         return context
@@ -444,7 +457,7 @@ class NamesRestore(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Machines:names_active_list')
+        return reverse('Machines:names_trash_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -524,7 +537,7 @@ class SuppliersCreate(LoginRequiredMixin, CreateView):
     model = MachinesSuppliers
     form_class = MachinesSuppliersForm
     template_name = 'forms/form_template.html'
-    # success_url = reverse_lazy('Machines:types_active_list')
+    success_url = reverse_lazy('Machines:suppliers_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -535,7 +548,12 @@ class SuppliersCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, "  تم إضافة مورد ماكينات بنجاح", extra_tags="success")
-        return reverse('Machines:suppliers_active_list')
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Machines:suppliers_active_list')
 
     # def get_success_url(self):
     #     if self.request.POST.get('url'):
@@ -570,7 +588,7 @@ class SuppliersDelete(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Machines:suppliers_trash_list')
+        return reverse('Machines:suppliers_active_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -594,7 +612,7 @@ class SuppliersRestore(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Machines:suppliers_active_list')
+        return reverse('Machines:suppliers_trash_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -757,7 +775,7 @@ class MachinesOrdersRestore(LoginRequiredMixin, UpdateView):
     template_name = 'forms/order_form.html'
 
     def get_success_url(self):
-        return reverse('Machines:MachinesOrdersList')
+        return reverse('Machines:MachinesOrdersTrashList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -858,6 +876,7 @@ def AddProductOrder(request, pk):
     type_page = "list"
     page = "active"
     action_url = reverse_lazy('Machines:AddProductOrder', kwargs={'pk': order.id})
+    messages.success(request, " تم اضافة منتج الي الطلبية بنجاح ", extra_tags="success")
 
     context = {
         'order': order,
@@ -893,7 +912,7 @@ class MachinesOrderProductsUpdate(LoginRequiredMixin, UpdateView):
         return context
 
     def get_success_url(self, **kwargs):
-        messages.success(self.request, " تم تعديل منتج " + str(self.object.product_name) + " بنجاح ", extra_tags="info")
+        messages.success(self.request, " تم تعديل منتج " + str(self.object.product_name) + " بنجاح ", extra_tags="success")
         return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.kwargs['id']})
 
 
@@ -1221,13 +1240,8 @@ class MachinesWarehouseDetail(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'تفاصيل ' + str(MachinesWarehouses.objects.get(id=int(self.kwargs['pk'])).name)
+        context['title'] = 'المخزون الخاص بمخزن الماكينات: ' + str(MachinesWarehouses.objects.get(id=int(self.kwargs['pk'])).name)
         context['type'] = 'list'
-        context['icons'] = '<i class="fas fa-warehouse"></i>'
         context['count'] = WarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('warehouse').count()
 
         return context
-    
-
-
-     

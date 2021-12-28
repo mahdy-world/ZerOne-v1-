@@ -75,7 +75,7 @@
 
                               </span>
                           </div>
-                          <h3 ><a href="{% url 'Machines:NamesDetail' x.id x.name %}" class="text-dark"> {{x.name}}</a></h3>
+                          <h3 ><a href="{% url 'Machines:NamesDetail' x.id x.name %}"  data-target="#sub_modal" data-toggle="modal" class="text-dark"> {{x.name}}</a></h3>
                           <h4 ><a href="#" class="badge badge-primary"> النوع : {{x.machine_type}}</a></h4>
 
 
@@ -90,7 +90,7 @@
                                   <a href="{% url 'Machines:NamesDetail' x.id x.name %}" 
                                   data-target="#sub_modal" data-toggle="modal"
                                   class="badge badge-dark waves-effect text-white waves-light">
-                                    <i class="bx bx-area font-size-16 align-middle "></i> تفاصيل
+                                    <i class="bx bx-area font-size-16 align-middle "></i> المخزون
                                   </a>
                               </div>
 
