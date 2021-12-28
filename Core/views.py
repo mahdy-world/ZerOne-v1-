@@ -9,10 +9,11 @@ from Machines.models import *
 from Core.models import SystemInformation
 
 # Create your views here.
+
+
 @login_required(login_url='Auth:login')
 def Index(request):
     return render(request, 'core/index.html')
-
 
 
 
@@ -67,4 +68,23 @@ class MachineSearch(LoginRequiredMixin, ListView):
         machine_search = self.request.GET.get("machine")  
         queryset = self.model.objects.filter(name__icontains=machine_search, deleted=False)
         return queryset
-        
+
+
+class SparePartsSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = SparePartsNames
+    template_name = 'SpareParts/sparepartsnames_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'active'
+        context['spare_search'] = self.request.GET.get("spare")
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+    def get_queryset(self):
+        spare_search = self.request.GET.get("spare")
+        queryset = self.model.objects.filter(name__icontains=spare_search, deleted=False)
+        return queryset
+
+
