@@ -5,7 +5,7 @@ from Machines.models import *
 
 def allcontext(request):
     info = SystemInformation.objects.filter(id=1)
-    spare_parts = SparePartsNames.objects.filter(deleted=False)
+    spare_parts = SparePartsNames.objects.filter(deleted=0)
     machines = MachinesNames.objects.filter(deleted=False)
     context = {
         'info':info,
