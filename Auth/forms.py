@@ -8,7 +8,7 @@ class ChangePasswordForm(forms.ModelForm):
         model = User
         fields = ['password']
         widgets = {
-            'password': forms.PasswordInput(attrs={'class': 'form-control', }),
+            'password': forms.PasswordInput(attrs={'class': 'form-control', 'required':'required' }),
         }
 
     def __init__(self, *args, **kwargs):

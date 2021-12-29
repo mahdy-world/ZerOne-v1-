@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMix
 from django.views import View
 from django.views.generic import *
 from django.urls import reverse_lazy
+from django.contrib.auth.hashers import check_password
 
 from Auth.forms import ChangePasswordForm , RegisterForm
 
@@ -44,21 +45,29 @@ class Logout(LoginRequiredMixin, View):
 def ChangePassword(request):
     form = ChangePasswordForm(request.POST or None)
     action_url = reverse_lazy('Auth:ChangePassword')
+    
     password = form["password"].value()
     title = "تغير كلمة المرور"
+    current_passowrd = request.user.password
     
     context = {
         'title':title,
+        'type': 'change',
         'form': form,
         'action_url' : action_url
     }
     
     if form.is_valid():
-        user = User.objects.get(username=request.user)
-        user.set_password(password) 
-        user.save()
-        return redirect('Core:index')
-
+        old_password = request.POST.get('old_password')
+        match_check = check_password(old_password,current_passowrd)
+        if match_check:
+            user = User.objects.get(username=request.user)
+            user.set_password(password) 
+            user.save()
+            return redirect('Core:index')
+        else:
+            return redirect('Core:index')
+            
     return render(request,'forms/form_template.html', context)        
 
 

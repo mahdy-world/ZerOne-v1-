@@ -26,7 +26,7 @@ class SystemInfoCreate(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'بيانات النظام'
-        context['message'] = 'add'
+        context['message'] = 'info'
         context['action_url'] = reverse_lazy('Core:SystemInfoCreate',)
         return context
     
@@ -44,7 +44,7 @@ class SystemInfoUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'تعديل بيانات النظام'
-        context['message'] = 'add'
+        context['message'] = 'info'
         context['action_url'] = reverse_lazy('Core:SystemInfoUpdate',kwargs={'pk': self.object.id})
         return context
     
@@ -77,7 +77,10 @@ class SparePartsSearch(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['message'] = 'active'
+        context['type'] = 'list'
+        context['title'] = 'قائمة انواع قطع الغيار'
+        context['icons'] = '<i class="fas fa-shapes"></i>'
+        context['page'] = 'active'
         context['spare_search'] = self.request.GET.get("spare")
         context['count'] = self.model.objects.filter(deleted=False).count()
         return context
