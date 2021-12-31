@@ -52,7 +52,7 @@ def ChangePassword(request):
     
     context = {
         'title':title,
-        'type': 'change',
+        'message':'change',
         'form': form,
         'action_url' : action_url
     }

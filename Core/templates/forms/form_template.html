@@ -86,19 +86,20 @@
                         {% elif message == 'info' %}   
                         {% csrf_token %}
                         {% bootstrap_form form %}
-                        {% else %}
+
+                        {% elif message == 'change' %}
                         {% csrf_token %}
-                        {% if type == 'change' %}
-                            
+                       
                                 <label> كلمة المرور القديمة </label>
                                 <input class="form-control mb-2" 
                                 placeholder="ادخل كلمة المرور القديمة..." 
                                 type="password" name="old_password" required>
                             
                         {% bootstrap_form form %}
-                        
+                        {% else %}
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
                       
-                        {% endif %}
                             
                         <input name="url" type="hidden" class="url_input">
                         <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
