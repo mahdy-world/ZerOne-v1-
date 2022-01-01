@@ -7,6 +7,7 @@ from django.contrib import messages
 from Core.forms import SystemInfoForm
 from Machines.models import *
 from Core.models import SystemInformation
+from SpareParts.models import SparePartsOrders
 
 # Create your views here.
 
@@ -88,6 +89,46 @@ class SparePartsSearch(LoginRequiredMixin, ListView):
     def get_queryset(self):
         spare_search = self.request.GET.get("spare")
         queryset = self.model.objects.filter(name__icontains=spare_search, deleted=False)
+        return queryset
+
+
+
+class SparePartsOrderSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = SparePartsOrders
+    template_name = 'SpareParts/sparepartsorders_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'list'
+        context['page'] = 'active'
+        context['spare_order_search'] = self.request.GET.get("spareOrder_search")
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+    def get_queryset(self):
+        spare_order_search = self.request.GET.get("spareOrder_search")
+        queryset = self.model.objects.filter(order_number__icontains=spare_order_search, deleted=False)
+        return queryset
+    
+    
+    
+class MachineOrderSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = MachinesOrders
+    template_name = 'Machines/machinesorders_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'list'
+        context['message'] = 'active'
+        context['machine_order_search'] = self.request.GET.get("MachineOrder_search")
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+    def get_queryset(self):
+        machine_order_search = self.request.GET.get("MachineOrder_search")
+        queryset = self.model.objects.filter(order_number__icontains=machine_order_search, deleted=False)
         return queryset
 
 
