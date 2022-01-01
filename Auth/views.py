@@ -45,7 +45,8 @@ class Logout(LoginRequiredMixin, View):
 def ChangePassword(request):
     form = ChangePasswordForm(request.POST or None)
     action_url = reverse_lazy('Auth:ChangePassword')
-    
+    success_url = reverse_lazy('Core:index')
+
     password = form["password"].value()
     title = "تغير كلمة المرور"
     current_passowrd = request.user.password
@@ -64,21 +65,37 @@ def ChangePassword(request):
             user = User.objects.get(username=request.user)
             user.set_password(password) 
             user.save()
-            return redirect('Core:index')
+            messages.success(request, " تم تغيير كلمة السر بنجاح", extra_tags="success")
+            if request.POST.get('url'):
+                return request.POST.get('url')
+            else:
+                return success_url
+            # return redirect('Core:index')
         else:
-            return redirect('Core:index')
+            messages.success(request, " خطأ! كلمة السر القديمة غير صحيحة .. حاول مرة أخري", extra_tags="danger")
+            if request.POST.get('url'):
+                return request.POST.get('url')
+            else:
+                return success_url
+            # return redirect('Core:index')
             
     return render(request,'forms/form_template.html', context)        
 
 
 def create_user(request,):
     action_url = reverse_lazy('Auth:create_user')
+    success_url = reverse_lazy('Core:index')
     form = RegisterForm(request.POST or None)
     if form.is_valid():
         user = form.save(commit=False)
         user.set_password(form.cleaned_data['password'])
         form.save()
-        return redirect('Core:index')
+        messages.success(request, " تم اضافة مستخدم بنجاح", extra_tags="success")
+        if request.POST.get('url'):
+            return request.POST.get('url')
+        else:
+            return success_url
+        # return redirect('Core:index')
     context = {
         'title': 'إضافة مستخدم جديد',
         'form': form,
@@ -103,6 +120,7 @@ class UsersUpdate(LoginRequiredMixin, UpdateView):
     model = User 
     template_name = 'forms/user_form.html'
     form_class = RegisterForm
+    success_url = reverse_lazy('Core:index')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -112,7 +130,7 @@ class UsersUpdate(LoginRequiredMixin, UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "تم التعديل بنجاح", extra_tags="success")
+        messages.success(self.request, "تم تعديل بيانات مستخدم بنجاح", extra_tags="success")
         if self.request.POST.get('url'):
             return self.request.POST.get('url')
         else:

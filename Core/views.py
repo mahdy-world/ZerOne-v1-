@@ -22,17 +22,23 @@ class SystemInfoCreate(LoginRequiredMixin, CreateView):
     model = SystemInformation
     template_name = 'forms/form_template.html'
     form_class = SystemInfoForm
-    
+    success_url = reverse_lazy('Core:index')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'بيانات النظام'
         context['message'] = 'info'
-        context['action_url'] = reverse_lazy('Core:SystemInfoCreate',)
+        context['action_url'] = reverse_lazy('Core:SystemInfoCreate')
         return context
     
     def get_success_url(self):
-        messages.success(self.request, "  تم إضافة نوع قطعة غيار بنجاح", extra_tags="success")
-        return reverse('Core:index')
+        messages.success(self.request, "  تم إضافة بيانات للنظام بنجاح", extra_tags="success")
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Core:index')
     
     
 class SystemInfoUpdate(LoginRequiredMixin, UpdateView):
@@ -40,6 +46,7 @@ class SystemInfoUpdate(LoginRequiredMixin, UpdateView):
     model = SystemInformation
     template_name = 'forms/form_template.html'
     form_class = SystemInfoForm
+    success_url = reverse_lazy('Core:index')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -49,8 +56,13 @@ class SystemInfoUpdate(LoginRequiredMixin, UpdateView):
         return context
     
     def get_success_url(self):
-        messages.success(self.request, " تم التعديل بنجاح", extra_tags="success")
-        return reverse('Core:index')
+        messages.success(self.request, " تم تعديل بيانات النظام بنجاح", extra_tags="success")
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+        # return reverse('Core:index')
  
  
 class MachineSearch(LoginRequiredMixin, ListView):
