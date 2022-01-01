@@ -8,4 +8,6 @@ urlpatterns = [
     path('systemInfoUpdate/<int:pk>', views.SystemInfoUpdate.as_view(), name='SystemInfoUpdate'),
     path('MachineSearch/', views.MachineSearch.as_view(), name='MachineSearch'),
     path('SparePartsSearch/', views.SparePartsSearch.as_view(), name='SparePartsSearch'),
+    path('SparePartsOrderSearch/', views.SparePartsOrderSearch.as_view(), name='SparePartsOrderSearch'),
+    path('MachineOrderSearch/', views.MachineOrderSearch.as_view(), name='MachineOrderSearch'),
 ]
