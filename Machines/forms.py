@@ -81,13 +81,13 @@ class MachinesOrdersForm(forms.ModelForm):
         model = MachinesOrders
         exclude = ['deleted']
         widgets = {
-            'order_supplier': forms.Select(attrs={'class': 'form-control'}),
-            'order_deposit_value': forms.NumberInput(attrs={'class': 'form-control'}),
-            'order_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'order_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'order_deposit_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'order_rest_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'order_receipt_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'order_supplier': forms.Select(attrs={'class': 'form-control' , 'name':'order_supplier'}),
+            'order_deposit_value': forms.NumberInput(attrs={'class': 'form-control' , 'name':'order_deposit_value'}),
+            'order_number': forms.TextInput(attrs={'class': 'form-control', 'name':'order_number'}),
+            'order_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'name':'order_date' }),
+            'order_deposit_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control' , 'name':'deposit_date'}),
+            'order_rest_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'name':'order_rest_date'}),
+            'order_receipt_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'name':'order_receipt_date'}),
         }
 
 
