@@ -106,5 +106,22 @@ class WarehouseTransactions(models.Model):
     def __str__(self):
         return self.warehouse.name
     
-    
 
+
+
+NOTIFECATION_CHOICES = (
+        (1, "موعد دفع العربون"),
+        (2, "موعد دفع باقي المبلغ"),
+        (3, "موعد تخليص البضاعة"),
+        (4, "موعد استلام البضاعة"),
+        (5, "موعد دفع الضرائب")
+    )   
+class MachineNotifecation(models.Model):
+    created_at = models.DateField(null=True,  verbose_name="تاريخ الانشاء")
+    machine_order = models.ForeignKey(MachinesOrders, null=True, on_delete=models.CASCADE, verbose_name="الطلبية")
+    notifeaction_type = models.IntegerField(choices=NOTIFECATION_CHOICES, default=0, verbose_name="نوع الاشعار")
+    message = models.CharField(max_length=100, null=True, verbose_name=" الرسالة")
+    read = models.BooleanField(default=0, verbose_name="قرأت / لم تقرأ")
+    
+    def __str__(self):
+        return self.message

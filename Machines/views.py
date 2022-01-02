@@ -700,11 +700,41 @@ class MachinesOrdersCreate(LoginRequiredMixin, CreateView):
         context['message'] = 'create'
         context['action_url'] = reverse_lazy('Machines:MachinesOrdersCreate')
         return context
-
+    
+    
+    def form_valid(self, form):
+        self.object = form.save()
+        noti1 = MachineNotifecation()
+        noti1.created_at = form.cleaned_data.get('order_deposit_date')
+        noti1.machine_order = self.object
+        noti1.notifeaction_type = 1
+        noti1.message = "تنبية بشأن..موعد دفع عربون طلب مكينات رقم : " + str(self.object)
+        noti1.save()
+        
+        noti2 = MachineNotifecation()
+        noti2.created_at = form.cleaned_data.get('order_rest_date')
+        noti2.machine_order = self.object
+        noti2.notifeaction_type = 2
+        noti2.message = "تنبية بشأن..موعد دفع باقي عربون طلب رقم : " + str(self.object)
+        noti2.save()
+        
+        
+        noti3 = MachineNotifecation()
+        noti3.created_at = form.cleaned_data.get('order_receipt_date')
+        noti3.machine_order = self.object
+        noti3.notifeaction_type = 3
+        noti3.message = "اتنبية بشأن..موعد استلام البضاعة الخاصة بطلب رقم : " + str(self.object)
+        noti3.save()
+        
+        return super().form_valid(form)
+        
+        
     def get_success_url(self, **kwargs):
         messages.success(self.request, "  تم اضافة طلبية مكن بنجاح", extra_tags="success")
         return reverse('Machines:MachinesOrdersDetail', kwargs={'pk': self.object.id})
 
+        
+    
 
 class MachinesOrdersUpdate(LoginRequiredMixin, UpdateView):
     login_url = '/auth/login/'
