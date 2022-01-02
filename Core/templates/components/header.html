@@ -61,9 +61,9 @@
                             <div class="col">
                                 <h6 class="m-0" key="t-notifications"> الأشعارات </h6>
                             </div>
-                            <div class="col-auto">
+                            <!-- <div class="col-auto">
                                 <a href="#!" class="small" key="t-view-all">عرض الجميع</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div data-simplebar style="max-height: 230px;">
@@ -80,24 +80,25 @@
                                     <h6 class="mt-0 mb-1" key="t-your-order">{{x.message}}</h6>
                                     <div class="font-size-12 text-muted">
                                         <p
-                                        {% if x.created_at == datetime.date.today() %}
-                                          
+                                        {% if x.created_at == today %}
                                         class="mb-1 badge badge-danger font-size-12"
+                                        {% else %}
+                                        class="mb-1 font-size-12"
                                         {% endif %} 
                                         
                                         key="t-grammer">
-                                            
-                                            {% if x.notifeaction_type == 1 %}
-                                            اليوم هو معاد دفع العربون
-                                            {% elif  x.notifeaction_type == 2 %}
-                                            اليوم هو معاد دفع باقي العربون
-                                            {% elif  x.notifeaction_type == 3 %}
-                                            اليوم هو معاد  استلام البضاعة
-                                            {% elif  x.notifeaction_type == 4 %}
-                                            اليوم هو معاد  استلام البضاعة
-                                            {% endif %}
-                                                
-                                        </p>
+                                        
+                                        {% if x.notifeaction_type == 1 %}
+                                        اليوم هو معاد دفع العربون
+                                        {% elif  x.notifeaction_type == 2 %}
+                                        اليوم هو معاد دفع باقي العربون
+                                        {% elif  x.notifeaction_type == 3 %}
+                                        اليوم هو معاد  استلام البضاعة
+                                        {% elif  x.notifeaction_type == 4 %}
+                                        اليوم هو معاد  استلام البضاعة
+                                        {% endif %}
+                                        
+                                    </p>
                                         <br>
                                         <p class="mb-0 badge badge-primary"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">{{x.created_at|date:'Y-m-d'}}</span></p>
                                     </div>
@@ -109,7 +110,7 @@
                     </div>
                     <div class="p-2 border-top">
                         <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="javascript:void(0)">
-                            <i class="mdi mdi-arrow-right-circle mr-1"></i> <span key="t-view-more">View More..</span> 
+                            <i class="mdi mdi-arrow-right-circle mr-1"></i> <span key="t-view-more">عرض الكل</span> 
                         </a>
                     </div>
                 </div>
