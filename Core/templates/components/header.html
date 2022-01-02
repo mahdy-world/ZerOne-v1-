@@ -69,7 +69,7 @@
                     <div data-simplebar style="max-height: 230px;">
                         {% for x in notifay %}
                           
-                        <a href="{% url 'Machines:MachinesOrdersDetail' x.machine_order.id %}" class="text-reset notification-item">
+                        <a href="{% url 'Machines:MachinesOrdersDetail' x.machine_order.id %}" onclick="send_ajax()" class="text-reset notification-item">
                             <div class="media">
                                 <div class="avatar-xs mr-3">
                                     <span class="avatar-title bg-primary rounded-circle font-size-16">
@@ -77,27 +77,45 @@
                                     </span>
                                 </div>
                                 <div class="media-body">
+                                    <input id="machine" type="number" value="{{x.id}}" hidden>
                                     <h6 class="mt-0 mb-1" key="t-your-order">{{x.message}}</h6>
                                     <div class="font-size-12 text-muted">
                                         <p
                                         {% if x.created_at == today %}
+                                        class="mb-1 badge badge-danger font-size-12"
+                                        {% elif x.created_at > today %}
                                         class="mb-1 badge badge-danger font-size-12"
                                         {% else %}
                                         class="mb-1 font-size-12"
                                         {% endif %} 
                                         
                                         key="t-grammer">
+
                                         
-                                        {% if x.notifeaction_type == 1 %}
-                                        اليوم هو معاد دفع العربون
-                                        {% elif  x.notifeaction_type == 2 %}
-                                        اليوم هو معاد دفع باقي العربون
-                                        {% elif  x.notifeaction_type == 3 %}
-                                        اليوم هو معاد  استلام البضاعة
-                                        {% elif  x.notifeaction_type == 4 %}
-                                        اليوم هو معاد  استلام البضاعة
+                                        {% if x.created_at == today %}
+                                            
+                                            {% if x.notifeaction_type == 1   %}
+                                            اليوم هو معاد دفع العربون
+                                            {% elif  x.notifeaction_type == 2 %}
+                                            اليوم هو معاد دفع باقي العربون
+                                            {% elif  x.notifeaction_type == 3 %}
+                                            اليوم هو معاد  استلام البضاعة
+                                            {% elif  x.notifeaction_type == 4 %}
+                                            اليوم هو معاد  استلام البضاعة
+                                            {% endif %}
+                                            
+                                        {% elif  x.created_at == tomorrow %}
+                                            {% if x.notifeaction_type == 1   %}
+                                            غداً هو معاد دفع العربون
+                                            {% elif  x.notifeaction_type == 2 %}
+                                            غداً هو معاد دفع باقي العربون
+                                            {% elif  x.notifeaction_type == 3 %}
+                                            غداً هو معاد  استلام البضاعة
+                                            {% elif  x.notifeaction_type == 4 %}
+                                            غداً هو معاد  استلام البضاعة
+                                            {% endif %}
+                                        
                                         {% endif %}
-                                        
                                     </p>
                                         <br>
                                         <p class="mb-0 badge badge-primary"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">{{x.created_at|date:'Y-m-d'}}</span></p>
@@ -115,6 +133,37 @@
                     </div>
                 </div>
             </div>
+
+            <script>
+
+                
+                function send_ajax(){
+              
+                  $.ajax({
+                    type : "POST",
+                    url : "{% url 'Core:Read' %}",
+                    data : {
+                      name : $('#machine').val(),
+                      csrfmiddlewaretoken: '{{ csrf_token }}',
+                      dataType: "json",
+                    },
+              
+                    success: function(data){
+                      
+                      
+                   },
+              
+                   failure: function() {
+                       
+                   }
+              
+              
+                  });
+              
+              
+                };
+              
+              </script>
 
             <!-- user item -->
             <div class="dropdown d-inline-block">
