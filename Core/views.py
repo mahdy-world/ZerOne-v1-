@@ -136,7 +136,7 @@ class MachineOrderSearch(LoginRequiredMixin, ListView):
 def Read(request):
     if request.is_ajax():
         pk = request.POST.get("name")
-        noti = MachineNotifecation.objects.get(id= pk)
+        noti = MachineNotifecation.objects.get(id=pk)
         noti.read = True
         noti.save()
         message = "done"
