@@ -849,7 +849,7 @@ class MachinesOrdersSuperDelete(LoginRequiredMixin, UpdateView):
 ###################################################################
 
 
-def MachinesOrdersDetail(request, pk):
+def  MachinesOrdersDetail(request, pk):
     order = get_object_or_404(MachinesOrders, id=pk)
     product = MachinesOrderProducts.objects.filter(product_order=order).order_by('id')
     count_product = product.count()
@@ -1025,6 +1025,11 @@ class MachinesOrderOperationsCreateDeposit(LoginRequiredMixin, CreateView):
             trans.transaction_type = 1
             trans.value = form.cleaned_data.get("operation_value")
             trans.save()
+            
+            notification = MachineNotifecation.objects.get(machine_order=order_number, notifeaction_type=1)
+            notification.delete()
+            print("delete_done")
+            
 
             return redirect(self.get_success_url())
         else:
@@ -1085,6 +1090,11 @@ class MachinesOrderOperationsCreateReset(LoginRequiredMixin, CreateView):
             trans.value = form.cleaned_data.get("operation_value")
             trans.save()
 
+            # to delete notification for Machines Order Operations Create Reset
+            notification = MachineNotifecation.objects.get(machine_order=order_number, notifeaction_type=2)
+            notification.delete()
+            print("delete_done")
+            
             return redirect(self.get_success_url())
         else:
             return redirect(self.get_absolute_url())
@@ -1198,6 +1208,12 @@ class MachinesOrderOperationsCreateTax(LoginRequiredMixin, CreateView):
             trans.transaction_type = 1
             trans.value = form.cleaned_data.get("operation_value")
             trans.save()
+            
+            # to delete notification for machine order operation
+            notification = MachineNotifecation.objects.get(machine_order=order_number, notifeaction_type=4)
+            notification.delete()
+            print("delete_done")
+        
 
             return redirect(self.get_success_url())
         else:
@@ -1235,6 +1251,28 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
         myform.warehouse_name = form.cleaned_data.get("warehouse_name")
         myform.operation_date = form.cleaned_data.get("operation_date")
         myform.save()
+        
+        # to delete notification for machine order operation
+        notification = MachineNotifecation.objects.get(machine_order=order_number, notifeaction_type=3)
+        notification.delete()
+        print("delete_done")
+        
+        
+        
+        op4 = MachinesOrderOperations.objects.filter(order_number=order_number, operation_type=4)
+        if op4:
+            op_4 = MachinesOrderOperations.objects.get(order_number=order_number, operation_type=4)
+            op_4_date = op_4.operation_date
+            op_5_date = op_4_date + timedelta(days=25)
+        else:
+            op_5_date = order_number.order_receipt_date
+            
+        notification2 = MachineNotifecation()  
+        notification2.created_at = op_5_date  
+        notification2.machine_order = order_number
+        notification2.notifeaction_type = 4
+        notification2.message = "تنبية بشأن...موعد دفع ضرائب طلبية رقم : " + str(order_number)
+        notification2.save()        
 
         order_products = MachinesOrderProducts.objects.filter(product_order=order_number, deleted=0)
         order_products_quantity = order_products.aggregate(count=Sum('product_quantity')).get('count')
