@@ -1259,9 +1259,11 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
         
         
         
+
         op_4 = MachinesOrderOperations.objects.get(order_number=order_number, operation_type=4)
         op_4_date = op_4.operation_date
         op_5_date = op_4_date + timedelta(days=25)
+        
         notification2 = MachineNotifecation()  
         notification2.created_at = op_5_date  
         notification2.machine_order = order_number
