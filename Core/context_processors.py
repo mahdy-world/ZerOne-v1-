@@ -18,7 +18,7 @@ def allcontext(request):
     today = datetime.date.today()
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     
-    notfaiy = MachineNotifecation.objects.filter(Q(created_at=tomorrow) | Q(created_at = today ) ).order_by('-id')
+    notfaiy = MachineNotifecation.objects.filter(Q(created_at=tomorrow) | Q(created_at = today ) )
     notification_count = MachineNotifecation.objects.filter(Q(created_at=tomorrow) | Q(created_at = today ), read=False ).count()
 
     context = { 
