@@ -112,9 +112,8 @@ class WarehouseTransactions(models.Model):
 NOTIFECATION_CHOICES = (
         (1, "موعد دفع العربون"),
         (2, "موعد دفع باقي المبلغ"),
-        (3, "موعد تخليص البضاعة"),
-        (4, "موعد استلام البضاعة"),
-        (5, "موعد دفع الضرائب")
+        (3, "موعد استلام البضاعة"),
+        (4, "موعد دفع الضرائب")
     )   
 class MachineNotifecation(models.Model):
     created_at = models.DateField(null=True,  verbose_name="تاريخ الانشاء")
