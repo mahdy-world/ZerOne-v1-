@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
-from SpareParts.models import SparePartsNames
+from SpareParts.models import SparePartsNames, SparePartsOrders
 from Treasury.models import *
 
 
@@ -110,14 +110,19 @@ class WarehouseTransactions(models.Model):
 
 
 NOTIFECATION_CHOICES = (
-        (1, "موعد دفع العربون"),
-        (2, "موعد دفع باقي المبلغ"),
-        (3, "موعد استلام البضاعة"),
-        (4, "موعد دفع الضرائب")
+        (1, "موعد دفع عربون مكينة"),
+        (2, "موعد دفع باقي مبلغ مكينة"),
+        (3, "موعد استلام بضاعة مكينة"),
+        (4, "موعد دفع ضرائب مكينة"),
+        (5, "موعد دفع عربون قطع غيار"),
+        (6, "موعد دفع باقي مبلغ قطع غيار"),
+        (7, "موعد استلام بضاعة قطع غيار"),
+        (8, "موعد ضرائب قطع غيار"),
     )   
 class MachineNotifecation(models.Model):
     created_at = models.DateField(null=True,  verbose_name="تاريخ الانشاء")
-    machine_order = models.ForeignKey(MachinesOrders, null=True, on_delete=models.CASCADE, verbose_name="الطلبية")
+    machine_order = models.ForeignKey(MachinesOrders, null=True, on_delete=models.CASCADE, verbose_name="طلبية المكن")
+    spare_order = models.ForeignKey(SparePartsOrders, null=True, on_delete=models.CASCADE, verbose_name="طلبية قطع الغيار")
     notifeaction_type = models.IntegerField(choices=NOTIFECATION_CHOICES, default=0, verbose_name="نوع الاشعار")
     message = models.CharField(max_length=100, null=True, verbose_name=" الرسالة")
     read = models.BooleanField(default=0, verbose_name="قرأت / لم تقرأ")
