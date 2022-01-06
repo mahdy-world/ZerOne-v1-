@@ -78,7 +78,7 @@
                     <div data-simplebar style="max-height: 230px;">
                         
                         {% for x in notifay %}
-                        <a href="{% url 'Machines:MachinesOrdersDetail' x.machine_order.id %}" onclick="send_ajax()" class="text-reset notification-item">
+                        <a href="{% url 'Machines:MachinesOrdersDetail' x.machine_order.id %}" onclick="send_ajax('{{x.id}}')" class="text-reset notification-item">
                             <div class="media">
                                 <div class="avatar-xs mr-3">
                                     <span class="avatar-title bg-primary rounded-circle font-size-16">
@@ -94,6 +94,7 @@
                                 </div>
                                 <div class="media-body">
                                     <input id="machine" type="number" value="{{x.id}}" hidden>
+                                   
                                     <h6 class="mt-0 mb-1" key="t-your-order">{{x.message}}</h6>
                                     <div class="font-size-12 text-muted">
                                         <p
@@ -151,30 +152,19 @@
 
             <script>
 
-                
-                function send_ajax(){
+                function send_ajax(id){
               
                   $.ajax({
                     type : "POST",
                     url : "{% url 'Core:Read' %}",
                     data : {
-                      name : $('#machine').val(),
+                      id : id,
+                      order: $('#order').val(),
                       csrfmiddlewaretoken: '{{ csrf_token }}',
                       dataType: "json",
                     },
               
-                    success: function(data){
-                      
-                      
-                   },
-              
-                   failure: function() {
-                       
-                   }
-              
-              
                   });
-              
               
                 };
               

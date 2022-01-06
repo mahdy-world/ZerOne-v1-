@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import  render
+from django.http.response import HttpResponse
+from django.shortcuts import  get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import *
@@ -147,10 +148,8 @@ class MachineOrderSearch(LoginRequiredMixin, ListView):
 
 def Read(request):
     if request.is_ajax():
-        pk = request.POST.get("name")
-        noti = MachineNotifecation.objects.get(id=pk)
-        noti.read = True
-        noti.save()
-        message = "done"
-        
-    return message
+        pk = request.POST.get('id')
+        obj = MachineNotifecation.objects.get(id=pk)
+        obj.read = True
+        obj.save(update_fields=['read'])
+        return HttpResponse('Updated')
