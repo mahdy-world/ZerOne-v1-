@@ -768,10 +768,58 @@ class MachinesOrdersUpdate(LoginRequiredMixin, UpdateView):
             form.fields['order_supplier'].queryset = MachinesSuppliers.objects.filter(
                 id=self.object.order_supplier.id)
         return form
-
+    
     def get_success_url(self, **kwargs):
         messages.success(self.request, " تم تعديل طلبية مكن " + str(self.object) + " بنجاح ", extra_tags="info")
         return reverse('Machines:MachinesOrdersList')
+    
+    def form_valid(self, form):
+        date1 = form.cleaned_data.get("order_deposit_date") # تاريخ دفع العربون الحديث
+        date2 = form.cleaned_data.get("order_rest_date") # تاريخ دفع باقي العربون الحديث
+        date3 = form.cleaned_data.get("order_receipt_date") # تاريخ استلام البضاعة الحديث
+        self.object = form.save()
+        
+        
+        noti1 = MachineNotifecation.objects.get(machine_order = self.object, notifeaction_type = 1 ) # اشعار دفع العربون 
+        noti2 = MachineNotifecation.objects.get(machine_order = self.object, notifeaction_type = 2 ) # اشعار دفع باقي المبلغ 
+        noti3 = MachineNotifecation.objects.get(machine_order = self.object, notifeaction_type = 3 ) # اشعار استلام البضاعة 
+        
+        noti_date1 = noti1.created_at # تاريخ اشعار دفع العربون القديم
+        noti_date2 = noti2.created_at # تاريخ اشعار دفع باقي العربون القديم
+        noti_date3 = noti3.created_at # تاريخ اشعار استلام البضاعة القديم 
+        
+        
+        if noti_date1 != date1 :
+            noti1.created_at = form.cleaned_data.get("order_deposit_date")
+            if noti1.read == True :
+               noti1.read = False
+               noti1.save()
+               return redirect(self.get_success_url())
+            noti1.save()
+            return redirect(self.get_success_url())   
+            
+           
+        elif noti_date2 != date2:
+            noti2.created_at = form.cleaned_data.get("order_rest_date")
+            if noti2.read == True :
+                noti2.read = False
+                noti2.save()
+                return redirect(self.get_success_url())
+            noti2.save()    
+            return redirect(self.get_success_url())
+        
+        elif noti_date3 != date3:
+            noti3.created_at = form.cleaned_data.get("order_receipt_date")
+            if noti3.read == True :
+                noti3.read = False
+                noti3.save()
+                return redirect(self.get_success_url())
+            noti3.save()    
+            return redirect(self.get_success_url())
+        
+        return redirect(self.get_success_url())   
+        
+    
 
 
 class MachinesOrdersDelete(LoginRequiredMixin, UpdateView):

@@ -55,12 +55,12 @@ class MachinesSuppliers(models.Model):
 # فاتورة طلب الماكينات
 class MachinesOrders(models.Model):
     order_number = models.CharField(max_length=50, null=True, verbose_name="رقم الطلب")
-    order_date = models.DateTimeField(null=True, verbose_name="تاريخ الطلب")
+    order_date = models.DateField(null=True, verbose_name="تاريخ الطلب")
     order_supplier = models.ForeignKey(MachinesSuppliers, on_delete=models.CASCADE, null=True, verbose_name='المورد')
     order_deposit_value = models.FloatField(default=0, null=True, verbose_name="قيمة العربون")
-    order_deposit_date = models.DateTimeField(null=True, verbose_name="تاريخ دفع العربون")
-    order_rest_date = models.DateTimeField(null=True, verbose_name="تاريخ دفع باقي المبلغ")
-    order_receipt_date = models.DateTimeField(null=True, verbose_name="تاريخ استلام البضاعة")
+    order_deposit_date = models.DateField(null=True, verbose_name="تاريخ دفع العربون")
+    order_rest_date = models.DateField(null=True, verbose_name="تاريخ دفع باقي المبلغ")
+    order_receipt_date = models.DateField(null=True, verbose_name="تاريخ استلام البضاعة")
     deleted = models.BooleanField(default=False, verbose_name='حذف')
 
     def __str__(self):
