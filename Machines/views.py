@@ -715,7 +715,7 @@ class MachinesOrdersCreate(LoginRequiredMixin, CreateView):
         noti2.created_at = form.cleaned_data.get('order_rest_date')
         noti2.machine_order = self.object
         noti2.notifeaction_type = 2
-        noti2.message = "تنبية بشأن..موعد دفع باقي عربون طلب رقم : " + str(self.object)
+        noti2.message = "تنبية بشأن..موعد دفع باقي عربون طلب مكينات رقم : " + str(self.object)
         noti2.save()
         
         
@@ -723,7 +723,7 @@ class MachinesOrdersCreate(LoginRequiredMixin, CreateView):
         noti3.created_at = form.cleaned_data.get('order_receipt_date')
         noti3.machine_order = self.object
         noti3.notifeaction_type = 3
-        noti3.message = "اتنبية بشأن..موعد استلام البضاعة الخاصة بطلب رقم : " + str(self.object)
+        noti3.message = "اتنبية بشأن..موعد استلام البضاعة الخاصة بطلب مكينات رقم : " + str(self.object)
         noti3.save()
         
         return super().form_valid(form)
@@ -797,7 +797,6 @@ class MachinesOrdersUpdate(LoginRequiredMixin, UpdateView):
                return redirect(self.get_success_url())
             noti1.save()
             return redirect(self.get_success_url())   
-            
            
         elif noti_date2 != date2:
             noti2.created_at = form.cleaned_data.get("order_rest_date")
@@ -1077,7 +1076,6 @@ class MachinesOrderOperationsCreateDeposit(LoginRequiredMixin, CreateView):
             notification = MachineNotifecation.objects.get(machine_order=order_number, notifeaction_type=1)
             notification.delete()
             print("delete_done")
-            
 
             return redirect(self.get_success_url())
         else:
@@ -1316,7 +1314,7 @@ class MachinesOrderOperationsCreateOrder(LoginRequiredMixin, CreateView):
         notification2.created_at = op_5_date  
         notification2.machine_order = order_number
         notification2.notifeaction_type = 4
-        notification2.message = "تنبية بشأن...موعد دفع ضرائب طلبية رقم : " + str(order_number)
+        notification2.message = "تنبية بشأن...موعد دفع ضرائب طلب مكينات رقم : " + str(order_number)
         notification2.save()        
 
         

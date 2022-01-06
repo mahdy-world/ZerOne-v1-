@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMix
 from django.views.generic import *
 from django.db.models import Count
 from django.contrib import messages
+from Machines.models import MachineNotifecation
 
 from Treasury.models import WorkTreasuryTransactions
 from datetime import datetime, timedelta
@@ -669,6 +670,32 @@ class SparePartsOrderCreate(LoginRequiredMixin ,CreateView):
         context['action_url'] = reverse_lazy('SpareParts:SparePartsOrderCreate')
         return context
     
+    def form_valid(self, form):
+        self.object = form.save()
+        noti1 = MachineNotifecation()
+        noti1.created_at = form.cleaned_data.get('order_deposit_date')
+        noti1.spare_order = self.object
+        noti1.notifeaction_type = 5
+        noti1.message = "تنبية بشأن..موعد دفع عربون طلب قطع غيار رقم : " + str(self.object)
+        noti1.save()
+        
+        noti2 = MachineNotifecation()
+        noti2.created_at = form.cleaned_data.get('order_rest_date')
+        noti2.spare_order = self.object
+        noti2.notifeaction_type = 6
+        noti2.message = "تنبية بشأن..موعد دفع باقي عربون طلب قطع غيار رقم : " + str(self.object)
+        noti2.save()
+        
+        
+        noti3 = MachineNotifecation()
+        noti3.created_at = form.cleaned_data.get('order_receipt_date')
+        noti3.spare_order = self.object
+        noti3.notifeaction_type = 7
+        noti3.message = "اتنبية بشأن..موعد استلام البضاعة الخاصة بطلب قطع غيار رقم : " + str(self.object)
+        noti3.save()
+        
+        return super().form_valid(form)
+    
     def get_success_url(self, **kwargs):
         messages.success(self.request, "  تم اضافة طلبية قطع غيار بنجاح", extra_tags="success")
         return reverse('SpareParts:SparePartsOrderDetail', kwargs={'pk':self.object.id})
@@ -712,7 +739,50 @@ class SparePartsOrderUpdate(LoginRequiredMixin ,UpdateView):
         messages.success(self.request, "تم تعديل طلبية قطع غيار رقم " + str(self.object) + " بنجاح ", extra_tags="success")
         return reverse('SpareParts:SparePartsOrderList')
 
-
+    def form_valid(self, form):
+        date1 = form.cleaned_data.get("order_deposit_date") # تاريخ دفع العربون الحديث
+        date2 = form.cleaned_data.get("order_rest_date") # تاريخ دفع باقي العربون الحديث
+        date3 = form.cleaned_data.get("order_receipt_date") # تاريخ استلام البضاعة الحديث
+        self.object = form.save()
+        
+        
+        noti1 = MachineNotifecation.objects.get(spare_order = self.object, notifeaction_type = 5 ) # اشعار دفع العربون 
+        noti2 = MachineNotifecation.objects.get(spare_order = self.object, notifeaction_type = 6 ) # اشعار دفع باقي المبلغ 
+        noti3 = MachineNotifecation.objects.get(spare_order = self.object, notifeaction_type = 7 ) # اشعار استلام البضاعة 
+        
+        noti_date1 = noti1.created_at # تاريخ اشعار دفع العربون القديم
+        noti_date2 = noti2.created_at # تاريخ اشعار دفع باقي العربون القديم
+        noti_date3 = noti3.created_at # تاريخ اشعار استلام البضاعة القديم 
+        
+        
+        if noti_date1 != date1 :
+            noti1.created_at = form.cleaned_data.get("order_deposit_date")
+            if noti1.read == True :
+               noti1.read = False
+               noti1.save()
+               return redirect(self.get_success_url())
+            noti1.save()
+            return redirect(self.get_success_url())   
+           
+        elif noti_date2 != date2:
+            noti2.created_at = form.cleaned_data.get("order_rest_date")
+            if noti2.read == True :
+                noti2.read = False
+                noti2.save()
+                return redirect(self.get_success_url())
+            noti2.save()    
+            return redirect(self.get_success_url())
+        
+        elif noti_date3 != date3:
+            noti3.created_at = form.cleaned_data.get("order_receipt_date")
+            if noti3.read == True :
+                noti3.read = False
+                noti3.save()
+                return redirect(self.get_success_url())
+            noti3.save()    
+            return redirect(self.get_success_url())
+        
+        return redirect(self.get_success_url())  
 
 class SparePartsOrderDelete(LoginRequiredMixin ,UpdateView):
     login_url = '/auth/login/'
@@ -984,6 +1054,10 @@ class SparePartsOperationCreateDeposit(LoginRequiredMixin ,CreateView):
             trans.transaction_type = 1 
             trans.value = form.cleaned_data.get("operation_value")
             trans.save()
+            
+            notification = MachineNotifecation.objects.get(spare_order=order_number, notifeaction_type=5)
+            notification.delete()
+            print("delete_done")
             return redirect(self.get_success_url())
         else:
             return redirect(self.get_absolute_url())
@@ -1048,6 +1122,10 @@ class SparePartsOperationCreateReset(LoginRequiredMixin ,CreateView):
             trans.transaction_type = 1 
             trans.value = form.cleaned_data.get("operation_value")
             trans.save()
+            
+            notification = MachineNotifecation.objects.get(spare_order=order_number, notifeaction_type=6)
+            notification.delete()
+            print("delete_done")
             return redirect(self.get_success_url())
         else:
             return redirect(self.get_absolute_url())
@@ -1174,6 +1252,10 @@ class SparePartsOperationCreateTax(LoginRequiredMixin ,CreateView):
             trans.transaction_type = 1
             trans.value = form.cleaned_data.get("operation_value")
             trans.save()
+            
+            notification = MachineNotifecation.objects.get(spare_order=order_number, notifeaction_type=8)
+            notification.delete()
+            print("delete_done")
             return redirect(self.get_success_url())
         else:
             return redirect(self.get_absolute_url())
@@ -1214,6 +1296,28 @@ class SparePartsOperationCreateOrder(LoginRequiredMixin ,CreateView):
         myform.warehouse_name = form.cleaned_data.get("warehouse_name")
         myform.operation_date = form.cleaned_data.get("operation_date")
         myform.save()
+        
+        
+        # to delete notification for machine order operation
+        notification = MachineNotifecation.objects.get(spare_order=order_number, notifeaction_type=7)
+        notification.delete()
+        print("delete_done")
+        
+        
+        
+
+        op_4 = SparePartsOrderOperations.objects.get(order_number=order_number, operation_type=4)
+        op_4_date = op_4.operation_date
+        op_5_date = op_4_date + timedelta(days=25)
+        
+        notification2 = MachineNotifecation()  
+        notification2.created_at = op_5_date  
+        notification2.spare_order = order_number
+        notification2.notifeaction_type = 8
+        notification2.message = "تنبية بشأن...موعد دفع ضرائب طلب قطع غيار رقم : " + str(order_number)
+        notification2.save()        
+
+        
         
         order_products = SparePartsOrderProducts.objects.filter(product_order=order_number, deleted=0)
         order_products_quantity = order_products.aggregate(count=Sum('product_quantity')).get('count')
