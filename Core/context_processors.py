@@ -15,6 +15,15 @@ def allcontext(request):
     spare_order = SparePartsOrders.objects.filter(deleted=False)
     machine_order = MachinesOrders.objects.filter(deleted=False)
     
+    
+    
+    machine_order_count = machine_order.count() # عدد طلبيات المكينات
+    spare_order_count = spare_order.count() # عدد طلبيات قطع الغيار
+    spare_supplier_count = SparePartsSuppliers.objects.filter(deleted=False).count() # عدد موردين قطع الغيار
+    machines_count = machines.count()
+    spareparts_count = spare_parts.count()
+    machines_supplier  = MachinesSuppliers.objects.filter(deleted=False).count()
+    
     today = datetime.date.today()
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     
@@ -30,7 +39,14 @@ def allcontext(request):
         'notifay':notfaiy,
         'today': today,
         'tomorrow' : tomorrow,
-        'notification_count': notification_count
+        'notification_count': notification_count,
+        'machine_order_count' : machine_order_count,
+        'spare_order_count' : spare_order_count,
+        'spare_supplier_count' : spare_supplier_count,
+        'machines_count' : machines_count,
+        'spareparts_count' : spareparts_count,
+        'machines_supplier' : machines_supplier,
+        
 
     }
     return context
