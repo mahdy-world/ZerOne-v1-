@@ -103,7 +103,7 @@
                                             {% if x.read == False %}
                                             class="mb-1 badge badge-danger font-size-12"
                                             {% elif x.read == True %}
-                                            class="mb-1 badge badge-warning font-size-12"
+                                            class="mb-1 badge badge-secondary font-size-12"
                                             
                                             {% endif %} 
                                             
@@ -166,7 +166,7 @@
                                             {% if x.read == False %}
                                             class="mb-1 badge badge-danger font-size-12"
                                             {% elif x.read == True %}
-                                            class="mb-1 badge badge-warning font-size-12"
+                                            class="mb-1 badge badge-secondary font-size-12"
                                             
                                             {% endif %} 
                                             
@@ -242,7 +242,7 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="/static/assets/images/users/avatar-1.jpg"
+                    <img class="rounded-circle header-profile-user" src="/static/assets/images/user.png"
                         alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ml-1" key="t-henry">{{request.user}}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
