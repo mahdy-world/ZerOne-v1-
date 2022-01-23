@@ -596,7 +596,7 @@ body[data-sidebar="dark"] #sidebar-menu ul li ul.sub-menu li a:hover {
 ;
 }
 body[data-sidebar="dark"].vertical-collpsed {
-  min-height: 1760px;
+  min-height: auto;
 }
 body[data-sidebar="dark"].vertical-collpsed
   .vertical-menu

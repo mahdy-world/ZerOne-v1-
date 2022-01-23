@@ -37,131 +37,6 @@
             </div>
             <!-- end page title -->
 
-            <div class="row">
-                
-
-                <div class="col-xl-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="card mini-stats-wid">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <p class="text-muted font-weight-medium"> فواتير قطع الغيار</p>
-                                            <h4 class="mb-0">{{spare_order_count}} طلب </h4>
-                                        </div>
-
-                                        <div class="mini-stat-icon avatar-sm rounded-circle bg-danger align-self-center">
-                                            <span class="avatar-title rounded-circle bg-danger">
-                                                <i class="bx bx-copy-alt font-size-24"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div class="card mini-stats-wid">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <p class="text-muted font-weight-medium"> فواتير المكينات</p>
-                                            <h4 class="mb-0">{{spare_order_count}} طلب </h4>
-                                        </div>
-
-                                        <div class="mini-stat-icon avatar-sm rounded-circle bg-danger align-self-center">
-                                            <span class="avatar-title rounded-circle bg-danger">
-                                                <i class="bx bx-copy-alt font-size-24"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div class="card mini-stats-wid">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <p class="text-muted font-weight-medium"> طلبيات قطع الغيار</p>
-                                            <h4 class="mb-0">{{spare_order_count}} طلب </h4>
-                                        </div>
-
-                                        <div class="mini-stat-icon avatar-sm rounded-circle bg-danger align-self-center">
-                                            <span class="avatar-title rounded-circle bg-danger">
-                                                <i class="bx bx-copy-alt font-size-24"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-2">
-                            <div class="card mini-stats-wid">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <p class="text-muted font-weight-medium">طلبيات المكينات</p>
-                                    <h4 class="mb-0">{{machine_order_count}} طلب </h4>
-                                        </div>
-
-                                        <div class="avatar-sm rounded-circle bg-danger align-self-center mini-stat-icon">
-                                            <span class="avatar-title rounded-circle bg-danger">
-                                                <i class="bx bx-copy-alt font-size-24"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="card mini-stats-wid">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <p class="text-muted font-weight-medium">قطع الغيار</p>
-                                            <h4 class="mb-0">{{spareparts_count}} قطعة </h4>
-                                        </div>
-
-                                        <div class="mini-stat-icon avatar-sm rounded-circle bg-danger align-self-center">
-                                            <span class="avatar-title rounded-circle bg-danger">
-                                                <i class="bx bx-archive-in font-size-24"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="card mini-stats-wid">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <p class="text-muted font-weight-medium">المكينات</p>
-                                            <h4 class="mb-0">{{machines_count}}
-                                                مكينة
-                                            </h4>
-                                        </div>
-
-                                        <div class="avatar-sm rounded-circle bg-danger align-self-center mini-stat-icon">
-                                            <span class="avatar-title rounded-circle bg-danger">
-                                                <i class="bx bx-archive-in font-size-24"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                    
-                </div>
-            </div>
-
-
             <style>
                 .mycard1 {
                    
@@ -171,9 +46,13 @@
                     align-items: center;
                     justify-content: center;
                     color: white;
-                    
-                    
+                    background-color: #343a40;
                 }
+
+                .mycard1:hover{
+                    background-color: #f46a6a;                    ;
+                }
+
                 .mycard1 i{
                     color:white;
                 }
@@ -183,24 +62,13 @@
                     margin-top: 10px;
 
                 }
-
-                .mycard2 {
-                    height:200px;
-                    display: flex;
-                    flex-direction:column;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                   
-                    
-                }
                 
             </style>
 
             <div class="row" >
                 
                 <div class="col-lg-6">
-                    <div class=" mycard1 bg-primary">
+                    <div class=" mycard1">
                         <i class="fas fa-file-invoice-dollar fa-7x"></i>
                         <div>
                             <h3> مبيعات قطع الغيار</h3>
@@ -209,7 +77,7 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <div class="mycard1 bg-primary">
+                    <div class="mycard1">
                         <i class="fas fa-file-invoice-dollar fa-7x"></i>
                        <div>
                             <h3>مبيعات المكنيات</h3>
@@ -225,7 +93,7 @@
                 
                 <div class="col-lg-4">
                     <a href="{% url 'SpareParts:SparePartsOrderList' %}">
-                        <div class=" mycard1 bg-danger">
+                        <div class=" mycard1">
                             <i class="fas fa-cart-arrow-down fa-7x"></i>
                             <div>
                                 <h3>طلبيات قطع الغيار</h3>
@@ -236,7 +104,7 @@
 
                 <div class="col-lg-4">
                    <a href="{% url 'Machines:MachinesOrdersList' %}">
-                        <div class="mycard1 bg-danger">
+                        <div class="mycard1">
                             <i class="fas fa-cart-arrow-down fa-7x"></i>
                             <div>
                                 <h3>طلبيات  المكينات</h3>
@@ -247,7 +115,7 @@
 
                 <div class="col-lg-2">
                    <a href="{% url 'SpareParts:SparePartsNameList' %}">
-                        <div class="mycard1 bg-success">
+                        <div class="mycard1">
                             <i class="fas fa-boxes fa-7x"></i>
                             <div>
                                 <h3>اصناف  قطع الغيار</h3>
@@ -258,7 +126,7 @@
 
                 <div class="col-lg-2">
                     <a href="{% url 'Machines:names_active_list' %}">
-                        <div class="mycard1 bg-success">
+                        <div class="mycard1">
                             <i class="fas fa-boxes fa-7x"></i>
                             <div>
                                 <h3>اصناف  المكينات </h3>
@@ -274,7 +142,7 @@
                 
                 <div class="col-lg-3">
                    <a href="{% url 'SpareParts:SparePartsWarehouseList' %}">
-                        <div class=" mycard1 bg-primary">
+                        <div class=" mycard1 ">
                             <i class="fas fa-warehouse fa-7x"></i>
                             <div>
                                 <h3>مخزن قطع الغيار</h3>
@@ -285,7 +153,7 @@
 
                 <div class="col-lg-3">
                     <a href="{% url 'Machines:warehouses_active_list' %}">
-                        <div class="mycard1 bg-primary">
+                        <div class="mycard1 ">
 
                             <i class="fas fa-warehouse fa-7x"></i>
                            <div>
@@ -297,7 +165,7 @@
 
                 <div class="col-lg-4">
                     <a href="{% url 'Treasury:WorkTreasuryList' %}">
-                        <div class="mycard1 bg-info">
+                        <div class="mycard1">
                             <i class="fas fa-dollar-sign fa-7x"></i>
                             <div>
                                 <h3>الخزينة</h3>
@@ -308,7 +176,7 @@
 
                 <div class="col-lg-2">
                     <a href="#" data-toggle="modal" data-target="#search_modal">
-                        <div class="mycard1 bg-warning">
+                        <div class="mycard1">
                             <i class="fas fa-search fa-7x"></i>
                             <div>
                                 <h3>البحث</h3>
@@ -326,7 +194,7 @@
                 <div class="col-lg-3">
                     <a href="{% url 'SpareParts:SparePartsSupplierList' %}">
 
-                        <div class=" mycard1 bg-secondary">
+                        <div class=" mycard1 ">
                             <i class="fas fa-people-carry fa-7x"></i>
                             <div>
                                 <h3>موردين قطع الغيار</h3>
@@ -338,7 +206,7 @@
                 <div class="col-lg-3">
                     <a href="{% url 'Machines:suppliers_active_list' %}">
                         
-                        <div class="mycard1 bg-secondary">
+                        <div class="mycard1 ">
                             <i class="fas fa-people-carry fa-7x"></i>
                            <div>
                                 <h3>موردين المكينات</h3>
@@ -354,7 +222,7 @@
                     {% else %}
                     href = "#"
                     {% endif %}>
-                        <div class="mycard1 bg-dark">
+                        <div class="mycard1 ">
                             <i class="fas fa-users fa-7x"></i>
                             <div>
                                 <h3>المستخدمين</h3>
