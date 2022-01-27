@@ -26,6 +26,7 @@ urlpatterns = [
     path('spare_parts/',include('SpareParts.urls')),
     path('machines/',include('Machines.urls')),
     path('treasury/',include('Treasury.urls'), ),
+    path('invoices/',include('Invoices.urls'), ),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
 

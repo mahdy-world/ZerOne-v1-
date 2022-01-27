@@ -818,8 +818,6 @@ class MachinesOrdersUpdate(LoginRequiredMixin, UpdateView):
         
         return redirect(self.get_success_url())   
         
-    
-
 
 class MachinesOrdersDelete(LoginRequiredMixin, UpdateView):
     login_url = '/auth/login/'
@@ -896,7 +894,7 @@ class MachinesOrdersSuperDelete(LoginRequiredMixin, UpdateView):
 ###################################################################
 
 
-def  MachinesOrdersDetail(request, pk):
+def MachinesOrdersDetail(request, pk):
     order = get_object_or_404(MachinesOrders, id=pk)
     product = MachinesOrderProducts.objects.filter(product_order=order).order_by('id')
     count_product = product.count()
