@@ -51,7 +51,11 @@
                             {% csrf_token %}
                             {% bootstrap_form form %}
                             <h5 class="font-weight-bold text-center">هل انت متأكد من نقل العنصر
+                                {% if object.name %}
                                 "{{ object.name }}"
+                                {% else %}
+                                "{{ object.id }}"
+                                {% endif %}
                                 الي سلة المهملات
                                 ؟
                             </h5>
@@ -59,7 +63,11 @@
                             {% csrf_token %}
                             {% bootstrap_form form %}
                             <h5 class="font-weight-bold text-center">هل انت متأكد من ارجاع العنصر
+                                {% if object.name %}
                                 "{{ object.name }}"
+                                {% else %}
+                                "{{ object.id }}"
+                                {% endif %}
                                 الى القائمة النشطة مرة اخري
                                 ؟
                             </h5>
@@ -73,7 +81,7 @@
                                 {% elif object.order_number %}
                                 "{{object.order_number}}"
                                 {% else %}
-                                "{{ object.product_name }}"
+                                "{{ object.id }}"
                                 {% endif %}
                                     
                                 بشكل نهائي
@@ -82,7 +90,15 @@
                         {% elif message == 'operation' %} 
                             {% csrf_token %}
                             {% bootstrap_form form %}
-                            <h5 class="font-weight-bold text-center"> تأكيد العملية !</h5>   
+                            <h5 class="font-weight-bold text-center"> تأكيد العملية !</h5>
+                        {% elif message == 'out_ware' %}
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <h5 class="font-weight-bold text-center"> تسليم البضاعة !</h5>
+                        {% elif message == 'inv_back' %}
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <h5 class="font-weight-bold text-center"> الغاء حفظ الفاتورة !</h5>
                         {% elif message == 'info' %}   
                         {% csrf_token %}
                         {% bootstrap_form form %}
@@ -99,8 +115,7 @@
                         {% else %}
                         {% csrf_token %}
                         {% bootstrap_form form %}
-                      
-                            
+
                         <input name="url" type="hidden" class="url_input">
                         <input name="instance" type="hidden"  value="{{ request.user.instance.id }}">
                         {% endif %}
@@ -112,11 +127,20 @@
                                  نعم
                                
                         </button>
-                        {% elif message == 'restore' %}
+                        {% elif message == 'restore' or message == 'inv_back' %}
                            <button type="submit" class="btn btn-info ">
                                 <i class="fa fa-save"></i>
                                  نعم
-                               
+                        </button>
+                        {% elif message == 'inv_pay' %}
+                           <button type="submit" class="btn btn-info ">
+                                <i class="fa fa-save"></i>
+                                 دفع
+                        </button>
+                        {% elif message == 'out_ware' %}
+                           <button type="submit" class="btn btn-info ">
+                                <i class="fa fa-save"></i>
+                                 تسليم
                         </button>
                         {% elif message == 'update' %}
                             <button type="submit" class="btn btn-info font-weight-bold text-center">
@@ -162,7 +186,49 @@
     </script>
 
    
+<script>
+$("form input[id='unit_price']").on('change keyup', function () {
+    var quantity = parseFloat($("form input[id='quantity']").val());
+    var unit_price = parseFloat($("form input[id='unit_price']").val());
+    $("form input[id='total_price']").val(unit_price*quantity);
+});
 
+$("form input[id='quantity']").on('change keyup', function () {
+    var quantity = parseFloat($("form input[id='quantity']").val());
+    var unit_price = parseFloat($("form input[id='unit_price']").val());
+    $("form input[id='total_price']").val(unit_price*quantity);
+});
+
+$("form input[id='inv_overall']").val($("form input[id='inv_total']").val());
+$("form input[id='inv_discount']").on('change keyup', function () {
+    var total = parseFloat($("form input[id='inv_total']").val());
+    var discount = parseFloat($("form input[id='inv_discount']").val());
+    $("form input[id='inv_overall']").val(total-discount);
+});
+
+var $element = $("form input[id='inv_pay_residual_value_pay_date']");
+{% if paid == 0 %}
+$("label[for='"+$element.attr('id')+"']").hide();
+$("form input[id='inv_pay_residual_value_pay_date']").hide();
+$("form input[id='inv_pay_paid_value']").val($("form input[id='inv_pay_overall']").val());
+{% endif %}
+
+$("form input[id='inv_pay_paid_value']").on('change keyup', function () {
+    var paid_value = parseFloat($("form input[id='inv_pay_paid_value']").val());
+    var overall = parseFloat($("form input[id='inv_pay_overall']").val());
+    $("form input[id='inv_pay_residual_value']").val(overall-paid_value);
+    if (paid_value < overall){
+        $("label[for='"+$element.attr('id')+"']").show();
+        $("form input[id='inv_pay_residual_value_pay_date']").show();
+        $("form input[id='inv_pay_residual_value_pay_date']").val('');
+    }
+    else {
+        $("label[for='"+$element.attr('id')+"']").hide();
+        $("form input[id='inv_pay_residual_value_pay_date']").hide();
+        $("form input[id='inv_pay_residual_value_pay_date']").val('');
+    }
+});
+</script>
  
 
 {% endblock %} 

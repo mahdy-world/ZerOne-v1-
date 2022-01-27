@@ -1,0 +1,583 @@
+{% extends "base.html" %}
+
+
+{% block css %}
+
+<style>
+    .sel .select2-selection__rendered {
+        line-height: 31px !important;
+        height: 37px !important;
+    }
+    .sel .select2-container .select2-selection--single {
+        height: 37px !important;
+        border: 1px solid lightgray;
+    }
+    .sel .select2-selection__arrow {
+        height: 37px !important;
+    }
+</style>
+{% endblock css %}
+    
+
+{% block main %}
+{% load  crispy_forms_tags %}
+    <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+           
+                <div class="row">
+                    <div class="col-12"> {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
+                            <i class="mdi mdi-check-all mr-2"></i>
+                            {{ message|safe }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        {% endfor %}
+
+            
+                      {% endif %}
+                    </div>
+                   
+                </div>
+              
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+                            
+                            <h3 class="mb-0 "> فاتورة مبيعات
+                                {% if invoice.invoice_product_type == 1 %}
+                                مكن
+                                {% else %}
+                                قطع غيار
+                                {% endif %}
+                                {{invoice.id}}</h3>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
+                                    {% if invoice.deleted == 0 %}
+                                    <li class="breadcrumb-item"><a href="{% url 'Invoices:InvoiceList' invoice.invoice_product_type %}">قائمة الفواتير</a></li>
+                                    {% else %}
+                                    <li class="breadcrumb-item"><a href="{% url 'Invoices:InvoiceTrashList' invoice.invoice_product_type %}">قائمة الفواتير</a></li>
+                                    {% endif %}
+
+                                    <li class="breadcrumb-item active">فاتورة مبيعات
+                                        {% if invoice.invoice_product_type == 1 %}
+                                        مكن
+                                        {% else %}
+                                        قطع غيار
+                                        {% endif %}
+                                        {{invoice.id}}</li>
+                                </ol>
+                            </div>
+
+                            
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- معلومات الطلب -->
+                    <div class="col-lg-4 col-md-4">
+                        <div class="card">
+
+                            <div class="card-body ">
+                                <div class="bg-primary">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class=" p-3">
+                                                                    
+                                                                        <h3 class="text-center font-weight-bold" style="color: white;">
+                                                                            <i class="fas fa-info"></i> معلومات الفاتورة
+                                                                        </h3>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-nowrap mb-0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th scope="row"><i class='bx bx-bookmark-minus bx-sm' style='color:#556ee6'  ></i> رقم الفاتورة :</th>
+                                                                    <td>{{ invoice.id }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row"> <i class='bx bx-calendar bx-sm' style='color:#556ee6'  ></i>تاريخ الفاتورة : </th>
+                                                                    <td>{{ invoice.date|date:'Y-m-d' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row"><i class='bx bx-user-pin bx-sm' style='color:#556ee6' ></i>العميل : </th>
+                                                                    <td>{{ invoice.customer }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row"> <i class='bx bx-home bx-sm' style='color:#556ee6' ></i>المخزن : </th>
+                                                                    <td><span class="badge badge-danger font-size-14">
+                                                                        {% if invoice.warehouse %}
+                                                                        {{ invoice.warehouse }}
+                                                                        {% else %}
+                                                                        {{ invoice.warehouse_spare }}
+                                                                        {% endif %}
+                                                                    </span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#556ee6' ></i>الخزنة : </th>
+                                                                    <td><span class="badge badge-danger font-size-14">{{ invoice.treasury }} </span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row"> <i class='bx bx-dollar-circle bx-sm' style='color:#556ee6' ></i>الدفع : </th>
+                                                                    <td><span class="badge badge-warning font-size-14">
+                                                                        {% if invoice.paid %}
+                                                                        نعم
+                                                                            {% if invoice.residual_value > 0 %}
+                                                                                <br><br>
+                                                                                 <span class="text-secondary">لكن لم يتم دفع الفاتورة بالكامل</span>
+                                                                            {% endif %}
+                                                                        {% else %}
+                                                                        لا
+                                                                        {% endif %}
+                                                                    </span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row"> <i class='bx bx-home-circle bx-sm' style='color:#556ee6' ></i>تسليم البضاعة : </th>
+                                                                    <td><span class="badge badge-warning font-size-14">
+                                                                        {% if invoice.out_of_warehouse %}
+                                                                        نعم
+                                                                        {% else %}
+                                                                        لا
+                                                                        {% endif %}
+                                                                    </span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row"><i class='bx bx-note bx-sm' style='color:#556ee6'  ></i> ملاحظات :</th>
+                                                                    <td>
+                                                                        {% if invoice.comment %}
+                                                                        {{ invoice.comment }}
+                                                                        {% else %}
+                                                                        ----------
+                                                                        {% endif %}
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                            </div>
+                        </div>
+
+                        {% if invoice.out_of_warehouse %}
+                        <a href="{% url 'Invoices:PrintInvoice' invoice.id %}" target="_blank" class="form-control btn btn-success" title=" طباعة الفاتورة">
+                            <i class="fa fa-print"></i> طباعة الفاتورة
+                        </a>
+                        {% elif invoice.paid %}
+                        {% if invoice.residual_value > 0 %}
+                        <a style="margin-bottom: 10px" href="{% url 'Invoices:InvoicePay' invoice.id %}" data-toggle="modal" data-target="#action_modal" class="form-control btn btn-success" title="دفع الفاتورة">
+                            <i class="fa fa-money-bill-alt"></i> دفع الفاتورة
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'Invoices:InvoiceOut' invoice.id %}" data-toggle="modal" data-target="#action_modal" class="form-control btn btn-success" title=" تسليم البضاعة">
+                            <i class="fa fa-shopping-bag"></i> تسليم البضاعة
+                        </a>
+                        <a style="margin-top: 10px" href="{% url 'Invoices:PrintInvoice' invoice.id %}" target="_blank" class="form-control btn btn-success" title=" طباعة الفاتورة">
+                            <i class="fa fa-print"></i> طباعة الفاتورة
+                        </a>
+                        {% elif invoice.saved %}
+                        <a href="{% url 'Invoices:InvoiceBack' invoice.id %}" data-toggle="modal" data-target="#action_modal" class="form-control btn btn-info" title=" ارجاع من الحفظ">
+                            <i class="fa fa-backspace"></i> ارجاع من الحفظ
+                        </a>
+                        <a style="margin-top: 10px" href="{% url 'Invoices:InvoicePay' invoice.id %}" data-toggle="modal" data-target="#action_modal" class="form-control btn btn-success" title="دفع الفاتورة">
+                            <i class="fa fa-money-bill-alt"></i> دفع الفاتورة
+                        </a>
+                        {% else %}
+                            {% if product %}
+                                <a href="{% url 'Invoices:InvoiceSave' invoice.id %}" data-toggle="modal" data-target="#action_modal" class="form-control btn btn-success" title="حفظ الفاتورة">
+                                    <i class="fa fa-save"></i> حفظ الفاتورة
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    {% if invoice.deleted == 0 %}
+                    <div class="col-lg-8">
+
+                         <div class="card">
+                            <div class="card-body">
+
+                                <div class="tab-pane" id="processing" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="bg-primary">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="text-primary p-3">
+                                                                
+                                                                    <h3 class="text-center font-weight-bold" style="color: white;">
+                                                                        <i class="fas fa-layer-group"></i>
+                                                                         أصناف الفاتورة
+                                                                    </h3>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+
+                                                    {% if not invoice.saved %}
+                                                    <div class="table-responsive" id="order_list">
+                                                        <table class="table table-nowrap mb-0">
+                                                            <thead>
+                                                                <form method="post" action="{{action_url}}">
+                                                                {% csrf_token %}
+                                                                <tr>
+                                                                    <th class="col-lg-5 col-xl-5 col-md-5">
+                                                                        {% if form.item %}
+                                                                        {{form.item|as_crispy_field}}
+                                                                        {% else %}
+                                                                        {{form.item_spare|as_crispy_field}}
+                                                                        {% endif %}
+                                                                    </th>
+                                                                    <th class="col-lg-2 col-xl-2 col-md-2">{{form.unit_price|as_crispy_field}}</th>
+                                                                    <th class="col-lg-2 col-xl-2 col-md-2">{{form.quantity|as_crispy_field}} </th>
+                                                                    <th class="col-lg-2 col-xl-2 col-md-2">{{form.total_price|as_crispy_field}} </th>
+                                                                    {% if not invoice.saved %}
+                                                                    <th class="col-lg-2 col-xl-2 col-md-2">
+                                                                        <button style="width: 100%" type="submit" class="btn btn-success">اضافة</button>
+                                                                    </th>
+                                                                    {% endif %}
+                                                                </tr>
+                                                                </form>
+                                                            </thead>
+                                                           
+                                                        </table>
+                                                    </div>
+                                                    {% endif %}
+
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-centered table-nowrap text-center">
+                                                                <thead class="thead-light">
+                                                                    <tr>
+                                                                        <th>م</th>
+                                                                        <th>الصنف</th>
+                                                                        <th>سعر البيع</th>
+                                                                        <th>الكمية</th>
+                                                                        <th>الاجمالي</th>
+                                                                        {% if not invoice.saved %}
+                                                                        <th></th>
+                                                                        {% endif %}
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    
+                                                                    {% if product %}
+                                                                    {% for x in product  %}
+                                                                    <tr style="text-align: center;">
+                                                                        
+                                                                        <td>{{forloop.counter}}</td>
+                                                                        <td>
+                                                                            {% if x.item %}
+                                                                            {{x.item}}
+                                                                            {% else %}
+                                                                            {{x.item_spare}}
+                                                                            {% endif %}
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="badge badge-pill badge-soft-success font-size-12 text-danger">
+                                                                                <i class='bx bx-dollar'></i> {{ x.unit_price }}
+                                                                            </span>
+                                                                        </td>
+                                                                        <td>
+                                                                            {{x.quantity}}
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="badge badge-pill badge-soft-success font-size-12 text-danger">
+                                                                                <i class='bx bx-dollar'></i> {{ x.total_price }}
+                                                                            </span>
+                                                                        </td>
+                                                                        {% if not invoice.saved %}
+                                                                        <td>
+                                                                            <a href="{% url 'Invoices:InvoiceProductsUpdate' x.id x.invoice.id %}" class="mr-3 text-primary" data-toggle="modal" data-target="#action_modal" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                                            <a href="{% url 'Invoices:InvoiceProductsDelete' x.id x.invoice.id  %}" class="text-danger" data-target="#action_modal" data-toggle="modal" title="" data-original-title="Delete"><i class="mdi mdi-close font-size-18"></i></a>
+                                                                        </td>
+                                                                        {% endif %}
+                                                                    </tr>
+                
+                                                                    {% endfor %}
+                                                                   
+                                                                    {% endif %}
+                                                                        
+                                                                    
+                                                                 
+                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                       
+                                                    </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                            </div>
+                        </div>
+
+                        <!-- اجمالي  -->
+                        <div class="row">
+                            <!-- القطع -->
+                                <div class="col-lg-4 col-md-4">
+                                       <div class="card mini-stats-wid">
+                                           <div class="card-body">
+                                               <div class="media">
+                                                   <div class="media-body">
+                                                       <p class="text-muted font-weight-bold">عدد الأصناف</p>
+                                                       <h4 class="mb-0">{{count_product}} صنف</h4>
+                                                   </div>
+
+                                                   <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                       <span class="avatar-title">
+                                                           <i class="bx bx-copy-alt bx-sm"></i>
+                                                       </span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                                 
+                                <!-- الكمية -->
+                               <div class="col-lg-4 col-md-4">
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">اجمالي الكمية </p>
+                                                               <h4 class="mb-0">
+                                                                   {% if qu %}
+                                                                   {{qu}}
+                                                                   {% else %}
+                                                                   0
+                                                                   {% endif %}
+                                                                   قطعة
+                                                               </h4>
+                                                           </div>
+
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                <i class="fas fa-balance-scale"></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                               
+                               <!-- المبلغ -->
+                               <div class="col-lg-4 col-md-4">
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">اجمالي المبلغ </p>
+                                                               <h4 class="mb-0">
+                                                                   {% if total %}
+                                                                   {{total}}
+                                                                   {% else %}
+                                                                   0
+                                                                   {% endif %}
+                                                                   جنية
+                                                               </h4>
+                                                           </div>
+
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                   <i class='bx bx-dollar-circle bx-sm'  ></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                       </div>
+
+                        {% if invoice.saved %}
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">قيمة الخصم </p>
+                                                               <h4 class="mb-0">
+                                                                   {% if invoice.discount %}
+                                                                   {{invoice.discount}}
+                                                                   {% else %}
+                                                                   0.0
+                                                                   {% endif %}
+                                                                   جنية
+                                                               </h4>
+                                                           </div>
+
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                   <i class='bx bx-dollar-circle bx-sm'  ></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                            <div class="col-lg-6 col-md-6">
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">المطلوب للدفع </p>
+                                                               <h4 class="mb-0">
+                                                                   {% if invoice.overall %}
+                                                                   {{invoice.overall}}
+                                                                   {% else %}
+                                                                   0.0
+                                                                   {% endif %}
+                                                                   جنية
+                                                               </h4>
+                                                           </div>
+
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                   <i class='bx bx-dollar-circle bx-sm'  ></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                        </div>
+                        {% endif %}
+
+                        {% if invoice.paid %}
+                        <div class="row">
+                            <div {% if invoice.residual_value_pay_date %} class="col-lg-4 col-md-4" {% else %} class="col-lg-6 col-md-6" {% endif %}>
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">القيمة المدفوعة </p>
+                                                               <h4 class="mb-0">
+                                                                   {% if invoice.paid_value %}
+                                                                   {{invoice.paid_value}}
+                                                                   {% else %}
+                                                                   0.0
+                                                                   {% endif %}
+                                                                   جنية
+                                                               </h4>
+                                                           </div>
+
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                   <i class='bx bx-dollar-circle bx-sm'  ></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                            <div {% if invoice.residual_value_pay_date %} class="col-lg-4 col-md-4" {% else %} class="col-lg-6 col-md-6" {% endif %}>
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">القيمة المتبقية </p>
+                                                               <h4 class="mb-0">
+                                                                   {% if invoice.residual_value %}
+                                                                   {{invoice.residual_value}}
+                                                                   {% else %}
+                                                                   0.0
+                                                                   {% endif %}
+                                                                   جنية
+                                                               </h4>
+                                                           </div>
+
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                   <i class='bx bx-dollar-circle bx-sm'  ></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                            {% if invoice.residual_value_pay_date %}
+                            <div class="col-lg-4 col-md-4">
+                                               <div class="card mini-stats-wid">
+                                                   <div class="card-body">
+                                                       <div class="media">
+                                                           <div class="media-body">
+                                                               <p class="text-muted font-weight-bold ">تاريخ اكمال الدفع </p>
+                                                               <h4 class="mb-0">
+                                                                   {% if invoice.residual_value_pay_date %}
+                                                                   {{invoice.residual_value_pay_date|date:'Y-m-d'}}
+                                                                   {% else %}
+
+                                                                   {% endif %}
+                                                               </h4>
+                                                           </div>
+
+                                                           <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                                               <span class="avatar-title">
+                                                                   <i class='bx bx-calendar bx-sm'  ></i>
+                                                               </span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                               </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    {% endif %}
+                </div>
+
+
+
+                {% if is_paginated %}
+                {% include "components/paginator.html" %}
+                {% endif %}
+
+              
+
+          </div>
+      </div>
+  </div>
+{% endblock main %}
+
+
+{% block js %}
+
+<script>
+    $(document).ready(function() {
+        $('#product').select2();
+    });
+</script>
+
+<script>
+    $( '#unit_price' ).on('change keyup', function () {
+        var unit_price = parseFloat(this.value);
+        var quantity = parseFloat($('#quantity').val());
+        $('#total_price').val(unit_price*quantity);
+    });
+
+    $( '#quantity' ).on('change keyup', function () {
+        var quantity = parseFloat(this.value);
+        var unit_price = parseFloat($('#unit_price').val());
+        $('#total_price').val(unit_price*quantity);
+    });
+</script>
+
+{% endblock js %}
