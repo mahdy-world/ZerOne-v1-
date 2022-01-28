@@ -128,8 +128,18 @@
                                        </div>
               
                                       <div class="">
-                                          <a href="{% url 'Treasury:WorkTreasuryDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
-                                              <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
+                                          <a
+                                                {% if x.balance > 0 %}
+                                                href="#"
+                                                {% else %}
+                                                href="{% url 'Treasury:WorkTreasuryDelete' x.id %}" data-toggle="modal" data-target="#action_modal"
+                                                {% endif %}
+                                              data-placement="top" title="" data-original-title="Profile">
+                                                {% if x.balance > 0 %}
+                                                <span class="badge badge-danger" style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. الخزنة تحتوي علي نقدية"><i class='bx bxs-trash'  ></i>حذف</span>
+                                                {% else %}
+                                                <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
+                                                {% endif %}
                                           </a>
                                       </div>
                                   {% else %}

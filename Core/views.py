@@ -7,6 +7,7 @@ from django.views.generic import *
 from django.contrib import messages
 from Core.forms import SystemInfoForm
 from Machines.models import *
+from Invoices.models import *
 from Core.models import SystemInformation
 from SpareParts.models import SparePartsOrders
 
@@ -16,7 +17,6 @@ from SpareParts.models import SparePartsOrders
 @login_required(login_url='Auth:login')
 def Index(request):
     return render(request, 'core/index.html')
-
 
 
 class SystemInfoCreate(LoginRequiredMixin, CreateView):
@@ -105,7 +105,6 @@ class SparePartsSearch(LoginRequiredMixin, ListView):
         return queryset
 
 
-
 class SparePartsOrderSearch(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = SparePartsOrders
@@ -124,8 +123,7 @@ class SparePartsOrderSearch(LoginRequiredMixin, ListView):
         queryset = self.model.objects.filter(order_number__icontains=spare_order_search, deleted=False)
         return queryset
     
-    
-    
+
 class MachineOrderSearch(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = MachinesOrders
@@ -144,6 +142,45 @@ class MachineOrderSearch(LoginRequiredMixin, ListView):
         queryset = self.model.objects.filter(order_number__icontains=machine_order_search, deleted=False)
         return queryset
 
+
+class MachineInvoiceSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = Invoice
+    template_name = 'Invoices/invoice_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'list'
+        context['message'] = 'active'
+        context['invoice_product_type'] = 1
+        context['machine_invoice_search'] = self.request.GET.get("machine_invoice_search")
+        context['count'] = self.model.objects.filter(deleted=False, invoice_product_type=1).count()
+        return context
+
+    def get_queryset(self):
+        machine_invoice_search = self.request.GET.get("machine_invoice_search")
+        queryset = self.model.objects.filter(id=machine_invoice_search, deleted=False)
+        return queryset
+
+
+class SpareInvoiceSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = Invoice
+    template_name = 'Invoices/invoice_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'list'
+        context['message'] = 'active'
+        context['invoice_product_type'] = 2
+        context['spare_invoice_search'] = self.request.GET.get("spare_invoice_search")
+        context['count'] = self.model.objects.filter(deleted=False, invoice_product_type=2).count()
+        return context
+
+    def get_queryset(self):
+        spare_invoice_search = self.request.GET.get("spare_invoice_search")
+        queryset = self.model.objects.filter(id=spare_invoice_search, deleted=False)
+        return queryset
 
 
 def Read(request):

@@ -43,7 +43,7 @@ class RegisterForm(forms.ModelForm):
         self.fields['is_staff'].help_text = "لدية صلاحيات محدودة"   
         self.fields['is_active'].label = "نشط"   
         self.fields['is_active'].help_text = "يعمل / لا يعمل .... بديل للحذف"   
-        self.fields['is_superuser'].label = "مسئول"   
+        self.fields['is_superuser'].label = "مسؤول"
         self.fields['is_superuser'].help_text = "لدية كل الصلاحيات لعمل كل شئ "   
 class RegisterForm(forms.ModelForm):
     
@@ -72,5 +72,5 @@ class RegisterForm(forms.ModelForm):
         self.fields['is_staff'].help_text = "لدية صلاحيات محدودة"   
         self.fields['is_active'].label = "نشط"   
         self.fields['is_active'].help_text = "يعمل / لا يعمل .... بديل للحذف"   
-        self.fields['is_superuser'].label = "مسئول"   
+        self.fields['is_superuser'].label = "مسؤول"
         self.fields['is_superuser'].help_text = "لدية كل الصلاحيات لعمل كل شئ "   

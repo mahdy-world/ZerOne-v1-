@@ -242,6 +242,54 @@
                             
                                                 </div>
 
+                                                <div class="col-lg-6">
+                                                    <span style="margin-right: 10px;" class=" font-weight-bold">بحث عن فاتورة مبيعات مكن ...</span>
+
+                                                    <form class="app-search d-none d-lg-block"  method="get" action="{% url 'Core:MachineInvoiceSearch' %}">
+                                                        <div class="position-relative" >
+                                                            <input type="text"  value="{{machine_invoice_search}}" list="machine_invoice" class="form-control"
+                                                             name="machine_invoice_search"  placeholder="بحث  ...  برقم الفاتورة">
+                                                            <span >
+                                                                <button class="bx bx-search-alt btn bnt-light" type="submit">
+                                                                </button>
+                                                            </span>
+                                                            <datalist id="machine_invoice" >
+                                                                        {% for inv in machine_invoice %}
+                                                                            <option value="{{ inv.id }}">
+                                                                                {{ inv.id }}
+                                                                                </option>
+                                                                        {% endfor %}
+                                                            </datalist>
+                                                        </div>
+                                                    </form>
+
+
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <span style="margin-right: 10px;" class=" font-weight-bold">بحث عن فاتورة مبيعات قطع غيار ...</span>
+
+                                                    <form class="app-search d-none d-lg-block"  method="get" action="{% url 'Core:SpareInvoiceSearch' %}">
+                                                        <div class="position-relative" >
+                                                            <input type="text"  value="{{spare_invoice_search}}" list="spare_invoice" class="form-control"
+                                                             name="spare_invoice_search"  placeholder="بحث  ...  برقم الفاتورة">
+                                                            <span >
+                                                                <button class="bx bx-search-alt btn bnt-light" type="submit">
+                                                                </button>
+                                                            </span>
+                                                            <datalist id="spare_invoice" >
+                                                                        {% for inv in spare_invoice %}
+                                                                            <option value="{{ inv.id }}">
+                                                                                {{ inv.id }}
+                                                                                </option>
+                                                                        {% endfor %}
+                                                            </datalist>
+                                                        </div>
+                                                    </form>
+
+
+                                                </div>
+
                                             </div>
 
                                            
