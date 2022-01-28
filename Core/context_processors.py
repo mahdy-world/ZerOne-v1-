@@ -3,6 +3,7 @@ from django.http import request
 from Core.models import SystemInformation
 from SpareParts.models import *
 from Machines.models import * 
+from Invoices.models import *
 from django.utils import timezone as tz
 from django.db.models import Q
 
@@ -10,13 +11,13 @@ from django.db.models import Q
 
 def allcontext(request):
     info = SystemInformation.objects.filter(id=1)
-    spare_parts = SparePartsNames.objects.filter(deleted=0)
+    spare_parts = SparePartsNames.objects.filter(deleted=False)
     machines = MachinesNames.objects.filter(deleted=False)
     spare_order = SparePartsOrders.objects.filter(deleted=False)
     machine_order = MachinesOrders.objects.filter(deleted=False)
-    
-    
-    
+    machine_invoice = Invoice.objects.filter(deleted=False, invoice_product_type=1)
+    spare_invoice = Invoice.objects.filter(deleted=False, invoice_product_type=2)
+
     machine_order_count = machine_order.count() # عدد طلبيات المكينات
     spare_order_count = spare_order.count() # عدد طلبيات قطع الغيار
     spare_supplier_count = SparePartsSuppliers.objects.filter(deleted=False).count() # عدد موردين قطع الغيار
@@ -46,7 +47,9 @@ def allcontext(request):
         'machines_count' : machines_count,
         'spareparts_count' : spareparts_count,
         'machines_supplier' : machines_supplier,
-        
+        'machine_invoice' : machine_invoice,
+        'spare_invoice' : spare_invoice,
+
 
     }
     return context

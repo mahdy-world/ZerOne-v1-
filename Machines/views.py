@@ -1343,7 +1343,7 @@ class MachinesWarehouseDetail(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = WarehouseTransactions
     template_name = 'Machines/machineswarehousestransactions_detail.html'
-    paginate_by = 10
+    # paginate_by = 10
 
     def get_queryset(self):
         queryset = WarehouseTransactions.objects.filter(warehouse=self.kwargs['pk']).order_by('item')
