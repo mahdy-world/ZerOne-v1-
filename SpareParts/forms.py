@@ -1,7 +1,4 @@
 from django import forms
-from django.contrib.admin.widgets import AdminDateWidget
-from django.forms import widgets
-from django.forms.models import inlineformset_factory
 from .models import *
 
 class SparePartsTypeForm(forms.ModelForm):
