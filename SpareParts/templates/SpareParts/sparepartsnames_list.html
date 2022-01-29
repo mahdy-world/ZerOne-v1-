@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load custom_tags %}
 {% block main %}
     <div class="main-content">
 
@@ -86,7 +86,8 @@
 
                 {% if object_list %}
                 <div class="row">
-                {% for x in object_list  %}
+                {% for x in object_list %}
+                {% product_warehouses x.id as has_products %}
                 <div class="col-xl-3 col-sm-6">
                   <div class="card text-center">
                       <div class="card-body">
@@ -119,8 +120,18 @@
                                      </div>
             
                                     <div class="">
-                                        <a href="{% url 'SpareParts:SparePartsNameDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
+                                        <a
+                                            {% if has_products %}
+                                            href="#"
+                                            {% else %}
+                                            href="{% url 'SpareParts:SparePartsNameDelete' x.id %}" data-toggle="modal" data-target="#action_modal"
+                                            {% endif %}
+                                            data-placement="top" title="" data-original-title="Profile">
+                                            {% if has_products %}
+                                            <span style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. الصنف موجود بكميات داخل المخازن" class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
+                                            {% else %}
                                             <span class="badge badge-danger"><i class='bx bxs-trash'  ></i>حذف</span>
+                                            {% endif %}
                                         </a>
                                     </div>
                                 {% else %}

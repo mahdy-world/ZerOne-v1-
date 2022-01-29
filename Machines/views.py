@@ -366,6 +366,11 @@ class NamesCreate(LoginRequiredMixin, CreateView):
         context['action_url'] = reverse_lazy('Machines:names_create')
         return context
 
+    def get_form(self, *args, **kwargs):
+        form = super(NamesCreate, self).get_form(*args, **kwargs)
+        form.fields['machine_type'].queryset = MachinesTypes.objects.filter(deleted=False)
+        return form
+
     def get_success_url(self):
         messages.success(self.request, "  تم إضافة صنف ماكينة بنجاح", extra_tags="success")
 

@@ -41,4 +41,9 @@ def order_products_val(order_id):
 
 @register.simple_tag(name='warehouse_products')
 def warehouse_products(ware_id):
-    return WarehouseTransactions.objects.filter(warehouse__id=ware_id)
+    return WarehouseTransactions.objects.filter(warehouse__id=ware_id, quantity__gt=0)
+
+
+@register.simple_tag(name='product_warehouses')
+def product_warehouses(prod_id):
+    return WarehouseTransactions.objects.filter(item__id=prod_id, quantity__gt=0)
