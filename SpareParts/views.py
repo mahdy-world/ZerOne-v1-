@@ -1,12 +1,10 @@
 from django.db.models.aggregates import Sum
-from django.shortcuts import get_object_or_404, redirect ,HttpResponseRedirect, render
+from django.shortcuts import get_object_or_404, redirect , render
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import  LoginRequiredMixin
 from django.views.generic import *
-from django.db.models import Count
 from django.contrib import messages
 from Machines.models import MachineNotifecation
-
 from Treasury.models import WorkTreasuryTransactions
 from datetime import datetime, timedelta
 from .forms import *

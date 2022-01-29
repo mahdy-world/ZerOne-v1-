@@ -1,0 +1,3 @@
+1 = install GTK run time (https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/releases)
+2 = pip install weasyprint 
+3 = put path (C:\Program Files\GTK3-Runtime Win64\bin) in above all pathes in the System Properties > Envoironment Variables > Path for both system and user

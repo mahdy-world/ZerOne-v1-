@@ -3,12 +3,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import *
+import weasyprint
 from .models import *
 from .forms import *
 from django.contrib import messages
 from datetime import datetime, timedelta
 from django.template.loader import render_to_string
-import weasyprint
 from django.http import HttpResponse
 from Core.models import *
 
