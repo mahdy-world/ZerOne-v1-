@@ -209,6 +209,11 @@ class SparePartsNameCreate(LoginRequiredMixin ,CreateView):
         context['message'] = 'add'
         context['action_url'] = reverse_lazy('SpareParts:SparePartsNameCreate')
         return context
+
+    def get_form(self, *args, **kwargs):
+        form = super(SparePartsNameCreate, self).get_form(*args, **kwargs)
+        form.fields['spare_type'].queryset = SparePartsTypes.objects.filter(deleted=False)
+        return form
     
     def get_success_url(self):
         messages.success(self.request, "  تم اضافة صنف قطعة غيار بنجاح", extra_tags="success")

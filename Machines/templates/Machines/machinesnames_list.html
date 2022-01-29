@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load custom_machine_tags %}
 {% block main %}
 
     <div class="main-content">
@@ -65,7 +65,8 @@
 
                 {% if object_list %}
                 <div class="row">
-                {% for x in object_list  %}
+                {% for x in object_list %}
+                {% product_warehouses x.id as has_products %}
                 <div class="col-xl-3 col-sm-6">
                   <div class="card text-center">
                       <div class="card-body">
@@ -102,8 +103,22 @@
                               </div>
 
                               <div class="mr-3">
-                                  <a href="{% url 'Machines:names_delete' x.id %}" data-toggle="modal" data-target="#action_modal" class="badge badge-danger waves-effect text-white waves-light">
-                                    <i class="bx bxs-trash font-size-16 align-middle "></i> حذف
+                                  <a
+                                    {% if has_products %}
+                                    href="#"
+                                    {% else %}
+                                    href="{% url 'Machines:names_delete' x.id %}" data-toggle="modal" data-target="#action_modal"
+                                    {% endif %}
+                                    class="badge badge-danger waves-effect text-white waves-light">
+                                    {% if has_products %}
+                                      <span style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. الصنف موجود بكميات داخل المخازن">
+                                      <i class="bx bxs-trash font-size-16 align-middle mr-2"></i> حذف
+                                      </span>
+                                      {% else %}
+                                      <span>
+                                      <i class="bx bxs-trash font-size-16 align-middle mr-2"></i> حذف
+                                      </span>
+                                      {% endif %}
                                   </a>
                               </div>
                               {% endif %}
