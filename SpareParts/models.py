@@ -70,7 +70,7 @@ class SparePartsOrderProducts(models.Model):
     product_order = models.ForeignKey(SparePartsOrders, on_delete=models.CASCADE, null=True, verbose_name='الطلبية')
     product_name = models.ForeignKey(SparePartsNames, on_delete=models.CASCADE, null=True, verbose_name='المنتج')
     product_quantity = models.IntegerField(default=0, null=True, verbose_name="الكمية")
-    product_price = models.FloatField(default=0, null=True, verbose_name="سعر الشراء")
+    product_price = models.FloatField(default=0, null=True, verbose_name="سعر الشراء الكلي")
     deleted = models.BooleanField(default=False, verbose_name='حذف')
 
 

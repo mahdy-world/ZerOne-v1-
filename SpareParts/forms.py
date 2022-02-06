@@ -17,6 +17,12 @@ class DeleteTypeForm(forms.ModelForm):
 
 
 class SparePartsNameForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(SparePartsNameForm, self).__init__(*args, **kwargs)
+        spare_type = SparePartsTypes.objects.filter(deleted=False)
+        self.fields['spare_type'].queryset = spare_type
+        
     class Meta:
         model = SparePartsNames
         exclude = ['deleted']        
@@ -68,6 +74,12 @@ class SupplierDeleteForm(forms.ModelForm):
 
 
 class SparePartOrderForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(SparePartOrderForm, self).__init__(*args, **kwargs)
+        supplier = SparePartsSuppliers.objects.filter(deleted=False)
+        self.fields['order_supplier'].queryset = supplier
+        
     class Meta:
         model = SparePartsOrders
         exclude = ['deleted']
@@ -129,6 +141,13 @@ class OrderDeleteForm(forms.ModelForm):
 
 
 class orderProductForm(forms.ModelForm):
+    
+    # return custome value at fileds by using queryset 
+    def __init__(self, *args, **kwargs):
+        super(orderProductForm, self).__init__(*args, **kwargs)
+        products = SparePartsNames.objects.filter(deleted=False)
+        self.fields['product_name'].queryset = products
+        
     class Meta:
         model = SparePartsOrderProducts
         fields = ['product_name','product_quantity', 'product_price']

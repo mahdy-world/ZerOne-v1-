@@ -41,6 +41,12 @@ class MachinesWarehousesFormDelete(forms.ModelForm):
 
 
 class MachinesNamesForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(MachinesNamesForm, self).__init__(*args, **kwargs)
+        machine_type = MachinesTypes.objects.filter(deleted=False)
+        self.fields['machine_type'].queryset = machine_type
+        
     class Meta:
         model = MachinesNames
         exclude = ['deleted']
@@ -77,6 +83,12 @@ class MachinesSuppliersFormDelete(forms.ModelForm):
 
 
 class MachinesOrdersForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(MachinesOrdersForm, self).__init__(*args, **kwargs)
+        supplier = MachinesSuppliers.objects.filter(deleted=False)
+        self.fields['order_supplier'].queryset = supplier
+        
     class Meta:
         model = MachinesOrders
         exclude = ['deleted']
@@ -143,6 +155,13 @@ class MachinesOrdersDeleteForm(forms.ModelForm):
 
 
 class MachinesOrderProductsForm(forms.ModelForm):
+    
+    # return custome value at fileds by using queryset 
+    def __init__(self, *args, **kwargs):
+        super(MachinesOrderProductsForm, self).__init__(*args, **kwargs)
+        products = MachinesNames.objects.filter(deleted=False)
+        self.fields['product_name'].queryset = products
+        
     class Meta:
         model = MachinesOrderProducts
         fields = ['product_name', 'product_quantity', 'product_price']
