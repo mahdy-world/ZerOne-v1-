@@ -72,7 +72,7 @@ class MachinesOrderProducts(models.Model):
     product_order = models.ForeignKey(MachinesOrders, on_delete=models.CASCADE, null=True, verbose_name='الطلبية')
     product_name = models.ForeignKey(MachinesNames, on_delete=models.CASCADE, null=True, verbose_name='المنتج')
     product_quantity = models.IntegerField(default=0, null=True, verbose_name="الكمية")
-    product_price = models.FloatField(default=0, null=True, verbose_name="سعر الشراء")
+    product_price = models.FloatField(default=0, null=True, verbose_name="سعر الشراء الكلي")
     deleted = models.BooleanField(default=False, verbose_name='حذف')
 
     def __str__(self):

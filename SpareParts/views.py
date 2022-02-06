@@ -865,11 +865,11 @@ class SparePartsOrderSuperDelete(LoginRequiredMixin, UpdateView):
 
 def SparePartsOrderDetail(request, pk):
     order = get_object_or_404(SparePartsOrders , id=pk)
-    product = SparePartsOrderProducts.objects.all().filter(product_order=order,)
+    product = SparePartsOrderProducts.objects.filter(product_order=order, deleted=False)
     
-    count_product = SparePartsOrderProducts.objects.all().filter(product_order=order).count()
+    count_product = SparePartsOrderProducts.objects.filter(product_order=order).count()
 
-    queryset = SparePartsOrderProducts.objects.all().filter(product_order=order,)
+    queryset = SparePartsOrderProducts.objects.filter(product_order=order,deleted=False)
     total = queryset.aggregate(total=Sum('product_price')).get('total')
     quantity = queryset.aggregate(quantity=Sum('product_quantity')).get('quantity')
     
@@ -916,8 +916,9 @@ def SparePartsOrderDetail(request, pk):
 
 def AddProductOrder(request, pk):
     order = get_object_or_404(SparePartsOrders , id=pk)
-    product = SparePartsOrderProducts.objects.filter(product_order=order).order_by('id')
-    count_product = SparePartsOrderProducts.objects.all().filter(product_order=order).count()
+    product = SparePartsOrderProducts.objects.filter(product_order=order, deleted=False).order_by('id')
+    print(product)
+    count_product = SparePartsOrderProducts.objects.filter(product_order=order, delted=False).count()
     print(count_product)
     
     form = orderProductForm(request.POST or None)
