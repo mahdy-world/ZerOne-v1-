@@ -241,6 +241,14 @@ class SparePartsNameUpdate(LoginRequiredMixin ,UpdateView):
         context['action_url'] = reverse_lazy('SpareParts:SparePartsNameUpdate', kwargs={'pk': self.object.id})
         return context
     
+    def get_form(self, *args, **kwargs):
+        form = super(SparePartsNameUpdate, self).get_form(*args, **kwargs)
+        if self.object.spare_type.deleted == False:
+            form.fields['spare_type'].queryset = SparePartsTypes.objects.filter(deleted=False)
+        else:
+            form.fields['spare_type'].queryset = SparePartsTypes.objects.all()
+        return form
+
     def get_success_url(self):
         messages.success(self.request, " تم تعديل صنف قطعة غيار " + str(self.object) + " بنجاح ", extra_tags="success")
         return reverse('SpareParts:SparePartsNameList',)
