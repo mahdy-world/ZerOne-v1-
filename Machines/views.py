@@ -401,6 +401,14 @@ class NamesUpdate(LoginRequiredMixin, UpdateView):
         context['action_url'] = reverse_lazy('Machines:names_update', kwargs={'pk': self.object.id})
         return context
 
+    def get_form(self, *args, **kwargs):
+        form = super(NamesUpdate, self).get_form(*args, **kwargs)
+        if self.object.machine_type.deleted == False:
+            form.fields['machine_type'].queryset = MachinesTypes.objects.filter(deleted=False)
+        else:
+            form.fields['machine_type'].queryset = MachinesTypes.objects.all()
+        return form
+
     def get_success_url(self):
         messages.success(self.request, " تم تعديل صنف ماكينة " + str(self.object) + " بنجاح ", extra_tags="success")
         return reverse('Machines:names_active_list')
