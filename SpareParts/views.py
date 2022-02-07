@@ -21,6 +21,7 @@ class SparePartsTypeList(LoginRequiredMixin ,ListView):
 
     def get_queryset(self):
         queryset = self.model.objects.filter(deleted=False).order_by('id')
+        
         return queryset
     
     def get_context_data(self, **kwargs):
@@ -157,7 +158,11 @@ class SparePartsTypeSuperDelete(LoginRequiredMixin, UpdateView):
         messages.success(self.request, " تم حذف نوع قطعة غيار " + str(self.object) + " نهائيا بنجاح ", extra_tags="success")
         my_form = SparePartsTypes.objects.get(id=self.kwargs['pk'])
         my_form.delete()
-        return redirect(self.get_success_url())    
+        
+        # delete also the spare parts names that has realation with type 
+        product = SparePartsNames.objects.filter(spare_type=self.kwargs['pk'])
+        product.delete()
+        return redirect(self.get_success_url())
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 

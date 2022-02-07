@@ -159,6 +159,10 @@ class TypesSuperDelete(LoginRequiredMixin, UpdateView):
         messages.success(self.request, " تم حذف نوع ماكينة " + str(self.object) + " نهائيا بنجاح ", extra_tags="success")
         my_form = MachinesTypes.objects.get(id=self.kwargs['pk'])
         my_form.delete()
+        
+        # delete also the machine names that has realation with type 
+        product = MachinesNames.objects.filter(machine_type=self.kwargs['pk'])
+        product.delete()
         return redirect(self.get_success_url())
 
 
@@ -903,6 +907,8 @@ def MachinesOrdersDetail(request, pk):
     order = get_object_or_404(MachinesOrders, id=pk)
     product = MachinesOrderProducts.objects.filter(product_order=order).order_by('id')
     count_product = product.count()
+    
+   
 
     total = product.aggregate(total=Sum('product_price')).get('total')
     quantity = product.aggregate(quantity=Sum('product_quantity')).get('quantity')

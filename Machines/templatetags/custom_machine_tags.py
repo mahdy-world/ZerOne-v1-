@@ -47,3 +47,7 @@ def warehouse_products(ware_id):
 @register.simple_tag(name='product_warehouses')
 def product_warehouses(prod_id):
     return WarehouseTransactions.objects.filter(item__id=prod_id, quantity__gt=0)
+
+
+
+    
