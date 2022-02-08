@@ -67,6 +67,7 @@
                 <div class="row">
                 {% for x in object_list %}
                 {% product_warehouses x.id as has_products %}
+                {% inside_order x.id as in_orders %}
                 <div class="col-xl-3 col-sm-6">
                   <div class="card text-center">
                       <div class="card-body">
@@ -78,8 +79,6 @@
                           </div>
                           <h3 ><a href="{% url 'Machines:NamesDetail' x.id x.name %}"  data-target="#sub_modal" data-toggle="modal" class="text-dark"> {{x.name}}</a></h3>
                           <h4 ><a href="#" class="badge badge-primary"> النوع : {{x.machine_type}}</a></h4>
-
-
                       </div>
                       <div class="card-footer bg-transparent border-top">
                           <div class="contact-links d-flex justify-content-center font-size-20">
@@ -125,13 +124,29 @@
                                 {% if message == 'trash' %}
                               <div class="mr-3">
                                   <a href="{% url 'Machines:names_restore' x.id %}" data-toggle="modal" data-target="#action_modal" class="badge badge-info waves-effect text-white waves-light">
-                                    <i class="bx bx-redo font-size-16 align-middle mr-2"></i> ارجاع
+                                    <i class="bx bx-redo font-size-16 align-middle "></i> ارجاع
                                   </a>
                               </div>
 
                               <div class="mr-3">
-                                  <a href="{% url 'Machines:names_super_delete' x.id %}" data-toggle="modal" data-target="#action_modal" class="badge badge-danger waves-effect text-white waves-light">
-                                    <i class="bx bxs-trash font-size-16 align-middle mr-2"></i> حذف نهائي
+                                  <a
+                                   {% if in_orders %}
+                                    href="#"
+                                    {% else %}
+                                    href="{% url 'Machines:names_super_delete' x.id %}" data-toggle="modal" data-target="#action_modal"
+                                    {% endif %}
+                                    class="badge badge-danger waves-effect text-white waves-light">
+
+                                    
+                                    {% if in_orders %}
+                                        <span style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. الصنف موجود بكميات داخل الطلبيات">
+                                        <i class="bx bxs-trash font-size-16 align-middle "></i> حذف نهائي 
+                                        </span>
+                                    {% else %}
+                                    <i class="bx bxs-trash font-size-16 align-middle"></i> حذف نهائي
+
+                                    {% endif %}
+                                        
                                   </a>
                               </div>
                               {% endif %}

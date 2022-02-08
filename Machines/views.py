@@ -916,8 +916,6 @@ def MachinesOrdersDetail(request, pk):
     product = MachinesOrderProducts.objects.filter(product_order=order).order_by('id')
     count_product = product.count()
     
-   
-
     total = product.aggregate(total=Sum('product_price')).get('total')
     quantity = product.aggregate(quantity=Sum('product_quantity')).get('quantity')
 

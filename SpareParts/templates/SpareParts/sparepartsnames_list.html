@@ -88,6 +88,7 @@
                 <div class="row">
                 {% for x in object_list %}
                 {% product_warehouses x.id as has_products %}
+                {% inside_order x.id as in_orders %}
                 <div class="col-xl-3 col-sm-6">
                   <div class="card text-center">
                       <div class="card-body">
@@ -136,16 +137,30 @@
                                     </div>
                                 {% else %}
                                      <div class="mr-3">
-                                            <a href="{% url 'SpareParts:SparePartsNameRestore' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Message">
+                                            <a href="{% url 'SpareParts:SparePartsNameRestore' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" class="badge badge-dark waves-effect text-white waves-light" data-original-title="Message">
                                                 <span class="badge badge-dark"><i class='bx bx-redo '></i> استرجاع
                                                 </span>
                                             </a>
                                     </div>
 
                                     <div class="">
-                                        <a href="{% url 'SpareParts:SparePartsNameSuperDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
-                                            <span class="badge badge-danger"><i class='bx bxs-trash '   ></i> حذف نهائي </span>
-                                             
+                                        <a
+                                            {% if in_orders %}
+                                            href="#"
+                                            {% else %}
+                                            href="{% url 'SpareParts:SparePartsNameSuperDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile"
+                                            {% endif %}
+                                            class="badge badge-danger waves-effect text-white waves-light"
+                                            >
+                                            
+                                            {% if in_orders %}
+                                                <span style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. الصنف موجود بكميات داخل الطلبيات">
+                                                <i class="bx bxs-trash font-size-16 align-middle "></i> حذف نهائي 
+                                                </span>
+                                            {% else %}    
+                                            <span class="badge badge-danger"><i class='bx bxs-trash '></i> حذف نهائي </span>
+                                            {% endif %}
+                                                
                                         </a>
                                     </div>
                                 {% endif %}
