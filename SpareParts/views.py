@@ -922,9 +922,7 @@ def SparePartsOrderDetail(request, pk):
 def AddProductOrder(request, pk):
     order = get_object_or_404(SparePartsOrders , id=pk)
     product = SparePartsOrderProducts.objects.filter(product_order=order, deleted=False).order_by('id')
-    print(product)
-    count_product = SparePartsOrderProducts.objects.filter(product_order=order, delted=False).count()
-    print(count_product)
+    count_product = SparePartsOrderProducts.objects.filter(product_order=order, deleted=False).count()
     
     form = orderProductForm(request.POST or None)
     type_page = "list"

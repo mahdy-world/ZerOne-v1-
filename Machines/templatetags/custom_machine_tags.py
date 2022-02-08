@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from django import template
 from django.db.models import Sum
 
@@ -48,6 +49,12 @@ def warehouse_products(ware_id):
 def product_warehouses(prod_id):
     return WarehouseTransactions.objects.filter(item__id=prod_id, quantity__gt=0)
 
+
+# check if products inside orders or not using id that came from template 
+@register.simple_tag(name='inside_order')
+def inside_order(product_id):
+    return MachinesOrderProducts.objects.filter(product_name__id=product_id)
+    
 
 
     

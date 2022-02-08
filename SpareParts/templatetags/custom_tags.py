@@ -43,3 +43,9 @@ def warehouse_products(ware_id):
 @register.simple_tag(name='product_warehouses')
 def product_warehouses(prod_id):
     return SparePartsWarehouseTransactions.objects.filter(item__id=prod_id, quantity__gt=0)
+
+
+# check if products inside orders or not using id that came from template 
+@register.simple_tag(name='inside_order')
+def inside_order(product_id):
+    return SparePartsOrderProducts.objects.filter(product_name__id=product_id)
